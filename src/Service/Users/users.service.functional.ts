@@ -25,7 +25,7 @@ class UserService {
   }
 
   async login(phoneEmail, password) {
-    const searchUser = await searchUserByLogin(phoneEmail, password);
+    const searchUser = await searchUserByLogin(phoneEmail);
     if (!searchUser && !decryptionPassword(password, searchUser.password))
       return { status: false };
     else {
