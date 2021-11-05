@@ -8,7 +8,6 @@ export async function searchMusicsByIdUser(id_user, root) {
     .find({
       where: { id_user, root: root },
     });
-  console.log(musicInBasket);
 
   if (musicInBasket) {
     return musicInBasket;
