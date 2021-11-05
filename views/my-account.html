@@ -1,0 +1,276 @@
+
+<!DOCTYPE html> <html lang="ru-RU"><head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script>
+    async function login() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", '/login', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({
+        email: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+      }));
+
+      xhr.onload = function () {
+        const data = JSON.parse(this.responseText);
+        if (!data || ! data.loginUser) {
+         alert('Неверный логин или пароль')
+        } else {
+          window.localStorage.setItem('id_user', data.loginUser.searchUser.id);
+          window.localStorage.setItem('jwtToken', data.loginUser.tokens.jwtToken);
+          window.localStorage.setItem('refreshToken', data.loginUser.tokens.refreshToken);
+          window.location.href = "/music";
+        }
+      };
+    }
+  </script>
+
+
+  <title>MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт</title>
+  <meta name="description" content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+  <link rel="canonical" href="/my-account" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт" />
+  <meta property="og:description" content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой." />
+  <meta property="og:url" content="/my-account" />
+  <meta property="og:site_name" content="MuzBanda" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:description" content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой." />
+  <meta name="twitter:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт" />
+  <script type='application/ld+json' class='yoast-schema-graph yoast-schema-graph--main'>{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://muzzona.com.ua/#organization","name":"","url":"https://muzzona.com.ua/","sameAs":[]},{"@type":"WebSite","@id":"https://muzzona.com.ua/#website","url":"https://muzzona.com.ua/","name":"MuzZona","publisher":{"@id":"https://muzzona.com.ua/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://muzzona.com.ua/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"WebPage","@id":"https://muzzona.com.ua/my-account/#webpage","url":"https://muzzona.com.ua/my-account/","inLanguage":"ru-RU","name":"MuzZona - \u0418\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u044b\u0445 cd \u0438 mp3 - \u041c\u043e\u0439 \u0430\u043a\u043a\u0430\u0443\u043d\u0442","isPartOf":{"@id":"https://muzzona.com.ua/#website"},"datePublished":"2019-01-16T12:07:45+03:00","dateModified":"2019-01-16T12:07:45+03:00","description":"\u041c\u044b \u0440\u0430\u0434\u044b \u043f\u0440\u0438\u0432\u0435\u0442\u0441\u0442\u0432\u043e\u0432\u0430\u0442\u044c \u0412\u0430\u0441 \u0432 \u043d\u0430\u0448\u0435\u043c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0435. \u0423 \u043d\u0430\u0441 \u0412\u044b \u0432\u0441\u0435\u0433\u0434\u0430 \u0441\u043c\u043e\u0436\u0435\u0442\u0435 \u043d\u0430\u0439\u0442\u0438 \u0438 \u043a\u0443\u043f\u0438\u0442\u044c\u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u0434\u0438\u0441\u043a\u0438 \u0441\u0430\u043c\u044b\u0445 \u0440\u0430\u0437\u043d\u043e\u043e\u0431\u0440\u0430\u0437\u043d\u044b\u0445 \u0441\u0442\u0438\u043b\u0435\u0439 \u0438 \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0439. \u041e\u0433\u0440\u043e\u043c\u043d\u044b\u0439 \u0430\u0441\u0441\u043e\u0440\u0442\u0438\u043c\u0435\u043d\u0442 \u0438\u0434\u0435\u043c\u043e\u043a\u0440\u0430\u0442\u0438\u0447\u043d\u044b\u0435 \u0446\u0435\u043d\u044b \u043f\u0440\u0438\u044f\u0442\u043d\u043e \u0443\u0434\u0438\u0432\u044f\u0442 \u043a\u0430\u043a \u043b\u044e\u0431\u0438\u0442\u0435\u043b\u0435\u0439 \u0441\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u043c\u0443\u0437\u044b\u043a\u0438, \u0442\u0430\u043a \u0438\u043f\u043e\u043a\u043b\u043e\u043d\u043d\u0438\u043a\u043e\u0432 \u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0439, \u0441\u0442\u0430\u0432\u0448\u0438\u0445 \u0443\u0436\u0435 \u043a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0438\u043c\u0438. \u0410 \u0431\u044b\u0441\u0442\u0440\u043e\u0435 \u043e\u0444\u043e\u0440\u043c\u043b\u0435\u043d\u0438\u0435 \u0438 \u043e\u0442\u043f\u0440\u0430\u0432\u043a\u0430\u0437\u0430\u043a\u0430\u0437\u0430 \u043f\u043e\u0437\u0432\u043e\u043b\u044f\u0442 \u0412\u0430\u043c \u0443\u0436\u0435 \u0447\u0435\u0440\u0435\u0437 \u043a\u043e\u0440\u043e\u0442\u043a\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u043d\u0430\u0441\u043b\u0430\u0436\u0434\u0430\u0442\u044c\u0441\u044f \u0441\u0432\u043e\u0435\u0439 \u043b\u044e\u0431\u0438\u043c\u043e\u0439 \u043c\u0443\u0437\u044b\u043a\u043e\u0439.","breadcrumb":{"@id":"https://muzzona.com.ua/my-account/#breadcrumb"}},{"@type":"BreadcrumbList","@id":"https://muzzona.com.ua/my-account/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://muzzona.com.ua/","url":"https://muzzona.com.ua/","name":"%%sitename%% %%sep%%  \u0418\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u043c\u0443\u0437\u044b\u043a\u0430\u043b\u044c\u043d\u044b\u0445 cd \u0438 mp3 %%sep%% %%title%%  %%page%%"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://muzzona.com.ua/my-account/","url":"https://muzzona.com.ua/my-account/","name":"\u041c\u043e\u0439 \u0430\u043a\u043a\u0430\u0443\u043d\u0442"}}]}]}</script>
+
+  <link rel='stylesheet' id='gtranslate-style-css'  href='https://muzzona.com.ua/wp-content/plugins/gtranslate/gtranslate-style24.css?ver=5.7.3' type='text/css' media='all' />
+  <link rel='stylesheet' id='wp-block-library-css'  href='https://muzzona.com.ua/wp-includes/css/dist/block-library/style.min.css?ver=5.7.3' type='text/css' media='all' />
+  <link rel='stylesheet' id='sp-wps-slick-css'  href='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/css/slick.css?ver=2.1.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='sp-wps-font-css'  href='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/css/spfont.css?ver=2.1.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='sp-wps-style-css'  href='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/css/style.css?ver=2.1.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='sp-wps-style-dep-css'  href='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/css/style-deprecated.css?ver=2.1.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='pac-styles-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce-product-archive-customiser/assets/css/pac.css?ver=5.7.3' type='text/css' media='all' />
+  <link rel='stylesheet' id='pac-layout-styles-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce-product-archive-customiser/assets/css/layout.css?ver=5.7.3' type='text/css' media='only screen and (min-width: 768px)' />
+  <link rel='stylesheet' id='select2-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce/assets/css/select2.css?ver=3.5.9' type='text/css' media='all' />
+  <link rel='stylesheet' id='woocommerce-layout-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=3.5.9' type='text/css' media='all' />
+  <link rel='stylesheet' id='woocommerce-smallscreen-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=3.5.9' type='text/css' media='only screen and (max-width: 768px)' />
+  <link rel='stylesheet' id='woocommerce-general-css'  href='https://muzzona.com.ua/wp-content/plugins/woocommerce/assets/css/woocommerce.css?ver=3.5.9' type='text/css' media='all' />
+  <style id='woocommerce-inline-inline-css' type='text/css'>
+    .woocommerce form .form-row .required { visibility: visible; }
+  </style>
+  <link rel='stylesheet' id='wp-bottom-menu-style-css'  href='https://muzzona.com.ua/wp-content/plugins/wp-bottom-menu/inc/style.css?ver=1.2' type='text/css' media='all' />
+  <link rel='stylesheet' id='font-awesome-css'  href='https://muzzona.com.ua/wp-content/plugins/wp-bottom-menu/inc/customizer-repeater/css/font-awesome.min.css?ver=1.1.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='clean-commerce-google-fonts-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C500&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+  <link rel='stylesheet' id='jquery-sidr-css'  href='https://muzzona.com.ua/wp-content/themes/clean-commerce/third-party/sidr/css/jquery.sidr.dark.min.css?ver=2.2.1' type='text/css' media='all' />
+  <link rel='stylesheet' id='jquery-slick-css'  href='https://muzzona.com.ua/wp-content/themes/clean-commerce/third-party/slick/slick.min.css?ver=1.6.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='clean-commerce-style-css'  href='https://muzzona.com.ua/wp-content/themes/clean-commerce/style.css?ver=1.1.1' type='text/css' media='all' />
+  <script type='text/javascript' src='https://muzzona.com.ua/wp-includes/js/jquery/jquery.min.js?ver=3.5.1' id='jquery-core-js'></script>
+  <script type='text/javascript' src='https://muzzona.com.ua/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+  <script type='text/javascript' src='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/js/slick.min.js?ver=2.1.7' id='sp-wps-slick-min-js-js'></script>
+  <script type='text/javascript' src='https://muzzona.com.ua/wp-content/plugins/woo-product-slider/public/assets/js/slick-config.js?ver=2.1.7' id='sp-wps-slick-config-js-js'></script>
+  <script type='text/javascript' id='zxcvbn-async-js-extra'>
+  </script>
+</head>
+
+<body data-rsssl=1 class="page-template-default page page-id-7 custom-background wc-pac-hide-sale-flash wc-pac-hide-product-count woocommerce-account woocommerce-page woocommerce-no-js global-layout-left-sidebar">
+
+<div id="page" class="hfeed site">
+  <a class="skip-link screen-reader-text" href="#content">Перейти к содержимому</a>		<div class="mobile-nav-wrap">
+  <a id="mobile-trigger" href="#mob-menu"><i class="fa fa-bars"></i></a>
+  <div id="mob-menu">
+    <ul id="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e" class="menu"><li id="menu-item-84" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84"><a href="https://muzzona.com.ua/">Магазин Лицензионной музыки</a></li>
+      <li id="menu-item-79" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a href="https://muzzona.com.ua/%d0%bf%d1%80%d0%b0%d0%b9%d1%81%d1%8b/">Каталоги</a></li>
+      <li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a href="https://muzzona.com.ua/%d0%ba%d0%be%d0%bd%d1%82%d0%b0%d0%ba%d1%82%d1%8b/">Контакты</a></li>
+      <li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a href="https://muzzona.com.ua/%d0%be%d0%bf%d0%bb%d0%b0%d1%82%d0%b0-%d0%b8-%d0%b4%d0%be%d1%81%d1%82%d0%b0%d0%b2%d0%ba%d0%b0/">Оплата и доставка</a></li>
+      <li id="menu-item-83" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a href="https://muzzona.com.ua/cart/">Корзина</a></li>
+      <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href="https://muzzona.com.ua/%d0%ba%d0%be%d0%bd%d1%82%d0%b0%d0%ba%d1%82%d1%8b/">☎	(066) 577-87-22</a></li>
+    </ul>			</div><!-- #mob-menu -->
+</div>
+
+  <header id="masthead" class="site-header" role="banner"><div class="container"><div class="inner-wrapper">			    <div class="site-branding">
+
+
+    <div id="site-identity">
+      <p class="site-title"><a href="/music" rel="home">MuzBanda</a></p>
+      <p class="site-description">Музыкальный интернет-магазин</p>
+    </div><!-- #site-identity -->
+  </div><!-- .site-branding -->
+    <div id="right-header">
+
+      <div id="cart-section">
+        <ul>
+          <li class="account-login">
+            <a href="/my-account">Мой аккаунт</a>
+          </li>
+          <li class="cart-price"><a href="/stripe"><strong>Корзина</strong>&nbsp;/&nbsp;<span class="amount"><span class="woocommerce-Price-amount amount">0.00<span class="woocommerce-Price-currencySymbol">$</span></span></span></a></li>
+          <li class="cart-icon"><strong>0</strong><span class="cart-icon-handle"></span></li>
+        </ul>
+      </div> <!-- .cart-section -->
+    </div> <!-- #right-header -->
+  </div> <!-- .inner-wrapper --></div><!-- .container --></header><!-- #masthead -->	    <div id="main-nav" class="clear-fix">
+  <div class="container">
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+      <div class="wrap-menu-content">
+        <div class="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-container"><ul id="primary-menu" class="menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84"><a href="/">Магазин музыки</a></li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a href="/">Каталоги</a></li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a href="/">Контакты</a></li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a href="/">Оплата и доставка</a></li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a href="/cart">Корзина</a></li>
+          <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a href=".">☎	(066) 577-87-22</a></li>
+        </ul></div>		            </div><!-- .menu-content -->
+    </nav><!-- #site-navigation -->
+
+
+  </div> <!-- .container -->
+</div> <!-- #main-nav -->
+
+  <div id="breadcrumb" itemprop="breadcrumb"><div class="container"><div class="woo-breadcrumbs breadcrumbs"><ul><li><a href="/my-music">Главная</a></li><li>Мой аккаунт</li></ul></div></div></div><div id="content" class="site-content"><div class="container"><div class="inner-wrapper">    <style type="text/css">div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li button{
+}
+
+
+</style>
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+
+
+
+      <article id="post-7" class="post-7 page type-page status-publish hentry">
+
+        <header class="entry-header">
+          <h1 class="entry-title">Мой аккаунт</h1>	</header><!-- .entry-header -->
+
+        <div class="entry-content-wrapper">
+          <div class="entry-content">
+            <div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
+
+              <div class="u-columns col2-set" id="customer_login">
+
+                <div class="u-column1 col-1">
+
+
+                  <h2>Авторизация</h2>
+
+                  <form class="woocommerce-form woocommerce-form-login login" method="post">
+
+
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                      <label for="username">Имя пользователя или email&nbsp;<span class="required">*</span></label>
+                      <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="" />			</p>
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                      <label for="password">Пароль&nbsp;<span class="required">*</span></label>
+                      <input id="password" class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" autocomplete="current-password" />
+                    </p>
+
+
+                    <p class="form-row">
+<!--                      <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="3f86a39e6e" /><input />-->
+                      <button type="submit" class="woocommerce-Button button" value="Войти" onclick="login(); return false">Войти</button>
+<!--                      <label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline">-->
+                      </label>
+                    </p>
+                    <p class="woocommerce-LostPassword lost_password">
+                      <a href="https://muzzona.com.ua/my-account/lost-password/">Забыли свой пароль?</a>
+                    </p>
+
+
+                  </form>
+
+
+                </div>
+
+                <div class="u-column2 col-2">
+
+                  <h2>Регистрация</h2>
+
+                  <form method="post" class="woocommerce-form woocommerce-form-register register"  >
+
+
+
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                      <label for="reg_username">Имя пользователя&nbsp;<span class="required">*</span></label>
+                      <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="" />				</p>
+
+
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                      <label for="reg_email">Email&nbsp;<span class="required">*</span></label>
+                      <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="" />			</p>
+
+
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                      <label for="reg_password">Пароль&nbsp;<span class="required">*</span></label>
+                      <input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" />
+                    </p>
+
+
+                    <div class="woocommerce-privacy-policy-text"></div>
+                    <p class="woocommerce-FormRow form-row">
+                      <input type="hidden" id="woocommerce-register-nonce" name="woocommerce-register-nonce" value="57ce6690da" /><input type="hidden" name="_wp_http_referer" value="/my-account/" />				<button type="submit" class="woocommerce-Button button" name="register" value="Регистрация">Регистрация</button>
+                    </p>
+
+
+                  </form>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div><!-- .entry-content -->
+        </div>
+
+        <footer class="entry-footer">
+        </footer><!-- .entry-footer -->
+      </article><!-- #post-## -->
+
+
+
+
+    </main><!-- #main -->
+  </div><!-- #primary -->
+
+  <div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+    </form>
+    </aside><aside id="nav_menu-7" class="widget widget_nav_menu"><div class="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2-container"><ul id="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2" class="menu"><li id="menu-item-91" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-91"><a href="/music">◈   Музыка на CD</a>
+    <ul class="sub-menu">
+      <li id="menu-item-105" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-105"><a href="/">Новинки</a></li>
+      <li id="menu-item-27310" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27310"><a href="/">Лучшее</a></li>
+      <li id="menu-item-32215" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-32215"><a href="/">Импорт</a></li>
+      <li id="menu-item-97" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-97"><a href="/">Rock</a></li>
+      <li id="menu-item-93" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-93"><a href="/">Jazz and blues</a></li>
+      <li id="menu-item-95" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-95"><a href="/">Pop</a></li>
+      <li id="menu-item-98" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-98"><a href="/">Украинская музыка</a></li>
+      <li id="menu-item-99" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-99"><a href="/">Шансон</a></li>
+      <li id="menu-item-27311" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27311"><a href="/">Классическая музыка</a></li>
+      <li id="menu-item-27313" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27313"><a href="/">Инструментальная музыка</a></li>
+      <li id="menu-item-27634" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27634"><a href="/">Lounge</a></li>
+      <li id="menu-item-27314" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27314"><a href="/">Ethnic music</a></li>
+      <li id="menu-item-92" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-92"><a href="/">Electronic</a></li>
+      <li id="menu-item-96" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-96"><a href="/">Rap and Hip-hop</a></li>
+      <li id="menu-item-27315" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27315"><a href="/">Саундтрек</a></li>
+    </ul>
+  </li>
+  </ul></aside>	</div>
+
+  <!--WPFC_FOOTER_START--></div><!-- .inner-wrapper --></div><!-- .container --></div><!-- #content -->
+  <footer id="colophon" class="site-footer" role="contentinfo"><div class="container">
+    <div class="colophon-inner colophon-grid-2">
+
+      <div class="colophon-column">
+        <div class="copyright">
+          Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купить музыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент и демократичные цены приятно удивят как любителей современной музыки, так и поклонников произведений, ставших уже классическими. А быстрое оформление и отправка заказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой.			    	</div><!-- .copyright -->
+      </div>
+
+
+      <div class="colophon-column">
+        <div class="site-info">
+          Clean Commerce от <a target="_blank" rel="designer" href="https://wenthemes.com/">WEN Themes</a>			    	</div>
+      </div>
+
+    </div>
+  </div></footer>
+</div><!-- #page --><a href="#page" class="scrollup" id="btn-scrollup"><i class="fa fa-angle-up"></i></a>
+
+</div>
+
+</body>
+</html>

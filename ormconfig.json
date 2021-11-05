@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "username": "user",
+  "password": "password",
+  "database": "postgres",
+  "logging": false,
+  "entities": [
+    "build/entity/**/*.js"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts"
+  ]
+}
