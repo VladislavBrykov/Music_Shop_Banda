@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Token } from '../interfaces';
 
 @Entity({ name: 'user' })
 class User {
@@ -12,9 +13,6 @@ class User {
 
   @Column()
   phoneEmail: string;
-
-  @Column()
-  token: string;
 
   @Column()
   password: string;
@@ -27,6 +25,7 @@ class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+  token?: Token;
 }
 
 export default User;

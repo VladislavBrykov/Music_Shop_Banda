@@ -11,7 +11,7 @@ export async function stripeInquiry(stripeEmail, stripeToken, finalPrice) {
     })
     .then((customer) => {
       return stripe.charges.create({
-        amount: Number(finalPrice.toString() + '00'),
+        amount: Number(finalPrice.toString() + process.env.S3_CENT),
         description: process.env.STRIPE_DESCRIPTION_PAY,
         currency: process.env.STRIPE_CURRENCY,
         customer: customer.id,

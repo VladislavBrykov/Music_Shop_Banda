@@ -6,9 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+
 .env
 .idea
-uploads/*
 build
 node_modules
 package-lock.json

@@ -1,12 +1,11 @@
 import * as bcrypt from 'bcrypt';
-const saltRounds = bcrypt.genSaltSync(10);
+
+const saltRounds = bcrypt.genSaltSync(Number(process.env.BCRYPT_HASH_NUMBER));
 
 export function hashPassword(password): string {
-  const hash: string = bcrypt.hashSync(password, saltRounds);
-  return hash;
+  return bcrypt.hashSync(password, saltRounds);
 }
 
 export function decryptionPassword(password, hash) {
-  const result = bcrypt.compareSync(password, hash);
-  return result;
+  return bcrypt.compareSync(password, hash);
 }

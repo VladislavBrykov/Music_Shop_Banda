@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+        async function login() {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", '/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                email: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+            }));
+
+            xhr.onload = function () {
+                const data = JSON.parse(this.responseText);
+                if (!data || !data.loginUser) {
+                    alert('Неверный логин или пароль')
+                } else {
+                    window.localStorage.setItem('id_user', data.loginUser.searchUser.id);
+                    window.localStorage.setItem('jwtToken', data.loginUser.tokens.jwtToken);
+                    window.localStorage.setItem('refreshToken', data.loginUser.tokens.refreshToken);
+                    window.location.href = "/";
+                }
+            };
+        }
+    </script>
+
+    <script>
+        async function registration() {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", '/registration', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                email: document.getElementById('reg_email').value,
+                password: document.getElementById('reg_password').value,
+            }));
+
+            xhr.onload = function () {
+                const data = JSON.parse(this.responseText);
+                if (!data || data.status === false) {
+                    alert('Логин уже занят')
+                } else {
+                    alert('Авторизация успешна можете залогиниться')
+                }
+            };
+        }
+    </script>
+
+
+    <title>MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт</title>
+    <meta name="description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <link rel="canonical" href="/authentication"/>
+    <meta property="og:locale" content="ru_RU"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт"/>
+    <meta property="og:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta property="og:url" content="/authentication"/>
+    <meta property="og:site_name" content="MuzBanda"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta name="twitter:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мой аккаунт"/>
+
+    <link rel='stylesheet' id='gtranslate-style-css' href='/css/my.account/account-1.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='wp-block-library-css' href='/css/my.account/account-2.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-slick-css' href='/css/my.account/account-3.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-font-css' href='/css/my.account/account-4.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-css' href='/css/my.account/account-5.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-dep-css' href='/css/my.account/account-6.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-styles-css' href='/css/my.account/account-7.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-layout-styles-css' href='/css/my.account/account-8.css' type='text/css'
+          media='only screen and (min-width: 768px)'/>
+    <link rel='stylesheet' id='select2-css' href='/css/my.account/account-9.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='woocommerce-layout-css' href='/css/my.account/account-10.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='woocommerce-smallscreen-css' href='/css/my.account/account-11.css' type='text/css'
+          media='only screen and (max-width: 768px)'/>
+    <link rel='stylesheet' id='woocommerce-general-css' href='/css/my.account/account-12.css' type='text/css'
+          media='all'/>
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='wp-bottom-menu-style-css' href='/css/my.account/account-13.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='font-awesome-css' href='/css/my.account/account-14.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='clean-commerce-google-fonts-css' href='/css/my.account/account-15.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='jquery-sidr-css' href='/css/my.account/account-16.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='jquery-slick-css' href='/css/my.account/account-17.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='clean-commerce-style-css' href='/css/my.account/account-18.css' type='text/css'
+          media='all'/>
+    <script type='text/javascript' src='/css/my.account/account-19.css' id='jquery-core-js'></script>
+    <script type='text/javascript' src='/css/my.account/account-20.css' id='jquery-migrate-js'></script>
+    <script type='text/javascript' src='/css/my.account/account-21.css' id='sp-wps-slick-min-js-js'></script>
+    <script type='text/javascript' id='zxcvbn-async-js-extra'>
+    </script>
+</head>
+
+<body data-rsssl=1
+      class="page-template-default page page-id-7 custom-background wc-pac-hide-sale-flash wc-pac-hide-product-count woocommerce-account woocommerce-page woocommerce-no-js global-layout-left-sidebar">
+
+<div id="page" class="hfeed site">
+    <a class="skip-link screen-reader-text" href="#content">Перейти к содержимому</a>
+    <div class="mobile-nav-wrap">
+        <a id="mobile-trigger" href="#mob-menu"><i class="fa fa-bars"></i></a>
+        <div id="mob-menu">
+            <ul id="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e" class="menu">
+                <li id="menu-item-84"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84"><a
+                        href="/">Магазин Лицензионной музыки</a></li>
+                <li id="menu-item-79" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                        href="/">Каталоги</a></li>
+                <li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                        href="/">Контакты</a></li>
+                <li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                        href="/">Оплата и доставка</a></li>
+                <li id="menu-item-83" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a
+                        href="/">Корзина</a></li>
+                <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                        href="/">☎ (066) 577-87-22</a></li>
+            </ul>
+        </div><!-- #mob-menu -->
+    </div>
+
+    <header id="masthead" class="site-header" role="banner">
+        <div class="container">
+            <div class="inner-wrapper">
+                <div class="site-branding">
+
+
+                    <div id="site-identity">
+                        <p class="site-title"><a href="/" rel="home">MuzBanda</a></p>
+                        <p class="site-description">Музыкальный интернет-магазин</p>
+                    </div><!-- #site-identity -->
+                </div><!-- .site-branding -->
+                <div id="right-header">
+
+                    <div id="cart-section">
+                        <ul>
+                            <li class="account-login">
+                                <a href="/authentication">Мой аккаунт</a>
+                            </li>
+                            <li class="cart-price"><a href="/basket"><strong>Корзина</strong>&nbsp;/&nbsp;<span
+                                    class="amount"><span class="woocommerce-Price-amount amount">0.00<span
+                                    class="woocommerce-Price-currencySymbol">$</span></span></span></a></li>
+                            <li class="cart-icon"><strong>0</strong><span class="cart-icon-handle"></span></li>
+                        </ul>
+                    </div> <!-- .cart-section -->
+                </div> <!-- #right-header -->
+            </div> <!-- .inner-wrapper --></div><!-- .container --></header><!-- #masthead -->
+    <div id="main-nav" class="clear-fix">
+        <div class="container">
+            <nav id="site-navigation" class="main-navigation" role="navigation">
+                <div class="wrap-menu-content">
+                    <div class="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-container">
+                        <ul id="primary-menu" class="menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84">
+                                <a href="/">Магазин музыки</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                                    href="/">Каталоги</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                                    href="/">Контакты</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                                    href="/">Оплата и доставка</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a
+                                    href="/cart">Корзина</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                                    href=".">☎ (066) 577-87-22</a></li>
+                        </ul>
+                    </div>
+                </div><!-- .menu-content -->
+            </nav><!-- #site-navigation -->
+
+
+        </div> <!-- .container -->
+    </div> <!-- #main-nav -->
+
+    <div id="breadcrumb" itemprop="breadcrumb">
+        <div class="container">
+            <div class="woo-breadcrumbs breadcrumbs">
+                <ul>
+                    <li><a href="/my-music">Главная</a></li>
+                    <li>Мой аккаунт</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="content" class="site-content">
+        <div class="container">
+            <div class="inner-wrapper">
+                <style type="text/css">div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li button {
+                }
+
+
+                </style>
+                <div id="primary" class="content-area">
+                    <main id="main" class="site-main" role="main">
+
+
+                        <article id="post-7" class="post-7 page type-page status-publish hentry">
+
+                            <header class="entry-header">
+                                <h1 class="entry-title">Мой аккаунт</h1></header><!-- .entry-header -->
+
+                            <div class="entry-content-wrapper">
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="woocommerce-notices-wrapper"></div>
+
+                                        <div class="u-columns col2-set" id="customer_login">
+
+                                            <div class="u-column1 col-1">
+
+
+                                                <h2>Авторизация</h2>
+
+                                                <form class="woocommerce-form woocommerce-form-login login"
+                                                      method="post">
+
+
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="username">Имя пользователя или email&nbsp;<span
+                                                                class="required">*</span></label>
+                                                        <input type="text"
+                                                               class="woocommerce-Input woocommerce-Input--text input-text"
+                                                               name="username" id="username" autocomplete="username"
+                                                               value=""/></p>
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="password">Пароль&nbsp;<span
+                                                                class="required">*</span></label>
+                                                        <input id="password"
+                                                               class="woocommerce-Input woocommerce-Input--text input-text"
+                                                               type="password" name="password"
+                                                               autocomplete="current-password"/>
+                                                    </p>
+
+
+                                                    <p class="form-row">
+                                                        <!--                      <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="3f86a39e6e" /><input />-->
+                                                        <button type="submit" class="woocommerce-Button button"
+                                                                value="Войти" onclick="login(); return false">Войти
+                                                        </button>
+                                                        <!--                      <label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline">-->
+                                                        </label>
+                                                    </p>
+                                                    <p class="woocommerce-LostPassword lost_password">
+                                                        <a href="/">Забыли свой пароль?</a>
+                                                    </p>
+
+
+                                                </form>
+
+
+                                            </div>
+
+                                            <div class="u-column2 col-2">
+
+                                                <h2>Регистрация</h2>
+
+                                                <form method="post"
+                                                      class="woocommerce-form woocommerce-form-register register">
+
+
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="reg_username">Имя пользователя&nbsp;<span
+                                                                class="required">*</span></label>
+                                                        <input type="text"
+                                                               class="woocommerce-Input woocommerce-Input--text input-text"
+                                                               name="username" id="reg_username" autocomplete="username"
+                                                               value=""/></p>
+
+
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="reg_email">Email&nbsp;<span
+                                                                class="required">*</span></label>
+                                                        <input type="email"
+                                                               class="woocommerce-Input woocommerce-Input--text input-text"
+                                                               name="email" id="reg_email" autocomplete="email"
+                                                               value=""/></p>
+
+
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="reg_password">Пароль&nbsp;<span
+                                                                class="required">*</span></label>
+                                                        <input type="password"
+                                                               class="woocommerce-Input woocommerce-Input--text input-text"
+                                                               name="password" id="reg_password"
+                                                               autocomplete="new-password"/>
+                                                    </p>
+
+
+                                                    <div class="woocommerce-privacy-policy-text"></div>
+                                                    <p class="woocommerce-FormRow form-row">
+                                                        <input type="hidden" id="woocommerce-register-nonce"
+                                                               name="woocommerce-register-nonce"
+                                                               value="57ce6690da"/><input type="hidden"
+                                                                                          name="_wp_http_referer"
+                                                                                          value="/authentication"/>
+                                                        <button type="submit" class="woocommerce-Button button"
+                                                                name="register" value="Регистрация" onclick="registration(); return false">Регистрация
+                                                        </button>
+                                                    </p>
+
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div><!-- .entry-content -->
+                            </div>
+
+                            <footer class="entry-footer">
+                            </footer><!-- .entry-footer -->
+                        </article><!-- #post-## -->
+
+
+                    </main><!-- #main -->
+                </div><!-- #primary -->
+
+                <div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+                    </form>
+                    </aside>
+                    <aside id="nav_menu-7" class="widget widget_nav_menu">
+                        <div class="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2-container">
+                            <ul id="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2"
+                                class="menu">
+                                <li id="menu-item-91"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-91">
+                                    <a href="/">◈ Музыка на CD</a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-105"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-105">
+                                            <a href="/">Новинки</a></li>
+                                        <li id="menu-item-27310"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27310">
+                                            <a href="/">Лучшее</a></li>
+                                        <li id="menu-item-32215"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-32215">
+                                            <a href="/">Импорт</a></li>
+                                        <li id="menu-item-97"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-97">
+                                            <a href="/">Rock</a></li>
+                                        <li id="menu-item-93"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-93">
+                                            <a href="/">Jazz and blues</a></li>
+                                        <li id="menu-item-95"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-95">
+                                            <a href="/">Pop</a></li>
+                                        <li id="menu-item-98"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-98">
+                                            <a href="/">Украинская музыка</a></li>
+                                        <li id="menu-item-99"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-99">
+                                            <a href="/">Шансон</a></li>
+                                        <li id="menu-item-27311"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27311">
+                                            <a href="/">Классическая музыка</a></li>
+                                        <li id="menu-item-27313"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27313">
+                                            <a href="/">Инструментальная музыка</a></li>
+                                        <li id="menu-item-27634"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27634">
+                                            <a href="/">Lounge</a></li>
+                                        <li id="menu-item-27314"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27314">
+                                            <a href="/">Ethnic music</a></li>
+                                        <li id="menu-item-92"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-92">
+                                            <a href="/">Electronic</a></li>
+                                        <li id="menu-item-96"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-96">
+                                            <a href="/">Rap and Hip-hop</a></li>
+                                        <li id="menu-item-27315"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27315">
+                                            <a href="/">Саундтрек</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                    </aside>
+                </div>
+
+                <!--WPFC_FOOTER_START--></div><!-- .inner-wrapper --></div><!-- .container --></div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="colophon-inner colophon-grid-2">
+
+                <div class="colophon-column">
+                    <div class="copyright">
+                        Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купить музыкальные
+                        диски самых разнообразных стилей и направлений. Огромный ассортимент и демократичные цены
+                        приятно удивят как любителей современной музыки, так и поклонников произведений, ставших уже
+                        классическими. А быстрое оформление и отправка заказа позволят Вам уже через короткое время
+                        наслаждаться своей любимой музыкой.
+                    </div><!-- .copyright -->
+                </div>
+
+
+                <div class="colophon-column">
+                    <div class="site-info">
+                        Clean Commerce от <a target="_blank" rel="designer" href="https://wenthemes.com/">WEN Themes</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+</div><!-- #page --><a href="#page" class="scrollup" id="btn-scrollup"><i class="fa fa-angle-up"></i></a>
+
+</div>
+
+</body>
+</html>

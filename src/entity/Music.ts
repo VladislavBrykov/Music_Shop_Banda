@@ -19,6 +19,9 @@ class Music {
 
   @Column()
   author: string;
+
+  @Column()
+  description: string;
 }
 
 export default Music;

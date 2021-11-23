@@ -1,46 +1,43 @@
 import { injectable } from 'inversify';
 import { getConnection } from 'typeorm';
-import { checkingUserExistence } from './utils/checking.user.existence';
-import { saveNewUser } from './utils/save.new.user';
-import { searchUserByLogin } from './utils/search.user.by.login';
-import { saveTokensAfterLogin } from './utils/save.tokens.after.login';
-import searchUserByToken from './utils/search.user.by.token';
-import newTokenCreator from './utils/create.new.token';
-import { ErrorsForUser } from '../../Constants/errors';
+import { createUser } from './utils/create.user';
+import { getUser } from './utils/get.user';
+import { saveTokens } from './utils/save.tokens';
+import getUserByToken from './utils/get.user.by.token';
+import newTokenCreator from './utils/create.token';
 import { decryptionPassword, hashPassword } from '../../Helpers/hash.password';
+import User from '../../entity/User';
+import { Authorized, Login, Token } from '../../interfaces';
 
 @injectable()
 class UserService {
   constructor() {}
 
   async getUsers() {
-    const users = await getConnection().getRepository('user').find();
-    return users;
+    return await getConnection().getRepository<User>('user').find();
   }
 
-  async registration(login, password) {
-    if (await checkingUserExistence(login))
-      throw new Error(ErrorsForUser.UserExists);
-    return await saveNewUser(login, password);
+  async registration(email, password): Promise<boolean> {
+    const searchUser: User = await getUser(email);
+    if (searchUser) return false;
+    await createUser(email, hashPassword(password));
+    return true;
   }
 
-  async login(phoneEmail, password) {
-    const searchUser = await searchUserByLogin(phoneEmail);
+  async login(phoneEmail, password): Promise<Authorized | Login> {
+    const searchUser: User = await getUser(phoneEmail);
     if (!searchUser && !decryptionPassword(password, searchUser.password))
       return { status: false };
     else {
-      const tokens = await saveTokensAfterLogin(searchUser, phoneEmail);
+      const tokens: object = await saveTokens(searchUser, phoneEmail);
       return { status: true, tokens, searchUser };
     }
   }
 
-  async refreshToken(refreshToken) {
-    const searchUser = (await searchUserByToken(refreshToken)) as unknown as {
-      phoneEmail: string;
-    };
+  async refreshToken(refreshToken): Promise<boolean | Token> {
+    const searchUser: User | boolean = await getUserByToken(refreshToken);
     if (searchUser) {
-      const newJwtToken = newTokenCreator(searchUser.phoneEmail);
-      return newJwtToken;
+      return newTokenCreator(searchUser.phoneEmail);
     }
     return false;
   }

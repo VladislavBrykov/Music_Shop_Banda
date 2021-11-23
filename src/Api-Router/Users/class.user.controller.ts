@@ -6,7 +6,7 @@ import { TYPES } from '../../types';
 import valid from '../../Helpers/incoming.data.validator';
 import path from 'path';
 import { ErrorsForUser } from '../../Constants/errors';
-import { hashPassword } from '../../Helpers/hash.password';
+import User from '../../entity/User';
 
 @injectable()
 class UserController {
@@ -23,13 +23,17 @@ class UserController {
   }
 
   loginPage = async (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../../../views', '/my-account.html'));
+    res.sendFile(
+      path.join(__dirname, '../../../views', '/authentication.html')
+    );
   };
 
   allUsers = async (req: Request, res: Response) => {
     await valid.allUsersInputData(req.body);
     const { phoneEmail } = req.body;
-    const users = await this.capacityUser.userService.getUsers(phoneEmail);
+    const users: [User] = await this.capacityUser.userService.getUsers(
+      phoneEmail
+    );
     if (!users) {
       throw new Error(ErrorsForUser.SearchUser);
     }
@@ -38,21 +42,21 @@ class UserController {
 
   registration = async (req: Request, res: Response) => {
     await valid.registrationLoginInputData(req.body);
-    const { password, phoneEmail } = req.body;
+    const { password, email } = req.body;
     const registerUser = await this.capacityUser.userService.registration(
-      phoneEmail,
+      email,
       password
     );
     if (!registerUser) {
-      throw new Error(ErrorsForUser.UserExists);
+      return res.status(500).json({ status: false });
     }
-    return res.status(200).json({ registerUser });
+    return res.status(200).json({ status: true });
   };
 
   login = async (req: Request, res: Response) => {
     await valid.registrationLoginInputData(req.body);
     const { password, email } = req.body;
-    const loginUser: any = await this.capacityUser.userService.login(
+    const loginUser = await this.capacityUser.userService.login(
       email,
       password
     );
@@ -63,8 +67,10 @@ class UserController {
   };
 
   refreshToken = async (req: Request, res: Response) => {
-    const token = req.headers.authorization;
-    const jwtToken = await this.capacityUser.userService.refreshToken(token);
+    const token: string = req.headers.authorization;
+    const jwtToken: string = await this.capacityUser.userService.refreshToken(
+      token
+    );
 
     if (!jwtToken) {
       res.redirect('/my-account');
