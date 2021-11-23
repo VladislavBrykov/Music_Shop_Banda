@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <title>MuzBanda - Интернет-магазин музыкальных cd и mp3 - Корзина</title>
+    <meta name='robots' content='max-image-preview:large'/>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        window.onload = function () {
+            axios.post('/sound-from-basket', {
+                id_user: localStorage.id_user,
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.jwtToken,
+                }
+            })
+                .then((res) => {
+                    const delivery = 10;
+                    let numberSound = 1;
+                    let finalPrice = 0;
+                    while (numberSound < res.data.length || res.data[numberSound - 1]) {
+                        let productName = 'product-name-' + numberSound.toString();
+                        let firstPrice = 'price-' + numberSound.toString();
+                        finalPrice += Number(res.data[numberSound - 1].price);
+                        const newTitle = res.data[numberSound - 1].title + ' - ' + res.data[numberSound - 1].author;
+                        if (newTitle || productName)
+                            document.getElementById(productName).innerHTML = newTitle.toString();
+                            document.getElementById(firstPrice).innerHTML = res.data[numberSound - 1].price + '.$';
+                            document.getElementById('final-price').innerHTML = finalPrice.toString() + '.$';
+                            document.getElementById('total-amount').innerHTML = (finalPrice + delivery).toString();
+                        numberSound++;
+                    }
+                })
+                .catch(async (err) => {
+                    if (err.toString() === 'TypeError: Cannot set properties of null (setting \'innerHTML\')')
+                        return
+                    else {
+                        async function newJwt() {
+                            axios.get('/refresh-token', {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': localStorage.refreshToken,
+                                }
+                            }).then(async (res) => {
+                                await localStorage.removeItem('jwtToken');
+                                await window.localStorage.setItem('jwtToken', res.data.jwtToken);
+                                window.location.href = '/basket';
+                            }).catch((err) => {
+                                window.location.href = '/authentication';
+                            })
+                        }
+                        await newJwt();
+                    }
+                })
+        }
+    </script>
+
+    <meta name="description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta property="og:locale" content="ru_RU"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Корзина"/>
+    <meta property="og:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta property="og:site_name" content="MuzBanda"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta name="twitter:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Корзина"/>
+
+    <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
+    <link rel='dns-prefetch' href='//s.w.org'/>
+    <link rel='stylesheet' id='gtranslate-style-css'
+          href='/css/basket/basket-1.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='wp-block-library-css'
+          href='/css/basket/basket-2.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='sp-wps-slick-css'
+          href='/css/basket/basket-3.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-font-css'
+          href='/css/basket/basket-4.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-css'
+          href='/css/basket/basket-5.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-dep-css'
+          href='/css/basket/basket-6.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-styles-css'
+          href='/css/basket/basket-7.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-layout-styles-css'
+          href='/css/basket/basket-8.css'
+          type='text/css' media='only screen and (min-width: 768px)'/>
+    <link rel='stylesheet' id='select2-css'
+          href='/css/basket/basket-9.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='woocommerce-layout-css'
+          href='/css/basket/basket-10.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='woocommerce-smallscreen-css'
+          href='/css/basket/basket-11.css'
+          type='text/css' media='only screen and (max-width: 768px)'/>
+    <link rel='stylesheet' id='woocommerce-general-css'
+          href='/css/basket/basket-12.css'
+          type='text/css' media='all'/>
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='wp-bottom-menu-style-css'
+          href='/css/basket/basket-13.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='font-awesome-css'
+          href='/css/basket/basket-14.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='jquery-sidr-css'
+          href='/css/basket/basket-15.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='jquery-slick-css'
+          href='/css/basket/basket-16.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='clean-commerce-style-css'
+          href='/css/basket/basket-17.css' type='text/css'
+          media='all'/>
+
+    <!-- Saphali Lite Version -->
+    <meta name="generator" content="Saphali Lite 1.8.4"/>
+    <meta name='robots' content='noindex,follow'/>
+    <link rel="icon" href="favicon.jpeg"
+          sizes="32x32"/>
+    <link rel="icon" href="favicon.jpeg"
+          sizes="192x192"/>
+    <link rel="apple-touch-icon"
+          href="favicon.jpeg"/>
+    <meta name="msapplication-TileImage"
+          content="favicon.jpeg"/>
+</head>
+
+<body data-rsssl=1
+      class="page-template-default page page-id-5 custom-background wc-pac-hide-sale-flash wc-pac-hide-product-count woocommerce-cart woocommerce-page woocommerce-no-js global-layout-left-sidebar">
+
+<div id="page" class="hfeed site">
+    <div class="mobile-nav-wrap">
+        <a id="mobile-trigger" href="#mob-menu"><i class="fa fa-bars"></i></a>
+        <div id="mob-menu">
+            <ul id="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e" class="menu">
+                <li id="menu-item-84"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84"><a
+                            href="/">Магазин CD дисков</a></li>
+                <li id="menu-item-79" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                            href="/">Каталоги</a></li>
+                <li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                            href="/">Контакты</a></li>
+                <li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                            href="/">Оплата и доставка</a></li>
+                <li id="menu-item-83"
+                    class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-83">
+                    <a href="/basket" aria-current="page">Корзина</a></li>
+                <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                            href="/">☎ (066) 577-87-22</a></li>
+            </ul>
+        </div><!-- #mob-menu -->
+    </div><!-- .mobile-nav-wrap -->
+
+    <header id="masthead" class="site-header" role="banner">
+        <div class="container">
+            <div class="inner-wrapper">
+                <div class="site-branding">
+
+
+                    <div id="site-identity">
+                        <p class="site-title"><a href="/" rel="home">MuzBanda</a></p>
+                        <p class="site-description">Музыкальный интернет-магазин</p>
+                    </div><!-- #site-identity -->
+                </div><!-- .site-branding -->
+                <div id="right-header">
+
+                    <div id="cart-section">
+                        <ul>
+                            <li class="account-login">
+                                <a href="/my-music">Мой аккаунт</a>
+                            </li>
+                            <li class="cart-price"><a href="/basket"><strong>Корзина</strong>&nbsp;/&nbsp;<span
+                                            class="amount"><span class="woocommerce-Price-amount amount"><span
+                                                    class="woocommerce-Price-currencySymbol"></span></span></span></a>
+                            </li>
+                            <li class="cart-icon"><strong>1</strong><span class="cart-icon-handle"></span></li>
+                        </ul>
+                    </div> <!-- .cart-section -->
+                </div> <!-- #right-header -->
+            </div> <!-- .inner-wrapper --></div><!-- .container --></header><!-- #masthead -->
+    <div id="main-nav" class="clear-fix">
+        <div class="container">
+            <nav id="site-navigation" class="main-navigation" role="navigation">
+                <div class="wrap-menu-content">
+                    <div class="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-container">
+                        <ul id="primary-menu" class="menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84">
+                                <a href="/">Магазин CD дисков</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                                        href="/">Каталоги</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                                        href="/">Контакты</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                                        href="/">Оплата
+                                    и доставка</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-83">
+                                <a href="/" aria-current="page">Корзина</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                                        href="/">☎
+                                    (066) 577-87-22</a></li>
+                        </ul>
+                    </div>
+                </div><!-- .menu-content -->
+            </nav><!-- #site-navigation -->
+
+
+        </div> <!-- .container -->
+    </div> <!-- #main-nav -->
+
+    <div id="breadcrumb" itemprop="breadcrumb">
+        <div class="container">
+            <div class="woo-breadcrumbs breadcrumbs">
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li>Корзина</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="content" class="site-content">
+        <div class="container">
+            <div class="inner-wrapper">
+                <style type="text/css">div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li button {
+                        background-color:;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li.slick-active button {
+                        background-color:;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107.wps-product-section .slick-arrow {
+                        color:;
+                        background-color:;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-title a {
+                        color: ;
+                        font-size: 0px;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-title a:hover {
+                        color: ;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-price {
+                        color: ;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-price del span {
+                        color: ;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a {
+                        color: ;
+                        background-color: ;
+                        border-color: ;
+                    }
+
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a:hover,
+                    div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a.added_to_cart {
+                        color: ;
+                        background-color: ;
+                        border-color: ;
+                    }</style>
+                <div id="primary" class="content-area">
+                    <main id="main" class="site-main" role="main">
+
+
+                        <article id="post-5" class="post-5 page type-page status-publish hentry">
+
+                            <header class="entry-header">
+                                <h1 class="entry-title">Корзина</h1></header><!-- .entry-header -->
+
+                            <div class="entry-content-wrapper">
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="woocommerce-notices-wrapper"></div>
+                                        <form class="woocommerce-cart-form" action="/"
+                                              method="post">
+
+                                            <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents"
+                                                   cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="product-remove">&nbsp;</th>
+                                                    <th class="product-name">Товар</th>
+                                                    <th class="product-price">Цена</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!--card-1-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-remove">
+                                                        <a href="/"
+                                                           class="remove" aria-label="Удалить эту позицию"
+                                                           data-product_id="34201" data-product_sku="">&times;</a></td>
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-1"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-1"><span
+                                                                    class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-remove">
+                                                        <a href=""
+                                                           class="remove" aria-label="Удалить эту позицию"
+                                                           data-product_id="34201" data-product_sku="">&times;</a></td>
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-2"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-2"><span
+                                                                    class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-3-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-remove">
+                                                        <a href=""
+                                                           class="remove" aria-label="Удалить эту позицию"
+                                                           data-product_id="34201" data-product_sku="">&times;</a></td>
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-3"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-3"><span
+                                                                    class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-4-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-remove">
+                                                        <a href=""
+                                                           class="remove" aria-label="Удалить эту позицию"
+                                                           data-product_id="34201" data-product_sku="">&times;</a></td>
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-4"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-4"><span
+                                                                    class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-5-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-remove">
+                                                        <a href=""
+                                                           class="remove" aria-label="Удалить эту позицию"
+                                                           data-product_id="34201" data-product_sku="">&times;</a></td>
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-5"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-5"><span
+                                                                    class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+
+                                                </tr>
+                                                <!--card-6-->
+
+                                                </tbody>
+                                            </table>
+                                        </form>
+
+                                        <div class="cart-collaterals">
+                                            <div class="cart_totals ">
+
+
+                                                <h2>Сумма заказов</h2>
+
+                                                <table cellspacing="0" class="shop_table shop_table_responsive">
+
+                                                    <tr class="cart-subtotal">
+                                                        <th>Подытог</th>
+                                                        <td data-title="Подытог"><span
+                                                                    class="woocommerce-Price-amount amount"
+                                                                    id="final-price"><span
+                                                                        class="woocommerce-Price-currencySymbol"></span></span>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    <tr class="woocommerce-shipping-totals shipping">
+                                                        <th>Доставка</th>
+                                                        <td data-title="Доставка">
+                                                            <ul id="shipping_method"
+                                                                class="woocommerce-shipping-methods">
+                                                                <li>
+                                                                    <input type="radio" name="shipping_method[0]"
+                                                                           data-index="0"
+                                                                           id="shipping_method_0_flat_rate2"
+                                                                           value="flat_rate:2" class="shipping_method"
+                                                                           checked='checked'/><label
+                                                                            for="shipping_method_0_flat_rate2">Отправка
+                                                                        заказа транспортной компанией: <span
+                                                                                class="woocommerce-Price-amount amount">10.00<span
+                                                                                    class="woocommerce-Price-currencySymbol">$.</span></span></label>
+                                                                </li>
+                                                                <p class="woocommerce-shipping-destination">
+                                                                    Это примерная стоимость. Цены будут уточнены во
+                                                                    время
+                                                                    оформления заказа. </p>
+
+
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="order-total">
+                                                        <th>Итого</th>
+                                                        <td data-title="Итого"><strong>
+                                                                <span class="woocommerce-Price-amount amount"
+                                                                      id="total-amount"><span
+                                                                            class="woocommerce-Price-currencySymbol">$.</span></span></strong>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <script> dataAmount = document.getElementById('total-amount'); </script>
+
+                                                <form action="/payment" + method="POST">
+
+                                                    <script
+                                                            src="//checkout.stripe.com/v2/checkout.js"
+                                                            class="stripe-button"
+                                                            data-key="<%= key %>"
+                                                            data-amount="<%      %>"
+                                                            data-locale="auto">
+                                                    </script>
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div><!-- .entry-content -->
+                            </div><!-- .entry-content-wrapper -->
+
+                            <footer class="entry-footer">
+                            </footer><!-- .entry-footer -->
+                        </article><!-- #post-## -->
+
+
+                    </main><!-- #main -->
+                </div><!-- #primary -->
+
+                <div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+                    <aside id="woocommerce_product_search-2" class="widget woocommerce widget_product_search">
+                        <form role="search" method="get" class="woocommerce-product-search"
+                              action="">
+                            <label class="screen-reader-text" for="woocommerce-product-search-field-0">Искать:</label>
+                            <input type="search" id="woocommerce-product-search-field-0" class="search-field"
+                                   placeholder="Поиск по товарам&hellip;" value="" name="s"/>
+                            <button type="submit" value="Поиск">Поиск</button>
+                            <input type="hidden" name="post_type" value="product"/>
+                        </form>
+                    </aside>
+                    <aside id="nav_menu-7" class="widget widget_nav_menu">
+                        <div class="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2-container">
+                            <ul id="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2"
+                                class="menu">
+                                <li id="menu-item-91"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-91">
+                                    <a href="">◈
+                                        Музыка на CD</a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-105"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-105">
+                                            <a href="">Новинки</a>
+                                        </li>
+                                        <li id="menu-item-27310"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27310">
+                                            <a href="">Лучшее</a>
+                                        </li>
+                                        <li id="menu-item-32215"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-32215">
+                                            <a href="">Импорт</a>
+                                        </li>
+                                        <li id="menu-item-97"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-97">
+                                            <a href="">Rock</a>
+                                        </li>
+                                        <li id="menu-item-93"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-93">
+                                            <a href="">Jazz
+                                                and blues</a></li>
+                                        <li id="menu-item-95"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-95">
+                                            <a href="">Pop</a>
+                                        </li>
+                                        <li id="menu-item-98"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-98">
+                                            <a href="">Украинская
+                                                музыка</a></li>
+                                        <li id="menu-item-99"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-99">
+                                            <a href="">Шансон</a>
+                                        </li>
+                                        <li id="menu-item-27311"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27311">
+                                            <a href="">Детская
+                                                музыка</a></li>
+                                        <li id="menu-item-27312"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27312">
+                                            <a href="">Классическая
+                                                музыка</a></li>
+                                        <li id="menu-item-27313"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27313">
+                                            <a href="">Инструментальная
+                                                музыка</a></li>
+                                        <li id="menu-item-27634"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27634">
+                                            <a href="">Lounge</a>
+                                        </li>
+                                        <li id="menu-item-27314"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27314">
+                                            <a href="/">Ethnic
+                                                music</a></li>
+                                        <li id="menu-item-92"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-92">
+                                            <a href="">Electronic</a>
+                                        </li>
+                                        <li id="menu-item-96"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-96">
+                                            <a href="">Rap
+                                                and Hip-hop</a></li>
+                                        <li id="menu-item-27315"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27315">
+                                            <a href="">Саундтрек</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-27344"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27344">
+                                    <a href="">◈
+                                        Виниловые пластинки (LP)</a></li>
+
+                            </ul>
+                    </aside>
+                </div><!-- #sidebar-primary -->
+
+            </div><!-- .inner-wrapper --></div><!-- .container --></div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="colophon-inner colophon-grid-2">
+
+                <div class="colophon-column">
+                    <div class="copyright">
+                        Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купить музыкальные
+                        диски самых разнообразных стилей и направлений. Огромный ассортимент и демократичные цены
+                        приятно удивят как любителей современной музыки, так и поклонников произведений, ставших уже
+                        классическими. А быстрое оформление и отправка заказа позволят Вам уже через короткое время
+                        наслаждаться своей любимой музыкой.
+                    </div><!-- .copyright -->
+                </div><!-- .colophon-column -->
+
+
+                <div class="colophon-column">
+                    <div class="site-info">
+                        Clean Commerce от <a target="_blank" rel="designer" href="https://wenthemes.com/">WEN Themes</a>
+                    </div><!-- .site-info -->
+                </div><!-- .colophon-column -->
+
+            </div><!-- .colophon-inner -->
+
+            <div xmlns:v="http://rdf.data-vocabulary.org/#"
+                 style="text-align: center; margin-top: 12px; margin-bottom: 9px;">
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href="/"
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">MuzBanda ›</a></span>
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href="/"
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">CD Магазин Номер — ❶    ›</a></span>
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href="/"
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">Лучшая Музыка!   ›</a></span>
+
+            </div>
+        </div><!-- .container --></footer><!-- #colophon -->
+</div><!-- #page --><a href="#page" class="scrollup" id="btn-scrollup"><i class="fa fa-angle-up"></i></a>
+
+<div style="position:fixed;top:0px;right:8%;z-index:999999;" id="gtranslate_wrapper">
+    <!-- GTranslate: https://gtranslate.io/ -->
+    <style>
+        .switcher {
+            font-family: Arial;
+            font-size: 12pt;
+            text-align: left;
+            cursor: pointer;
+            overflow: hidden;
+            width: 173px;
+            line-height: 17px;
+        }
+
+        .switcher a {
+            text-decoration: none;
+            display: block;
+            font-size: 12pt;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+
+        .switcher a img {
+            vertical-align: middle;
+            display: inline;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .switcher a:hover img {
+            opacity: 1;
+        }
+
+        .switcher .selected {
+            background: #fff linear-gradient(180deg, #efefef 0%, #fff 70%);
+            position: relative;
+            z-index: 9999;
+        }
+
+        .switcher .selected a {
+            border: 1px solid #ccc;
+            color: #666;
+            padding: 3px 5px;
+            width: 161px;
+        }
+
+        .switcher .selected a:after {
+            height: 24px;
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+            width: 15px;
+            background-position: 50%;
+            background-size: 11px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 285 285'><path d='M282 76.5l-14.2-14.3a9 9 0 0 0-13.1 0L142.5 174.4 30.3 62.2a9 9 0 0 0-13.2 0L3 76.5a9 9 0 0 0 0 13.1l133 133a9 9 0 0 0 13.1 0l133-133a9 9 0 0 0 0-13z' style='fill:%23666'/></svg>");
+            background-repeat: no-repeat;
+            content: "" !important;
+            transition: all .2s;
+        }
+
+        .switcher .selected a.open:after {
+            -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+        }
+
+        .switcher .selected a:hover {
+            background: #fff
+        }
+
+        .switcher .option {
+            position: relative;
+            z-index: 9998;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            background-color: #eee;
+            display: none;
+            width: 171px;
+            max-height: 198px;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .switcher .option a {
+            color: #000;
+            padding: 3px 5px;
+        }
+
+        .switcher .option a:hover {
+            background: #fff;
+        }
+
+        .switcher .option a.selected {
+            background: #fff;
+        }
+
+        #selected_lang_name {
+            float: none;
+        }
+
+        .l_name {
+            float: none !important;
+            margin: 0;
+        }
+
+        .switcher .option::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            background-color: #f5f5f5;
+        }
+
+        .switcher .option::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .switcher .option::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
+            background-color: #888;
+        }
+    </style>
+    <div class="switcher notranslate">
+        <div class="selected">
+            <a href="#" onclick="return false;"><img
+                        src="favicon.jpeg" height="24" width="24"
+                        alt="ru"/>Banda</a>
+        </div>
+        <div class="option">
+            <a href="#"
+               onclick="doGTranslate('ru|en');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+               title="English" class="nturl"><img
+                        data-gt-lazy-src="favicon.jpeg" height="24"
+                        width="24" alt="en"/> English</a><a href="#"
+                                                            onclick="doGTranslate('ru|ru');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+                                                            title="Russian" class="nturl selected"><img
+                        data-gt-lazy-src="favicon.jpeg" height="24"
+                        width="24"
+                        alt="ru"/> Russian</a><a href="#"
+                                                 onclick="doGTranslate('ru|uk');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+                                                 title="Ukrainian" class="nturl"><img
+                        data-gt-lazy-src="favicon.jpeg" height="24"
+                        width="24"
+                        alt="uk"/> Ukrainian</a></div>
+    </div>
+
+    <style>
+        #goog-gt-tt {
+            display: none !important;
+        }
+
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        .goog-te-menu-value:hover {
+            text-decoration: none !important;
+        }
+
+        .goog-text-highlight {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element2 {
+            display: none !important;
+        }
+    </style>
+
+    <div id="google_translate_element2"></div>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+
+</div>
+<div class="wp-bottom-menu" id="wp-bottom-menu">
+
+    <a href="/" class="wp-bottom-menu-item">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+
+            <i class="wp-bottom-menu-item-icons fa fa-home"></i>
+        </div>
+        <span>Головна</span>
+
+    </a>
+    <a href="/" class="wp-bottom-menu-item">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+            <div class="wp-bottom-menu-cart-count">1</div>
+
+            <i class="wp-bottom-menu-item-icons fa fa-shopping-cart"></i>
+        </div>
+        <span class="wp-bottom-menu-cart-total"></span>
+
+    </a>
+    <a href="javascript:void(0);" title="Пошук" class="wp-bottom-menu-item wp-bottom-menu-search-form-trigger">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+
+            <i class="wp-bottom-menu-item-icons fa fa-search"></i>
+        </div>
+        <span>Пошук</span>
+
+    </a>
+</div>
+
+<div class="wp-bottom-menu-search-form-wrapper" id="wp-bottom-menu-search-form-wrapper">
+    <form role="search" method="get" action="/" class="wp-bottom-menu-search-form">
+        <i class="fa fa-search"></i>
+        <input type="hidden" name="post_type" value="product"/>
+        <input type="search" class="search-field" placeholder="Пошук" value="" name="s"/>
+    </form>
+</div>
+<style type="text/css">
+    @media (max-width: 1024px) {
+        .wp-bottom-menu {
+            display: flex;
+        }
+
+        .wp-bottom-menu-search-form-wrapper {
+            display: block;
+        }
+    }
+
+    :root {
+        --wpbottommenu-font-size: 12px;
+        --wpbottommenu-icon-size: 24px;
+        --wpbottommenu-text-color: #000000;
+        --wpbottommenu-icon-color: #000000;
+        --wpbottommenu-bgcolor: #ffffff;
+        --wpbottommenu-zindex: 9999;
+        --wpbottommenu-cart-count-bgcolor: #ff0000;
+    }
+
+</style>
+
+
+</body>
+</html>
+

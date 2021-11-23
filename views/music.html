@@ -1,0 +1,923 @@
+<html lang="ru-RU" style="height: 100%;">
+<head>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+
+        async function addToBasket(numberSound) {
+            let searchIdSoundByNumber = getCookie(numberSound.toString());
+            axios.post('/sound-to-basket', {
+                id_user: localStorage.id_user,
+                id_sound: searchIdSoundByNumber
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.jwtToken
+                }
+            })
+                .then()
+                .catch(async error => {
+                    async function newJwt() {
+                        axios.get('/refresh-token', {
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': localStorage.refreshToken,
+                            }
+                        }).then(async (res) => {
+                            await localStorage.removeItem('jwtToken');
+                            await window.localStorage.setItem('jwtToken', res.data.jwtToken);
+                            await addToBasket(numberSound);
+                        }).catch((err) => {
+                            window.location.href = '/authentication';
+                        })
+                    }
+
+                    await newJwt();
+                });
+        }
+    </script>
+
+    <script>
+        function getUrl(fileName) {
+            let a = {filename: fileName}
+            const url = axios.post('/get-url-image', a)
+                .then((response) => {
+                    console.log(response.data)
+                    return response.data;
+                })
+                .catch(error => {
+                    console.error('There was an error!', error);
+                });
+            return url;
+        }
+    </script>
+
+    <script>
+        window.onload = async function () {
+            {
+                function getRandomInt(max) {
+                    return Math.floor(Math.random() * max);
+                }
+
+                let xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", 'http://localhost:3001/music-list', false);
+                xmlHttp.send(null);
+                const data = JSON.parse(xmlHttp.responseText);
+                let cardMusicNumber = 1;
+                console.log(data);
+                const srcImage = await getUrl('admin/bonus.jpeg')
+
+                while (cardMusicNumber<21) {
+                    let numberTitle = 'title-' + cardMusicNumber.toString();
+                    let numberPrice = 'price-' + cardMusicNumber.toString();
+                    let numberImage = 'img-' + cardMusicNumber.toString();
+                    let numberAuthor = 'author-' + cardMusicNumber.toString();
+                    document.getElementById(numberTitle).innerHTML = 'Выиграть песню';
+                    document.getElementById(numberPrice).innerHTML = getRandomInt(50) + ' $';
+                    document.getElementById(numberImage).src = srcImage;
+                    cardMusicNumber++;
+                }
+
+
+                let hit_number = 1;
+                while (hit_number < 11) {
+                    let numberTitle = 'title-hit-' + hit_number.toString();
+                    let numberPrice = 'price-hit-' + hit_number.toString();
+                    let numberImage = 'img-hit-' + hit_number.toString();
+                    document.getElementById(numberTitle).innerHTML = 'Выиграть песню';
+                    document.getElementById(numberPrice).innerHTML = getRandomInt(50) + ' $';
+                    // let image = data[a - 1].image.toString();
+                    document.getElementById(numberImage).src = srcImage;
+                    hit_number++;
+                }
+
+
+                cardMusicNumber = 1
+                while (cardMusicNumber < 21) {
+                    document.cookie = cardMusicNumber.toString() + '=' + data[cardMusicNumber - 1].id;
+                    let numberTitle = 'title-' + cardMusicNumber.toString();
+                    let numberPrice = 'price-' + cardMusicNumber.toString();
+                    let numberImage = 'img-' + cardMusicNumber.toString();
+                    let numberAuthor = 'author-' + cardMusicNumber.toString();
+
+                    document.getElementById(numberTitle).innerHTML = data[cardMusicNumber - 1].title;
+                    document.getElementById(numberAuthor).innerHTML = data[cardMusicNumber - 1].author;
+                    document.getElementById(numberPrice).innerHTML = data[cardMusicNumber - 1].price + ' $';
+                    document.getElementById(numberImage).src = await getUrl(data[cardMusicNumber - 1].image);
+                    cardMusicNumber++;
+                }
+            }
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//s.w.org">
+
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/css/music/music-1.css"
+          media="all">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-2.css"
+          media="only screen and (min-width: 768px)">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-3.css"
+          media="all">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-4.css"
+          media="only screen and (max-width: 768px)">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-5.css"
+          media="all">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-6.css"
+          media="all">
+    <link rel="stylesheet" id="clean-commerce-google-fonts-css"
+          href="//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C500&amp;subset=latin%2Clatin-ext"
+          type="text/css" media="all">
+    <link rel="stylesheet" type="text/css" href="/css/music/music-7.css"
+          media="all">
+    <meta name="generator" content="WordPress 5.7.3">
+    <meta name="generator" content="WooCommerce 3.5.9">
+    <meta name="generator" content="Saphali Lite 1.8.4">
+
+<body data-rsssl="1"
+      class="home archive post-type-archive post-type-archive-product custom-background wc-pac-hide-sale-flash wc-pac-hide-product-count woocommerce woocommerce-page woocommerce-js global-layout-left-sidebar product-columns-4"
+      style="padding-bottom: 0px; position: relative; min-height: 100%; top: 0px;">
+
+<div id="page" class="hfeed site">
+    <a class="skip-link screen-reader-text" href="#content">Перейти к содержимому</a>
+    <div class="mobile-nav-wrap">
+
+        <header id="masthead" class="site-header" role="banner">
+            <div class="container">
+                <div class="inner-wrapper">
+                    <div class="site-branding">
+
+                        <div id="site-identity">
+                            <p class="site-title"><a href="/" rel="home">MuzBanda</a></p>
+                            <p id="body" class="site-description">Музыкальный интернет-магазин</p>
+                        </div>
+                    </div>
+                    <div id="right-header">
+
+                        <div id="cart-section">
+                            <ul>
+                                <li class="account-login">
+                                    <a href="/authentication">Мой аккаунт</a>
+                                </li>
+                                <li class="cart-price"><a href="/basket"><strong>Корзина</strong>&nbsp;/&nbsp;<span
+                                        class="amount"><span class="woocommerce-Price-amount amount"><span
+                                        class="woocommerce-Price-currencySymbol"></span></span></span></a></li>
+                                <li class="cart-icon"><strong>0</strong><span class="cart-icon-handle"></span></li>
+                            </ul>
+                        </div>
+                    </div> <!-- #right-header -->
+                </div> <!-- .inner-wrapper --></div><!-- .container --></header><!-- #masthead -->
+        <div id="main-nav" class="clear-fix">
+            <div class="container">
+                <nav id="site-navigation" class="main-navigation" role="navigation">
+                    <div class="wrap-menu-content">
+                        <div class="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-container">
+                            <ul id="primary-menu" class="menu">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item current_page_item menu-item-84">
+                                    <a href="/" aria-current="page">Магазин CD дисков</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                                        href="/">Каталоги</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                                        href="/">Контакты</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                                        href="/">Оплата
+                                    и доставка</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-83"><a
+                                        href="/basket">Корзина</a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                                        href="/">☎
+                                    (066) 577-87-22</a></li>
+                            </ul>
+                        </div>
+                    </div><!-- .menu-content -->
+                </nav><!-- #site-navigation -->
+
+
+            </div> <!-- .container -->
+        </div> <!-- #main-nav -->
+
+        </style>
+        <div id="primary">
+            <main role="main" class="site-main" id="main">
+                <header class="woocommerce-products-header">
+                    <h1 class="woocommerce-products-header__title page-title">Магазин Лицензионной музыки</h1>
+
+                </header>
+                <div class="woocommerce-notices-wrapper"></div>
+                <form class="woocommerce-ordering" method="get">
+                    <select name="orderby" class="orderby">
+                        <option value="popularity">По популярности</option>
+                        <option value="rating">По рейтингу</option>
+                        <option value="date" selected="selected">Сортировка по более позднему</option>
+                        <option value="price">Цены: по возрастанию</option>
+                        <option value="price-desc">Цены: по убыванию</option>
+                    </select>
+                    <input type="hidden" name="paged" value="1">
+                </form>
+                <ul class="products columns-4">
+                    <li class="post-34706 product type-product status-publish has-post-thumbnail product_cat--mp3 product_cat-electronic--mp3 first instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-1" width="2420" height="2420" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a" sizes="(max-width: 2420px) 100vw, 2420px">
+                            <h2 id="title-1" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-1" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-1" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol">$</span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34706" data-product_sku=""
+                               aria-label="Добавить &quot;Armin Van Buuren 2cd [mp3]&quot; в корзину" rel="nofollow"
+                               onclick="addToBasket(1)">В
+                        корзину</a></li>
+                    <li class="post-34698 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-heavy-metal instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-2" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-2" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-2" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-2" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34698" data-product_sku="4692655990902"
+                               aria-label="Добавить &quot;Кипелов - Звезды и кресты (2017) (digipak)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(2)">В корзину</a></li>
+                    <li class="post-34696 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-rock instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-3" width="640" height="640" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 640px) 100vw, 640px">
+                            <h2 id="title-3" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-3" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-3" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34696" data-product_sku="4680000800624"
+                               aria-label="Добавить &quot;Машина Времени - Вы (2016) (digipak)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(3)">В корзину</a></li>
+                    <li class="post-34694 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-power-metal last instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-4" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-4" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-4" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-4" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34694" data-product_sku="4632000069020"
+                               aria-label="Добавить &quot;Powerwolf – Lupus Dei (2007)&quot; в корзину" rel="nofollow"
+                               onclick="addToBasket(4)">В
+                        корзину</a></li>
+                    <li class="post-34692 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-power-metal first instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-5" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-5" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-5" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-5" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a href="/?add-to-cart=34692" data-quantity="1"
+                               class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34692" data-product_sku="4632000086225"
+                               aria-label="Добавить &quot;Powerwolf – Blood of the Saints (2011)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(5)">В корзину</a></li>
+                    <li class="post-34690 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-power-metal instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-6" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-6" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-6" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-6" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34690" data-product_sku="4632000048421"
+                               aria-label="Добавить &quot;Powerwolf – Return in Bloodred (2005)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(6)">В корзину</a></li>
+                    <li class="post-34688 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-6570 product_cat-rock---cd product_tag-power-metal instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-7" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-7" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-7" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-7" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34688" data-product_sku="4632000077926"
+                               aria-label="Добавить &quot;Powerwolf – Bible Of The Beast (2009)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(7)">В корзину</a></li>
+                    <li class="post-34685 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-pop product_tag-eurodisco product_tag-pop last instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-8" width="599" height="593" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 599px) 100vw, 599px">
+                            <h2 id="title-8" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-8" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-8" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34685" data-product_sku=""
+                               aria-label="Добавить &quot;C.C. Catch – Like A Hurricane (1987)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(8)">В корзину</a></li>
+                    <li class="post-34683 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-pop product_tag-eurodisco product_tag-pop first instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-9" width="220" height="220" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 220px) 100vw, 220px">
+                            <h2 id="title-9" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-9" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-9" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34683" data-product_sku="5907592142227"
+                               aria-label="Добавить &quot;C.C. Catch – Big Fun (1988)&quot; в корзину" rel="nofollow"
+                               onclick="addToBasket(9)">В
+                        корзину</a></li>
+                    <li class="post-34676 product type-product status-publish has-post-thumbnail product_cat----lp instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-10" width="800" height="800" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 800px) 100vw, 800px">
+                            <h2 id="title-10" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-10" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-10" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34676" data-product_sku=""
+                               aria-label="Добавить &quot;Iron Maiden – Senjutsu (2021) (Vinyl, 3Lp)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(10)">В корзину</a></li>
+                    <li class="post-34674 product type-product status-publish has-post-thumbnail product_cat----lp instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-11" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-11" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-11" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-11" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34674" data-product_sku="ASM042"
+                               aria-label="Добавить &quot;Kalush - Hotin (2021) (Vinyl, Lp)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(11)">В корзину</a></li>
+                    <li class="post-34657 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-rock---cd product_tag-progressive-rock last instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-12" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-12" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-12" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-12" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34657" data-product_sku=""
+                               aria-label="Добавить &quot;Yes - The Quest (2021)&quot; в корзину" rel="nofollow"
+                               onclick="addToBasket(12)">В
+                        корзину</a></li>
+                    <li class="post-34655 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-rock---cd product_tag-rock first instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-13" width="320" height="320" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 320px) 100vw, 320px">
+                            <h2 id="title-13" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-13" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-13" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34655" data-product_sku=""
+                               aria-label="Добавить &quot;Roger Taylor - Outsider (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(13)">В корзину</a></li>
+                    <li class="post-34653 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-rock---cd product_tag-heavy-metal instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-14" width="400" height="400" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 400px) 100vw, 400px">
+                            <h2 id="title-14" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-14" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-14" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34653" data-product_sku=""
+                               aria-label="Добавить &quot;KK's Priest - Sermons of the Sinner (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(14)">В корзину</a></li>
+                    <li class="post-34651 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-jazz-and-blues product_tag-vocal-jazz instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-15" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-15" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-15" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-15" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34651" data-product_sku=""
+                               aria-label="Добавить &quot;Tony Bennett &amp; Lady Gaga - Love for Sale (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(15)">В корзину</a></li>
+                    <li class="post-34649 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-pop product_tag-pop last instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-16" width="450" height="450" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 450px) 100vw, 450px">
+                            <h2 id="title-16" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-16" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-16" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34649" data-product_sku=""
+                               aria-label="Добавить &quot;Kim Wilde - Pop Don't Stop (Greatest Hits) (2cd) (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(16)">В корзину</a></li>
+                    <li class="post-34647 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-rock---cd product_tag-progressive-rock first instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-17" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-17" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-17" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-17" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34647" data-product_sku=""
+                               aria-label="Добавить &quot;Argos - The Other Life (2021)&quot; в корзину" rel="nofollow"
+                               onclick="addToBasket(17)">В
+                        корзину</a></li>
+                    <li class="post-34641 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-rock---cd product_tag-heavy-metal product_tag-power-metal product_tag-speedmetal instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-18" width="400" height="400" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 400px) 100vw, 400px">
+                            <h2 id="title-18" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-18" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-18" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34641" data-product_sku=""
+                               aria-label="Добавить &quot;Rage - Resurrection Day (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(18)">В корзину</a></li>
+                    <li class="post-34651 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-jazz-and-blues product_tag-vocal-jazz instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-19" width="500" height="500" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 500px) 100vw, 500px">
+                            <h2 id="title-19" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-19" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-19" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34651" data-product_sku=""
+                               aria-label="Добавить &quot;Tony Bennett &amp; Lady Gaga - Love for Sale (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(19)">В корзину</a></li>
+                    <li class="post-34649 product type-product status-publish has-post-thumbnail product_cat---cd product_cat-39 product_cat-pop product_tag-pop last instock shipping-taxable purchasable product-type-simple">
+                        <a><img id="img-20" width="450" height="450" src="https://mymusicshop.s3.eu-central-1.amazonaws.com/admin/bonus.jpeg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEF8aCmV1LW5vcnRoLTEiRzBFAiEA2Gas50YtK0dri9hvdWpsE5TayBpEzyLfZjgBV1owB7MCIEqZJXdYbqSHcQJk8kbbinhyQSRI5yN3kTR9RCdqVr%2BxKvYCCCgQABoMNTY5NjE2MTY5OTUxIgxmuYNtri%2Fy%2BXCewN4q0wJ2QGt1Npx1Qt2980AFMr7Axxl7egehyp%2FUimo6aOqRtFpA4pY0WDWOgPZ6UYV%2F7ZHxSu6Ldipy87h8%2B7ZofDvuTvkRybtl663X%2F4RKB3qrPh%2BoW1NlEOEdTQgHj95MySaAO72hjvf3ZFhPurXgZoSspdmh1EbZbzSj0hLkZAOXSX3nmG1ju8E8CJXXG7kxuTYjWSqsz4GjG86e5HINNnkf1tRjzKzeauzMfonmRVyhWuExhjG8iuB5nPO3VD2KzkWwKyliv7GaTsr8jMIJEiFe%2FOg7w1oACl1bc9SiuJI%2B3xhIRlX4BBzUwWhm3CKzfNpbNCV9lXnbSL37KpIy3%2BaNEPdhBwI7WatIv1r00g5ki8g1IuQZaqIv2ORQMvbOQTSY5B6JrpqyzNT%2FqEyRoBvsZAKRMC5BrY9PLcu4gLZP49p7UJcKxpkrRd5gpPjOli%2FCae0wpIftjAY6swKC%2B%2BygmGqucH1uj2pAWqU%2F6t5DsaOylSzpt9OXm%2BIubj1jJvtrGkw5WBa%2FDrd58kRojIu4CwEuEmYHU%2FRnt0nMd0%2FfUdUaz4Q4eNoGnJC%2FiP8%2BKarud9DJd801h6IX4ej4oQIlII9JclCc%2F6nhjhqCcj8meeIhyAJ%2FoxRrby1BEjM88%2BkixmiCwPS7Nfj%2FZdkhMPYmZGLB4qAETC%2BsLK5efhw4kmXjaJmNOiY%2BqSDCxUVZ2d3z8zwmD%2F073PO7lgEMnTcRPd99rQm40IbbiqViewRk8%2BUs3R4W%2F6OJpLs8waLIup7eSAmZEW3F48KxudWX6Vd85SjL2%2BRTx1SajmdLzP53pz60DuYpzt9h2aUiVN8LtjOOPjV2xWTghRBzlCPCc3T0v6VaDFm9uFUgAlEwMK26&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20211122T101947Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAYJH6E7PPTXH62QHD%2F20211122%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Signature=cf352d6a2897bd36b5921d4acbf18612cc0bc8b8d1f42a5cf01cc6da52338e7a"
+                                class="attachment-clean-commerce-carousel size-clean-commerce-carousel" loading="lazy"
+                                sizes="(max-width: 450px) 100vw, 450px">
+                            <h2 id="title-20" class="woocommerce-loop-product__title">Выиграть песню</h2>
+                            <span id="author-20" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                            <span id="price-20" class="price"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span>
+                        </a><a data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                               data-product_id="34649" data-product_sku=""
+                               aria-label="Добавить &quot;Kim Wilde - Pop Don't Stop (Greatest Hits) (2cd) (2021)&quot; в корзину"
+                               rel="nofollow" onclick="addToBasket(20)">В корзину</a></li>
+                </ul>
+                <nav class="woocommerce-pagination">
+                    <ul class="page-numbers">
+                        <li><span aria-current="page" class="page-numbers current">1</span></li>
+                        <li><a class="page-numbers" href="/2">2</a></li>
+                        <li><a class="page-numbers" href="/3">3</a></li>
+                        <li><a class="page-numbers" href="/4">4</a></li>
+                        <li><span class="page-numbers dots">…</span></li>
+                    </ul>
+                </nav>
+                <div class="page-description"><h2>Добро пожаловать в наш интернет-магазин музыкальных дисков!</h2>
+                    <p>Мы существуем для того, чтобы объединять людей вне зависимости от их возраста и предпочтений!
+                        Каким образом? Конечно же с помощью музыки!<br>Ведь как говорил американский поэт Генри
+                        Лонгфелло, – «Музыка – универсальный язык человечества». И мы с ним полностью согласны!</p>
+                    <h2>Что мы предлагаем:</h2>
+                    <ul>
+                        <li>Качественную лицензионную музыку на компакт-дисках в форматах CD, MP3.</li>
+                        <li>Виниловые пластинки с музыкой в форматах LP.</li>
+                        <li>Огромный выбор всевозможных стилей музыки.</li>
+                        <li>Удобную доставку по всей Украине (Киев, Харьков, Одесса, Львов и другие города – для нас нет
+                            границ!) Мы предлагаем доставку как курьером по столице, так и почтой по территории всей
+                            страны.
+                        </li>
+                        <li>Самые лучшие цены в своем сегменте.</li>
+                        <li>Действительно продуманную систему оплаты.</li>
+                        <li>Выгодные условия приобретения (от двух тысяч гривен – доставка бесплатная!).</li>
+                        <li>Оперативное реагирование на заказ.</li>
+                    </ul>
+                    <p>Для того, чтобы удовлетворить запросы даже самых искушенных аудио ценителей, мы создали обширные
+                        разделы для поклонников поп-музыки, рока, джаза и блюза, классической музыки, электроники,
+                        этнической музыки, украинской, лаунжа, инструментальной музыки и шансона. Вы также можете
+                        порадовать Вашего ребенка, заказав у нас сборники с детскими песнями. Кроме того, в нашем
+                        магазине вы сможете найти и купить компакт-диски с лучшими композициями из фильмов.</p>
+                    <h2>Что такое музыка в формате CD?</h2>
+                    <p>Формат CD довольно часто считают такой себе классикой аудиозаписей. К тому же, многие люди
+                        предпочитают и сейчас использовать, и прослушивать этот аудио формат. Дело в том, что песни
+                        записываются в качестве цифровых данных по принципу виниловых пластинок. И плотность звука в
+                        четыре раза больше, нежели в формате MP3.&nbsp;</p>
+                    <h2>Что такое формат MP3?</h2>
+                    <p>Это файловый формат записи, который имеет определенное расширение, позволяющее использовать любые
+                        носители – и компакт-диски, в том числе. Файлы записываются небольшого размера, поэтому на один
+                        носитель возможно записать множество файлов. Считается, что MP3 практически не уступает по
+                        качеству звучанию CD. Небольшое различие заметят только отъявленные меломаны, разница лишь в
+                        том, что битрейт у MP3 пониженный.</p>
+                    <h2>Для кого подойдут виниловые диски с музыкой?</h2>
+                    <p>Давно кусок «винила» был пределом слезных мечтаний меломанов, так как ничего не могло сравниться
+                        с качеством звучания спиральных дорожек под иглой проигрывателя. В современное время мир
+                        виниловых пластинок так же открыт и популярен, но уже больше почитается диджеями и аудиофилами.
+                        Если вы хотите по-настоящему оценить глубину звучания любимых композиций или придерживаетесь
+                        своих взглядов, что нет ничего лучше проверенного временем – это для вас!</p>
+                    <p>В интернет-магазине представлены такие исполнители и группы: «Машина Времени», «Наутилус
+                        Помпилиус», «Гражданская оборона», Владимир Высоцкий, «Вопли Видоплясова», «Воскресение»,
+                        «AC/DC», Madonna, «Сектор Газа», Monatik, Макс Барских, Sade, «Rammstein», Lana Del Rey,
+                        «Queen», «The Beatles», Lara Fabian, «Время и Стекло», «Без Обмежень», Kazka, Сергей Трофимов,
+                        Михаил Круг,&nbsp; «Queen», Григорий Лепс и множество других!</p>
+                    <p>Не можете определиться с предпочтениями или исполнителями? Не беда! Загляните в разделы «Новинки»
+                        или «Лучшее» – там вы найдете хиты и тренды в мире музыки! А для того, чтобы ознакомиться с
+                        полным ассортиментом нашего магазина, заходите в «Каталоги». Опыт, ответственность, большой
+                        ассортимент музыкальных дисков, выгодные цены, выбор доставки и оплаты, удобная система поиска –
+                        все это поможет сделать быстрый выбор и через несколько дней уже наслаждаться великолепным
+                        звучанием композиций! </p>
+                </div>
+            </main><!-- #main --></div><!-- #primary -->
+        <div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+            <aside id="woocommerce_product_search-2" class="widget woocommerce widget_product_search">
+                <form role="search" method="get" class="woocommerce-product-search">
+                    <label class="screen-reader-text" for="woocommerce-product-search-field-0">Искать:</label>
+                    <input type="search" id="woocommerce-product-search-field-0" class="search-field"
+                           placeholder="Поиск по товарам…" value="" name="s">
+                    <button type="submit" value="Поиск">Поиск</button>
+                    <input type="hidden" name="post_type" value="product">
+                </form>
+            </aside>
+            <aside id="nav_menu-7" class="widget widget_nav_menu">
+                <div class="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2-container">
+                    <ul id="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2"
+                        class="menu">
+                        <li id="menu-item-91"
+                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-91">
+                            <a href="">◈
+                                Музыка на CD</a>
+                            <ul class="sub-menu">
+                                <li id="menu-item-105"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-105">
+                                    <a href="">Новинки</a>
+                                </li>
+                                <li id="menu-item-27310"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27310">
+                                    <a href="">Лучшее</a>
+                                </li>
+                                <li id="menu-item-32215"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-32215">
+                                    <a href="">Импорт</a>
+                                </li>
+                                <li id="menu-item-97"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-97">
+                                    <a href="">Rock</a>
+                                </li>
+                                <li id="menu-item-93"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-93">
+                                    <a href="">Jazz
+                                        and blues</a></li>
+                                <li id="menu-item-95"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-95">
+                                    <a href="">Pop</a>
+                                </li>
+                                <li id="menu-item-98"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-98">
+                                    <a href="">Украинская
+                                        музыка</a></li>
+                                <li id="menu-item-99"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-99">
+                                    <a href="">Шансон</a>
+                                </li>
+                                <li id="menu-item-27311"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27311">
+                                    <a href="">Детская
+                                        музыка</a></li>
+                                <li id="menu-item-27312"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27312">
+                                    <a href="">Классическая
+                                        музыка</a></li>
+                                <li id="menu-item-27313"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27313">
+                                    <a href="">Инструментальная
+                                        музыка</a></li>
+                                <li id="menu-item-27634"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27634">
+                                    <a href="">Lounge</a>
+                                </li>
+                                <li id="menu-item-27314"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27314">
+                                    <a href="">Ethnic
+                                        music</a></li>
+                                <li id="menu-item-92"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-92">
+                                    <a href="">Electronic</a>
+                                </li>
+                                <li id="menu-item-96"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-96">
+                                    <a href="">Rap
+                                        and Hip-hop</a></li>
+                                <li id="menu-item-27315"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27315">
+                                    <a href="">Саундтрек</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="menu-item-100"
+                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-100">
+                            <a href="">◈
+                                Музыка MP3</a>
+                            <ul class="sub-menu">
+                                <li id="menu-item-102"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-102">
+                                    <a href="">Сборники
+                                        MP3</a></li>
+                                <li id="menu-item-27339"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27339">
+                                    <a href="">Rock
+                                        MP3</a></li>
+                                <li id="menu-item-27335"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27335">
+                                    <a href="">Jazz
+                                        &amp; Blues MP3</a></li>
+                                <li id="menu-item-27338"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27338">
+                                    <a href="">Pop
+                                        MP3</a></li>
+                                <li id="menu-item-27342"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27342">
+                                    <a href="">Украинская
+                                        музыка MP3</a></li>
+                                <li id="menu-item-27343"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27343">
+                                    <a href="">Шансон
+                                        MP3</a></li>
+                                <li id="menu-item-27581"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27581">
+                                    <a href="">Детская
+                                        музыка MP3</a></li>
+                                <li id="menu-item-27341"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27341">
+                                    <a href="">Классическая
+                                        музыка MP3</a></li>
+                                <li id="menu-item-27340"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27340">
+                                    <a href="">Инструментальная
+                                        музыка MP3</a></li>
+                                <li id="menu-item-27336"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27336">
+                                    <a href="">Lounge
+                                        MP3</a></li>
+                                <li id="menu-item-27333"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27333">
+                                    <a href="">Ethnic
+                                        music MP3</a></li>
+                                <li id="menu-item-27664"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27664">
+                                    <a href="">Electronic
+                                        MP3</a></li>
+                                <li id="menu-item-27334"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27334">
+                                    <a href="">Hip-hop
+                                        MP3</a></li>
+                            </ul>
+                        </li>
+                        <li id="menu-item-27344"
+                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27344"><a
+                                href="">◈
+                            Виниловые пластинки (LP)</a></li>
+                    </ul>
+                </div>
+            </aside>
+            <aside id="woocommerce_products-2" class="widget woocommerce widget_products"><h2 class="widget-title">Хиты
+                продаж</h2>
+                <ul class="product_list_widget">
+                    <li>
+
+                        <!--    Список Хитов продаэж-->
+
+                        <a href="/">
+                            <img id="img-hit-1" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 alt="" loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px"
+                                 title="">
+                            <span id="title-hit-1"
+                                  class="product-title">Выиграть песню
+                            </span>
+                        </a>
+
+
+                        <span id="price-hit-1" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-2" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px">
+                            <span id="title-hit-2" class="product-title">
+                                OneRepublic - Human (2021)
+                            </span>
+                        </a>
+
+
+                        <span id="price-hit-2" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-3" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px">
+                            <span id="title-hit-3" class="product-title">Iron Maiden - Senjutsu (2cd) (2021)</span>
+                        </a>
+
+
+                        <span id="price-hit-3" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-4" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px"
+                                 > <span id="title-hit-4"
+                                                                                         class="product-title">Billie Eilish - Happier Than Ever (2021)</span>
+                        </a>
+
+
+                        <span id="price-hit-4" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-5" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px">
+                            <span id="title-hit-5" class="product-title">Святослав Вакарчук - Оранжерея (2021)</span>
+                        </a>
+
+
+                        <span id="price-hit-5" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-6" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px"
+                                 > <span id="title-hit-6"
+                                                                                                  class="product-title">The Hardkiss – Жива і не залізна (2021) (digipak)</span>
+                        </a>
+
+
+                        <span id="price-hit-6" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-7" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px"> <span
+                                class="product-title" id="title-hit-7">Helloween - Helloween (2021)</span>
+                        </a>
+
+
+                        <span id="price-hit-7" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-8" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px" >
+                            <span id="title-hit-8" class="product-title">ПЕСНЯ ГОДА – 2021 танцевальная [mp3]</span>
+                        </a>
+
+
+                        <span id="price-hit-8" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-9" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px">
+                            <span id="title-hit-9" class="product-title">ПЕСНЯ ГОДА – 2021 популярная [mp3]</span>
+                        </a>
+
+
+                        <span id="price-hit-9" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <a href="/">
+                            <img id="img-hit-10" width="300" height="300"
+                                 src=""
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 loading="lazy"
+                                 sizes="(max-width: 300px) 100vw, 300px"> <span
+                                class="product-title" id="title-hit-10">AC/DC - Power Up (2020)</span>
+                        </a>
+
+
+                        <span id="price-hit-10" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                    <li>
+
+                        <span id="price-hit-11" class="woocommerce-Price-amount amount"><span
+                                class="woocommerce-Price-currencySymbol"></span></span>
+                    </li>
+                </ul>
+            </aside>
+        </div><!-- #sidebar-primary -->
+    </div><!-- .inner-wrapper --></div><!-- .container --></body><!-- #content -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="container">
+        <div class="colophon-inner colophon-grid-2">
+
+            <div class="colophon-column">
+                <div class="copyright">
+                    Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купить музыкальные
+                    диски самых разнообразных стилей и направлений. Огромный ассортимент и демократичные цены приятно
+                    удивят как любителей современной музыки, так и поклонников произведений, ставших уже классическими.
+                    А быстрое оформление и отправка заказа позволят Вам уже через короткое время наслаждаться своей
+                    любимой музыкой.
+                </div><!-- .copyright -->
+            </div><!-- .colophon-column -->
+
+
+            <div class="colophon-column">
+                <div class="site-info">
+                    Clean Commerce от <a target="_blank" rel="designer" href="https://wenthemes.com/">WEN Themes</a>
+                </div><!-- .site-info -->
+            </div><!-- .colophon-column -->
+
+        </div><!-- .colophon-inner -->

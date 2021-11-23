@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+
+    <title>MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мои Покупки</title>
+    <meta name='robots' content='max-image-preview:large'/>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+      window.onload = async function myMusic() {
+        axios.post('/my-sound-from-basket', {
+          id_user: localStorage.id_user,
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': localStorage.jwtToken
+          }
+        })
+          .then((res) => {
+              console.log(res.data)
+            let i = 1;
+            let finalPrice = 0;
+            while ( i <= res.data.length) {
+              let productName = 'product-name-' + i.toString();
+              let price = 'price-' + i.toString();
+              finalPrice+= Number(res.data[i-1].price);
+              document.getElementById(productName).innerHTML = res.data[i-1].title + ' - ' + res.data[i-1].author;
+              document.getElementById(price).innerHTML = res.data[i-1].price + '.$';
+              i++;
+            }
+          })
+          .catch(async error => {
+              if (error) {
+              async function newJwt() {
+                  axios.get('/refresh-token', {
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': localStorage.refreshToken,
+                      }
+                  }).then(async (res) => {
+                      await localStorage.removeItem('jwtToken');
+                      await window.localStorage.setItem('jwtToken', res.data.jwtToken);
+                      await myMusic();
+                  }).catch((err) => {
+                      console.log(err)
+                      window.location.href = '/my-account';
+                  })
+              }
+              await newJwt();
+          }
+          });
+      }
+    </script>
+
+
+    <!-- This site is optimized with the Yoast SEO plugin v11.3 - https://yoast.com/wordpress/plugins/seo/ -->
+    <meta name="description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <link rel="canonical" href="/"/>
+    <meta property="og:locale" content="ru_RU"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мои Покупки"/>
+    <meta property="og:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta property="og:site_name" content="MuzBanda"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:description"
+          content="Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купитьмузыкальные диски самых разнообразных стилей и направлений. Огромный ассортимент идемократичные цены приятно удивят как любителей современной музыки, так ипоклонников произведений, ставших уже классическими. А быстрое оформление и отправказаказа позволят Вам уже через короткое время наслаждаться своей любимой музыкой."/>
+    <meta name="twitter:title" content="MuzBanda - Интернет-магазин музыкальных cd и mp3 - Мои Покупки"/>
+
+    <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
+    <link rel='dns-prefetch' href='//s.w.org'/>
+    <link rel='stylesheet' id='gtranslate-style-css'
+          href='/css/my.music/music-1.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='wp-block-library-css'
+          href='/css/my.music/music-2.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='sp-wps-slick-css'
+          href='/css/my.music/music-3.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-font-css'
+          href='/css/my.music/music-4.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-css'
+          href='/css/my.music/music-5.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='sp-wps-style-dep-css'
+          href='/css/my.music/music-6.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-styles-css'
+          href='/css/my.music/music-7.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='pac-layout-styles-css'
+          href='/css/my.music/music-8.css'
+          type='text/css' media='only screen and (min-width: 768px)'/>
+    <link rel='stylesheet' id='select2-css'
+          href='/css/my.music/music-9.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='woocommerce-layout-css'
+          href='/css/my.music/music-10.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='woocommerce-smallscreen-css'
+          href='/css/my.music/music-11.css'
+          type='text/css' media='only screen and (max-width: 768px)'/>
+    <link rel='stylesheet' id='woocommerce-general-css'
+          href='/css/my.music/music-12.css'
+          type='text/css' media='all'/>
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='wp-bottom-menu-style-css'
+          href='/css/my.music/music-13.css' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' id='font-awesome-css'
+          href='/css/my.music/music-14.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='clean-commerce-google-fonts-css'
+          href='//fonts.googleapis.com/css?family=Open+Sans%3A400%2C300%2C500&#038;subset=latin%2Clatin-ext'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='jquery-sidr-css'
+          href='/css/my.music/music-15.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='jquery-slick-css'
+          href='/css/my.music/music-16.css'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='clean-commerce-style-css'
+          href='/css/my.music/music-17.css' type='text/css'
+          media='all'/>
+
+    <!-- Saphali Lite Version -->
+    <meta name="generator" content="Saphali Lite 1.8.4"/>
+    <meta name='robots' content='noindex,follow'/>
+    <link rel="icon" href="/favicon.jpeg"
+          sizes="32x32"/>
+    <link rel="icon" href="/favicon.jpeg"
+          sizes="192x192"/>
+    <link rel="apple-touch-icon"
+          href="/favicon.jpeg"/>
+    <meta name="msapplication-TileImage"
+          content="/favicon.jpeg"/>
+</head>
+
+
+<body data-rsssl=1
+      class="page-template-default page page-id-5 custom-background wc-pac-hide-sale-flash wc-pac-hide-product-count woocommerce-cart woocommerce-page woocommerce-no-js global-layout-left-sidebar">
+
+<div id="page" class="hfeed site">
+    <div class="mobile-nav-wrap">
+        <a id="mobile-trigger" href="#mob-menu"><i class="fa fa-bars"></i></a>
+        <div id="mob-menu">
+            <ul id="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e" class="menu">
+                <li id="menu-item-84"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84"><a
+                        href="/">Магазин CD дисков</a></li>
+                <li id="menu-item-79" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                        href="/">Каталоги</a></li>
+                <li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                        href="/">Контакты</a></li>
+                <li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                        href="/">Оплата и доставка</a></li>
+                <li id="menu-item-83"
+                    class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-83">
+                    <a href="/basket" aria-current="page">Мои Покупки</a></li>
+                <li id="menu-item-148" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                        href="/">☎ (066) 577-87-22</a></li>
+            </ul>
+        </div><!-- #mob-menu -->
+    </div><!-- .mobile-nav-wrap -->
+
+    <header id="masthead" class="site-header" role="banner">
+        <div class="container">
+            <div class="inner-wrapper">
+                <div class="site-branding">
+
+
+                    <div id="site-identity">
+                        <p class="site-title"><a href="/" rel="home">MuzBanda</a></p>
+                        <p class="site-description">Музыкальный интернет-магазин</p>
+                    </div><!-- #site-identity -->
+                </div><!-- .site-branding -->
+                <div id="right-header">
+
+                    <div id="cart-section">
+                        <ul>
+                            <li class="account-login">
+                                <a href="">Мой аккаунт</a>
+                            </li>
+                            <li class="cart-price"><a href="/my-music"><strong>Мои Покупки</strong>&nbsp;/&nbsp;<span
+                                    class="amount"><span class="woocommerce-Price-amount amount"><span
+                                    class="woocommerce-Price-currencySymbol"></span></span></span></a>
+                            </li>
+                            <li class="cart-icon"><strong>1</strong><span class="cart-icon-handle"></span></li>
+                        </ul>
+                    </div> <!-- .cart-section -->
+                </div> <!-- #right-header -->
+            </div> <!-- .inner-wrapper --></div><!-- .container --></header><!-- #masthead -->
+    <div id="main-nav" class="clear-fix">
+        <div class="container">
+            <nav id="site-navigation" class="main-navigation" role="navigation">
+                <div class="wrap-menu-content">
+                    <div class="menu-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%bd%d0%be%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-container">
+                        <ul id="primary-menu" class="menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-84">
+                                <a href="/">Магазин CD дисков</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a
+                                    href="/">Каталоги</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a
+                                    href="/">Контакты</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a
+                                    href="/">Оплата
+                                и доставка</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-83">
+                                <a href="/basket" aria-current="page">Мои Покупки</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-148"><a
+                                    href="">☎
+                                (066) 577-87-22</a></li>
+                        </ul>
+                    </div>
+                </div><!-- .menu-content -->
+            </nav><!-- #site-navigation -->
+
+
+        </div> <!-- .container -->
+    </div> <!-- #main-nav -->
+
+    <div id="breadcrumb" itemprop="breadcrumb">
+        <div class="container">
+            <div class="woo-breadcrumbs breadcrumbs">
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li>Мои Покупки</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="content" class="site-content">
+        <div class="container">
+            <div class="inner-wrapper">
+                <style type="text/css">div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li button {
+                    background-color:;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107.wps-product-section ul.slick-dots li.slick-active button {
+                    background-color:;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107.wps-product-section .slick-arrow {
+                    color:;
+                    background-color:;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-title a {
+                    color: ;
+                    font-size: 0px;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-title a:hover {
+                    color: ;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-price {
+                    color: ;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-product-price del span {
+                    color: ;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a {
+                    color: ;
+                    background-color: ;
+                    border-color: ;
+                }
+
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a:hover,
+                div.wps-slider-section #sp-woo-product-slider-107 .wpsf-cart-button a.added_to_cart {
+                    color: ;
+                    background-color: ;
+                    border-color: ;
+                }</style>
+                <div id="primary" class="content-area">
+                    <main id="main" class="site-main" role="main">
+
+
+                        <article id="post-5" class="post-5 page type-page status-publish hentry">
+
+                            <header class="entry-header">
+                                <h1 class="entry-title">Мои Покупки</h1></header><!-- .entry-header -->
+
+                            <div class="entry-content-wrapper">
+                                <div class="entry-content">
+                                    <div class="woocommerce">
+                                        <div class="woocommerce-notices-wrapper"></div>
+                                        <form class="woocommerce-cart-form" action=""
+                                              method="post">
+
+                                            <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents"
+                                                   cellspacing="0">
+                                                <thead>
+                                                <tr>
+                                                    <th class="product-name">Товар</th>
+                                                    <th class="product-price">Цена</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!--card-1-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-1"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-1"><span
+                                                                class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+
+                                                </tr>
+                                                <!--card-2-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-2"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-2"><span
+                                                                class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-3-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-3"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-3"><span
+                                                                class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-4-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-4"></a></td>
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-4"><span
+                                                                class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+                                                </tr>
+                                                <!--card-5-->
+                                                <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                    <td class="product-name" data-title="Товар">
+                                                        <a href="" id="product-name-5"></a></td>
+
+                                                    <td class="product-price" data-title="Цена">
+                                                        <span class="woocommerce-Price-amount amount" id="price-5"><span
+                                                                class="woocommerce-Price-currencySymbol"></span></span>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div><!-- .entry-content -->
+                            </div><!-- .entry-content-wrapper -->
+
+                            <footer class="entry-footer">
+                            </footer><!-- .entry-footer -->
+                        </article><!-- #post-## -->
+
+
+                    </main><!-- #main -->
+                </div><!-- #primary -->
+
+                <div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+                    <aside id="woocommerce_product_search-2" class="widget woocommerce widget_product_search">
+                        <form role="search" method="get" class="woocommerce-product-search"
+                              action="/">
+                            <label class="screen-reader-text" for="woocommerce-product-search-field-0">Искать:</label>
+                            <input type="search" id="woocommerce-product-search-field-0" class="search-field"
+                                   placeholder="Поиск по товарам&hellip;" value="" name="s"/>
+                            <button type="submit" value="Поиск">Поиск</button>
+                            <input type="hidden" name="post_type" value="product"/>
+                        </form>
+                    </aside>
+                    <aside id="nav_menu-7" class="widget widget_nav_menu">
+                        <div class="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2-container">
+                            <ul id="menu-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d0%b8-%d1%82%d0%be%d0%b2%d0%b0%d1%80%d0%be%d0%b2"
+                                class="menu">
+                                <li id="menu-item-91"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-has-children menu-item-91">
+                                    <a href="/">◈
+                                        Музыка на CD</a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-105"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-105">
+                                            <a href="/">Новинки</a>
+                                        </li>
+                                        <li id="menu-item-27310"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27310">
+                                            <a href="/">Лучшее</a>
+                                        </li>
+                                        <li id="menu-item-32215"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-32215">
+                                            <a href="/">Импорт</a>
+                                        </li>
+                                        <li id="menu-item-97"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-97">
+                                            <a href="">Rock</a>
+                                        </li>
+                                        <li id="menu-item-93"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-93">
+                                            <a href="">Jazz
+                                                and blues</a></li>
+                                        <li id="menu-item-95"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-95">
+                                            <a href="">Pop</a>
+                                        </li>
+                                        <li id="menu-item-98"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-98">
+                                            <a href="">Украинская
+                                                музыка</a></li>
+                                        <li id="menu-item-99"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-99">
+                                            <a href="">Шансон</a>
+                                        </li>
+                                        <li id="menu-item-27311"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27311">
+                                            <a href="">Детская
+                                                музыка</a></li>
+                                        <li id="menu-item-27312"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27312">
+                                            <a href="">Классическая
+                                                музыка</a></li>
+                                        <li id="menu-item-27313"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27313">
+                                            <a href="">Инструментальная
+                                                музыка</a></li>
+                                        <li id="menu-item-27634"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27634">
+                                            <a href="">Lounge</a>
+                                        </li>
+                                        <li id="menu-item-27314"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27314">
+                                            <a href="">Ethnic
+                                                music</a></li>
+                                        <li id="menu-item-92"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-92">
+                                            <a href="">Electronic</a>
+                                        </li>
+                                        <li id="menu-item-96"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-96">
+                                            <a href="">Rap
+                                                and Hip-hop</a></li>
+                                        <li id="menu-item-27315"
+                                            class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27315">
+                                            <a href="">Саундтрек</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li id="menu-item-27344"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-27344">
+                                    <a href="">◈
+                                        Виниловые пластинки (LP)</a></li>
+
+                            </ul>
+                    </aside>
+                </div><!-- #sidebar-primary -->
+
+            </div><!-- .inner-wrapper --></div><!-- .container --></div><!-- #content -->
+    <footer id="colophon" class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="colophon-inner colophon-grid-2">
+
+                <div class="colophon-column">
+                    <div class="copyright">
+                        Мы рады приветствовать Вас в нашем магазине. У нас Вы всегда сможете найти и купить музыкальные
+                        диски самых разнообразных стилей и направлений. Огромный ассортимент и демократичные цены
+                        приятно удивят как любителей современной музыки, так и поклонников произведений, ставших уже
+                        классическими. А быстрое оформление и отправка заказа позволят Вам уже через короткое время
+                        наслаждаться своей любимой музыкой.
+                    </div><!-- .copyright -->
+                </div><!-- .colophon-column -->
+
+
+                <div class="colophon-column">
+                    <div class="site-info">
+                        Clean Commerce от <a target="_blank" rel="designer" href="https://wenthemes.com/">WEN Themes</a>
+                    </div><!-- .site-info -->
+                </div><!-- .colophon-column -->
+
+            </div><!-- .colophon-inner -->
+
+            <div xmlns:v="http://rdf.data-vocabulary.org/#"
+                 style="text-align: center; margin-top: 12px; margin-bottom: 9px;">
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href=""
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">MuzBanda ›</a></span>
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href=""
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">CD Магазин Номер — ❶    ›</a></span>
+                <span typeof="v:Breadcrumb"><a property="v:title" rel="v:url" href=""
+                                               style="color:#c4c3c2;text-align: center;margin-right: 10px;">Лучшая Музыка!   ›</a></span>
+
+            </div>
+        </div><!-- .container --></footer><!-- #colophon -->
+</div><!-- #page --><a href="#page" class="scrollup" id="btn-scrollup"><i class="fa fa-angle-up"></i></a>
+
+<div style="position:fixed;top:0px;right:8%;z-index:999999;" id="gtranslate_wrapper">
+    <!-- GTranslate: https://gtranslate.io/ -->
+    <style>
+        .switcher {
+            font-family: Arial;
+            font-size: 12pt;
+            text-align: left;
+            cursor: pointer;
+            overflow: hidden;
+            width: 173px;
+            line-height: 17px;
+        }
+
+        .switcher a {
+            text-decoration: none;
+            display: block;
+            font-size: 12pt;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+
+        .switcher a img {
+            vertical-align: middle;
+            display: inline;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .switcher a:hover img {
+            opacity: 1;
+        }
+
+        .switcher .selected {
+            background: #fff linear-gradient(180deg, #efefef 0%, #fff 70%);
+            position: relative;
+            z-index: 9999;
+        }
+
+        .switcher .selected a {
+            border: 1px solid #ccc;
+            color: #666;
+            padding: 3px 5px;
+            width: 161px;
+        }
+
+        .switcher .selected a:after {
+            height: 24px;
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+            width: 15px;
+            background-position: 50%;
+            background-size: 11px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 285 285'><path d='M282 76.5l-14.2-14.3a9 9 0 0 0-13.1 0L142.5 174.4 30.3 62.2a9 9 0 0 0-13.2 0L3 76.5a9 9 0 0 0 0 13.1l133 133a9 9 0 0 0 13.1 0l133-133a9 9 0 0 0 0-13z' style='fill:%23666'/></svg>");
+            background-repeat: no-repeat;
+            content: "" !important;
+            transition: all .2s;
+        }
+
+        .switcher .selected a.open:after {
+            -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+        }
+
+        .switcher .selected a:hover {
+            background: #fff
+        }
+
+        .switcher .option {
+            position: relative;
+            z-index: 9998;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            background-color: #eee;
+            display: none;
+            width: 171px;
+            max-height: 198px;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .switcher .option a {
+            color: #000;
+            padding: 3px 5px;
+        }
+
+        .switcher .option a:hover {
+            background: #fff;
+        }
+
+        .switcher .option a.selected {
+            background: #fff;
+        }
+
+        #selected_lang_name {
+            float: none;
+        }
+
+        .l_name {
+            float: none !important;
+            margin: 0;
+        }
+
+        .switcher .option::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            background-color: #f5f5f5;
+        }
+
+        .switcher .option::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .switcher .option::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
+            background-color: #888;
+        }
+    </style>
+    <div class="switcher notranslate">
+        <div class="selected">
+            <a href="#" onclick="return false;"><img
+                    src="/favicon.jpeg" height="24" width="24"
+                    alt="ru"/> English</a>
+        </div>
+        <div class="option">
+            <a href="#"
+               onclick="doGTranslate('ru|en');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+               title="English" class="nturl"><img
+                    data-gt-lazy-src="/favicon.jpeg" height="24"
+                    width="24" alt="en"/> English</a><a href="#"
+                                                        onclick="doGTranslate('ru|ru');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+                                                        title="Russian" class="nturl selected"><img
+                data-gt-lazy-src="/favicon.jpeg" height="24"
+                width="24"
+                alt="ru"/> Russian</a><a href="#"
+                                         onclick="doGTranslate('ru|uk');jQuery('div.switcher div.selected a').html(jQuery(this).html());return false;"
+                                         title="Ukrainian" class="nturl"><img
+                data-gt-lazy-src="/favicon.jpeg" height="24"
+                width="24"
+                alt="uk"/> Ukrainian</a></div>
+    </div>
+    <script>
+      jQuery('.switcher .selected').click(function () {
+        jQuery('.switcher .option a img').each(function () {
+          if (!jQuery(this)[0].hasAttribute('src')) jQuery(this).attr('src', jQuery(this).attr('data-gt-lazy-src'))
+        });
+        if (!(jQuery('.switcher .option').is(':visible'))) {
+          jQuery('.switcher .option').stop(true, true).delay(100).slideDown(500);
+          jQuery('.switcher .selected a').toggleClass('open')
+        }
+      });
+      jQuery('.switcher .option').bind('mousewheel', function (e) {
+        let options = jQuery('.switcher .option');
+        if (options.is(':visible')) options.scrollTop(options.scrollTop() - e.originalEvent.wheelDelta);
+        return false;
+      });
+      jQuery('body').not('.switcher').click(function (e) {
+        if (jQuery('.switcher .option').is(':visible') && e.target != jQuery('.switcher .option').get(0)) {
+          jQuery('.switcher .option').stop(true, true).delay(100).slideUp(500);
+          jQuery('.switcher .selected a').toggleClass('open')
+        }
+      });
+    </script>
+    <style>
+        #goog-gt-tt {
+            display: none !important;
+        }
+
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        .goog-te-menu-value:hover {
+            text-decoration: none !important;
+        }
+
+        .goog-text-highlight {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element2 {
+            display: none !important;
+        }
+    </style>
+
+    <div id="google_translate_element2"></div>
+    <script>
+      function googleTranslateElementInit2() {
+        new google.translate.TranslateElement({pageLanguage: 'ru', autoDisplay: false}, 'google_translate_element2');
+      }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+
+
+    <script>
+      function GTranslateGetCurrentLang() {
+        let keyValue = document['cookie'].match('(^|;) ?googtrans=([^;]*)(;|$)');
+        return keyValue ? keyValue[2].split('/')[2] : null;
+      }
+
+      function GTranslateFireEvent(element, event) {
+        try {
+          if (document.createEventObject) {
+            let evt = document.createEventObject();
+            element.fireEvent('on' + event, evt)
+          } else {
+            let evt = document.createEvent('HTMLEvents');
+            evt.initEvent(event, true, true);
+            element.dispatchEvent(evt)
+          }
+        } catch (e) {
+        }
+      }
+
+      function doGTranslate(lang_pair) {
+        if (lang_pair.value) lang_pair = lang_pair.value;
+        if (lang_pair == '') return;
+        let lang = lang_pair.split('|')[1];
+        if (GTranslateGetCurrentLang() == null && lang == lang_pair.split('|')[0]) return;
+        let teCombo;
+        let sel = document.getElementsByTagName('select');
+        for (let i = 0; i < sel.length; i++) if (sel[i].className.indexOf('goog-te-combo') != -1) {
+          teCombo = sel[i];
+          break;
+        }
+        if (document.getElementById('google_translate_element2') == null || document.getElementById('google_translate_element2').innerHTML.length == 0 || teCombo.length == 0 || teCombo.innerHTML.length == 0) {
+          setTimeout(function () {
+            doGTranslate(lang_pair)
+          }, 500)
+        } else {
+          teCombo.value = lang;
+          GTranslateFireEvent(teCombo, 'change');
+          GTranslateFireEvent(teCombo, 'change')
+        }
+      }
+
+      if (GTranslateGetCurrentLang() != null) jQuery(document).ready(function () {
+        let lang_html = jQuery('div.switcher div.option').find('img[alt="' + GTranslateGetCurrentLang() + '"]').parent().html();
+        if (typeof lang_html != 'undefined') jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));
+      });
+    </script>
+    <script>jQuery(document).ready(function () {
+      let allowed_languages = ["en", "ru", "uk"];
+      let accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();
+      switch (accept_language) {
+        case 'zh-cn':
+          let preferred_language = 'zh-CN';
+          break;
+        case 'zh':
+          let preferred_language = 'zh-CN';
+          break;
+        case 'zh-tw':
+          let preferred_language = 'zh-TW';
+          break;
+        case 'zh-hk':
+          let preferred_language = 'zh-TW';
+          break;
+        case 'he':
+          let preferred_language = 'iw';
+          break;
+        default:
+          let preferred_language = accept_language.substr(0, 2);
+          break;
+      }
+      if (preferred_language != 'ru' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0) {
+        doGTranslate('ru|' + preferred_language);
+        document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';
+        let lang_html = jQuery('div.switcher div.option').find('img[alt="' + preferred_language + '"]').parent().html();
+        if (typeof lang_html != 'undefined') jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));
+      }
+    });</script>
+</div>
+<div class="wp-bottom-menu" id="wp-bottom-menu">
+
+    <a href="" class="wp-bottom-menu-item">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+
+            <i class="wp-bottom-menu-item-icons fa fa-home"></i>
+        </div>
+        <span>Головна</span>
+
+    </a>
+    <a href="/" class="wp-bottom-menu-item">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+            <div class="wp-bottom-menu-cart-count">1</div>
+
+            <i class="wp-bottom-menu-item-icons fa fa-shopping-cart"></i>
+        </div>
+        <span class="wp-bottom-menu-cart-total"></span>
+
+    </a>
+    <a href="javascript:void(0);" title="Пошук" class="wp-bottom-menu-item wp-bottom-menu-search-form-trigger">
+
+        <div class="wp-bottom-menu-icon-wrapper">
+
+            <i class="wp-bottom-menu-item-icons fa fa-search"></i>
+        </div>
+        <span>Пошук</span>
+
+    </a>
+</div>
+
+<div class="wp-bottom-menu-search-form-wrapper" id="wp-bottom-menu-search-form-wrapper">
+    <form role="search" method="get" action="" class="wp-bottom-menu-search-form">
+        <i class="fa fa-search"></i>
+        <input type="hidden" name="post_type" value="product"/>
+        <input type="search" class="search-field" placeholder="Пошук" value="" name="s"/>
+    </form>
+</div>
+<style type="text/css">
+    @media (max-width: 1024px) {
+        .wp-bottom-menu {
+            display: flex;
+        }
+
+        .wp-bottom-menu-search-form-wrapper {
+            display: block;
+        }
+    }
+
+    :root {
+        --wpbottommenu-font-size: 12px;
+        --wpbottommenu-icon-size: 24px;
+        --wpbottommenu-text-color: #000000;
+        --wpbottommenu-icon-color: #000000;
+        --wpbottommenu-bgcolor: #ffffff;
+        --wpbottommenu-zindex: 9999;
+        --wpbottommenu-cart-count-bgcolor: #ff0000;
+    }
+
+</style>
+
+<script type='text/javascript' id='wc-add-to-cart-js-extra'>
+  let wc_add_to_cart_params = {
+    "ajax_url": "\/wp-admin\/admin-ajax.php",
+    "wc_ajax_url": "\/?wc-ajax=%%endpoint%%",
+    "i18n_view_cart": "\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u043a\u043e\u0440\u0437\u0438\u043d\u044b",
+    "is_cart": "1",
+    "cart_redirect_after_add": "no"
+  };
+</script>
+
+<script type='text/javascript' id='woocommerce-js-extra'>
+  let woocommerce_params = {"ajax_url": "\/wp-admin\/admin-ajax.php", "wc_ajax_url": "\/?wc-ajax=%%endpoint%%"};
+</script>
+
+<script type='text/javascript' id='wc-country-select-js-extra'>
+  let wc_country_select_params = {
+    "countries": "{\"AF\":[],\"AT\":[],\"AX\":[],\"BE\":[],\"BH\":[],\"BI\":[],\"CZ\":[],\"DE\":[],\"DK\":[],\"EE\":[],\"FI\":[],\"FR\":[],\"GP\":[],\"GF\":[],\"IS\":[],\"IL\":[],\"IM\":[],\"KR\":[],\"KW\":[],\"LB\":[],\"LU\":[],\"MQ\":[],\"MT\":[],\"NL\":[],\"NO\":[],\"PL\":[],\"PT\":[],\"RE\":[],\"SG\":[],\"SK\":[],\"SI\":[],\"LK\":[],\"SE\":[],\"VN\":[],\"YT\":[],\"AU\":{\"ACT\":\"\\u0410\\u0432\\u0441\\u0442\\u0440\\u0430\\u043b\\u0438\\u0439\\u0441\\u043a\\u0430\\u044f \\u0441\\u0442\\u043e\\u043b\\u0438\\u0447\\u043d\\u0430\\u044f \\u0442\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u044f\",\"NSW\":\"\\u041d\\u043e\\u0432\\u044b\\u0439 \\u042e\\u0436\\u043d\\u044b\\u0439 \\u0423\\u044d\\u043b\\u044c\\u0441\",\"NT\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u0442\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u044f\",\"QLD\":\"\\u041a\\u0432\\u0438\\u043d\\u0441\\u043b\\u0435\\u043d\\u0434\",\"SA\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u0410\\u0432\\u0441\\u0442\\u0440\\u0430\\u043b\\u0438\\u044f\",\"TAS\":\"\\u0422\\u0430\\u0441\\u043c\\u0430\\u043d\\u0438\\u044f\",\"VIC\":\"\\u0412\\u0438\\u043a\\u0442\\u043e\\u0440\\u0438\\u044f\",\"WA\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u0410\\u0432\\u0441\\u0442\\u0440\\u0430\\u043b\\u0438\\u044f\"},\"AO\":{\"BGO\":\"\\u0411\\u0435\\u043d\\u0433\\u043e\",\"BLU\":\"\\u0411\\u0435\\u043d\\u0433\\u0435\\u043b\\u0430\",\"BIE\":\"\\u0411\\u0438\\u0435\",\"CAB\":\"\\u041a\\u0430\\u0431\\u0438\\u043d\\u0434\\u0430\",\"CNN\":\"\\u041a\\u0443\\u043d\\u0435\\u043d\\u0435\",\"HUA\":\"\\u0423\\u0430\\u043c\\u0431\\u043e\",\"HUI\":\"\\u0423\\u0438\\u043b\\u0430\",\"CCU\":\"\\u041a\\u0432\\u0430\\u043d\\u0434\\u043e-\\u041a\\u0443\\u0431\\u0430\\u043d\\u0433\\u043e\",\"CNO\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u041a\\u0432\\u0430\\u043d\\u0437\\u0430\",\"CUS\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u041a\\u0432\\u0430\\u043d\\u0437\\u0430\",\"LUA\":\"\\u041b\\u0443\\u0430\\u043d\\u0434\\u0430\",\"LNO\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u041b\\u0443\\u043d\\u0434\\u0430\",\"LSU\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u041b\\u0443\\u043d\\u0434\\u0430\",\"MAL\":\"\\u041c\\u0430\\u043b\\u0430\\u043d\\u0436\\u0435\",\"MOX\":\"\\u041c\\u043e\\u0448\\u0438\\u043a\\u043e\",\"NAM\":\"\\u041d\\u0430\\u043c\\u0438\\u0431\\u0435\",\"UIG\":\"\\u0423\\u0438\\u0436\\u0435\",\"ZAI\":\"\\u0417\\u0430\\u0438\\u0440\"},\"AR\":{\"C\":\"\\u0410\\u0432\\u0442\\u043e\\u043d\\u043e\\u043c\\u043d\\u044b\\u0439 \\u0433\\u043e\\u0440\\u043e\\u0434 \\u0411\\u0443\\u044d\\u043d\\u043e\\u0441-\\u0410\\u0439\\u0440\\u0435\\u0441\",\"B\":\"\\u0411\\u0443\\u044d\\u043d\\u043e\\u0441-\\u0410\\u0439\\u0440\\u0435\\u0441\",\"K\":\"\\u041a\\u0430\\u0442\\u0430\\u043c\\u0430\\u0440\\u043a\\u0430\",\"H\":\"\\u0427\\u0430\\u043a\\u043e\",\"U\":\"\\u0427\\u0443\\u0431\\u0443\\u0442\",\"X\":\"\\u041a\\u043e\\u0440\\u0434\\u043e\\u0432\\u0430\",\"W\":\"\\u041a\\u043e\\u0440\\u0440\\u0438\\u0435\\u043d\\u0442\\u0435\\u0441\",\"E\":\"\\u042d\\u043d\\u0442\\u0440\\u0435-\\u0420\\u0438\\u043e\\u0441\",\"P\":\"\\u0424\\u043e\\u0440\\u043c\\u043e\\u0441\\u0430\",\"Y\":\"\\u0416\\u0443\\u0436\\u0443\\u0439\",\"L\":\"\\u041b\\u0430-\\u041f\\u0430\\u043c\\u043f\\u0430\",\"F\":\"\\u0420\\u0438\\u043e\\u0445\\u0430\",\"M\":\"\\u041c\\u0435\\u043d\\u0434\\u043e\\u0441\\u0430\",\"N\":\"\\u041c\\u0438\\u0441\\u044c\\u043e\\u043d\\u0435\\u0441\",\"Q\":\"\\u041d\\u0435\\u0443\\u043a\\u0435\\u043d\",\"R\":\"\\u0420\\u0438\\u043e-\\u041d\\u0435\\u0433\\u0440\\u043e\",\"A\":\"\\u0421\\u0430\\u043b\\u044c\\u0442\\u0430\",\"J\":\"\\u0421\\u0430\\u043d-\\u0425\\u0443\\u0430\\u043d\",\"D\":\"\\u0421\\u0430\\u043d-\\u041b\\u0443\\u0438\\u0441\",\"Z\":\"\\u0421\\u0430\\u043d\\u0442\\u0430-\\u041a\\u0440\\u0443\\u0441\",\"S\":\"\\u0421\\u0430\\u043d\\u0442\\u0430-\\u0424\\u0435\",\"G\":\"\\u0421\\u0430\\u043d\\u0442\\u044c\\u044f\\u0433\\u043e-\\u0434\\u0435\\u043b\\u044c-\\u042d\\u0441\\u0442\\u0435\\u0440\\u043e\",\"V\":\"\\u041e\\u0433\\u043d\\u0435\\u043d\\u043d\\u0430\\u044f \\u0417\\u0435\\u043c\\u043b\\u044f\",\"T\":\"\\u0422\\u0443\\u043a\\u0443\\u043c\\u0430\\u043d\"},\"BD\":{\"BD-05\":\"\\u0411\\u0430\\u0433\\u0435\\u0440\\u0445\\u0430\\u0442\",\"BD-01\":\"\\u0411\\u0430\\u043d\\u0434\\u0430\\u0440\\u0431\\u0430\\u043d\",\"BD-02\":\"\\u0411\\u0430\\u0440\\u0433\\u0443\\u043d\\u0430\",\"BD-06\":\"\\u0411\\u0430\\u0440\\u0438\\u0441\\u0430\\u043b\",\"BD-07\":\"\\u0411\\u0445\\u043e\\u043b\\u0430\",\"BD-03\":\"\\u0411\\u043e\\u0433\\u0440\\u0430\",\"BD-04\":\"\\u0411\\u0440\\u0430\\u0445\\u043c\\u0430\\u043d\\u0431\\u0430\\u0440\\u0438\\u044f\",\"BD-09\":\"\\u0427\\u0430\\u043d\\u0434\\u043f\\u0443\\u0440\",\"BD-10\":\"\\u0427\\u0430\\u0442\\u0442\\u043e\\u0433\\u0440\\u0430\\u043c\",\"BD-12\":\"\\u0427\\u0443\\u0430\\u0434\\u0430\\u043d\\u0433\\u0430\",\"BD-11\":\"\\u041a\\u043e\\u043a\\u0441-\\u0411\\u0430\\u0437\\u0430\\u0440\",\"BD-08\":\"\\u041a\\u043e\\u043c\\u0438\\u043b\\u043b\\u0430\",\"BD-13\":\"\\u0414\\u0430\\u043a\\u043a\\u0430\",\"BD-14\":\"\\u0414\\u0438\\u043d\\u0430\\u0434\\u0436\\u043f\\u0443\\u0440\",\"BD-15\":\"\\u0424\\u0430\\u0440\\u0438\\u0434\\u043f\\u0443\\u0440\",\"BD-16\":\"\\u0424\\u0435\\u043d\\u0438\",\"BD-19\":\"\\u0413\\u0430\\u0439\\u0431\\u0430\\u043d\\u0434\\u0445\\u0430\",\"BD-18\":\"\\u0413\\u0430\\u0437\\u0438\\u043f\\u0443\\u0440\",\"BD-17\":\"\\u0413\\u043e\\u043f\\u0430\\u043b\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-20\":\"\\u0425\\u0430\\u0431\\u0438\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-21\":\"\\u0414\\u0436\\u0430\\u043c\\u0430\\u043b\\u043f\\u0443\\u0440\",\"BD-22\":\"\\u0414\\u0436\\u0430\\u0441\\u0441\\u043e\\u0440\",\"BD-25\":\"\\u0414\\u0436\\u0430\\u043b\\u043e\\u043a\\u0430\\u0442\\u0438\",\"BD-23\":\"\\u0414\\u0436\\u0435\\u043d\\u0430\\u0439\\u0434\\u0430\",\"BD-24\":\"\\u0414\\u0436\\u0430\\u0439\\u043f\\u0443\\u0440\\u0445\\u0430\\u0442\",\"BD-29\":\"\\u041a\\u0445\\u0430\\u0433\\u0440\\u0430\\u0447\\u0445\\u0430\\u0440\\u0438\",\"BD-27\":\"\\u041a\\u0445\\u0443\\u043b\\u043d\\u0430\",\"BD-26\":\"\\u041a\\u0438\\u0448\\u043e\\u0440\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-28\":\"\\u041a\\u0443\\u0440\\u0438\\u0433\\u0440\\u0430\\u043c\",\"BD-30\":\"\\u041a\\u0443\\u0448\\u0442\\u0438\\u044f\",\"BD-31\":\"\\u041b\\u0430\\u043a\\u0448\\u043c\\u0438\\u043f\\u0443\\u0440\",\"BD-32\":\"\\u041b\\u0430\\u043b\\u043c\\u043e\\u043d\\u0438\\u0440\\u0445\\u0430\\u0442\",\"BD-36\":\"\\u041c\\u0430\\u0434\\u0430\\u0440\\u0438\\u043f\\u0443\\u0440\",\"BD-37\":\"\\u041c\\u0430\\u0433\\u0443\\u0440\\u0430\",\"BD-33\":\"\\u041c\\u0430\\u043d\\u0438\\u043a\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-39\":\"\\u041c\\u0435\\u0445\\u0435\\u0440\\u043f\\u0443\\u0440\",\"BD-38\":\"\\u041c\\u0430\\u0443\\u043b\\u0432\\u0438\\u0431\\u0430\\u0437\\u0430\\u0440 \",\"BD-35\":\"\\u041c\\u0443\\u043d\\u0448\\u0438\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-34\":\"\\u041c\\u0438\\u043c\\u0435\\u043d\\u0441\\u0438\\u043d\\u0433\\u0445\",\"BD-48\":\"\\u041d\\u0430\\u043e\\u0433\\u0430\\u043e\\u043d\",\"BD-43\":\"\\u041d\\u0430\\u0440\\u0430\\u0439\\u043b\",\"BD-40\":\"\\u041d\\u0430\\u0440\\u0430\\u044f\\u043d\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-42\":\"\\u041d\\u0430\\u0440\\u0441\\u0438\\u043d\\u0433\\u0434\\u0438\",\"BD-44\":\"\\u041d\\u0430\\u0442\\u043e\\u0440\",\"BD-45\":\"\\u041d\\u0430\\u0432\\u0430\\u0431\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-41\":\"\\u041d\\u0435\\u0442\\u0440\\u043e\\u043a\\u043e\\u043d\\u0430\",\"BD-46\":\"\\u041d\\u0438\\u043b\\u043f\\u0445\\u0430\\u043c\\u0430\\u0440\\u0438\",\"BD-47\":\"\\u041d\\u043e\\u0430\\u043a\\u0445\\u0430\\u043b\\u0438\",\"BD-49\":\"\\u041f\\u0430\\u0431\\u043d\\u0430\",\"BD-52\":\"\\u041f\\u0430\\u043d\\u0447\\u0430\\u0433\\u0430\\u0440\\u0445\",\"BD-51\":\"\\u041f\\u0430\\u0442\\u0443\\u0430\\u043a\\u0445\\u0430\\u043b\\u0438\",\"BD-50\":\"\\u041f\\u0438\\u0440\\u043e\\u0434\\u0436\\u043f\\u0443\\u0440\",\"BD-53\":\"\\u0420\\u0430\\u0434\\u0436\\u0431\\u0430\\u0440\\u0438\",\"BD-54\":\"\\u0420\\u0430\\u0434\\u0436\\u0448\\u0430\\u0445\\u0438\",\"BD-56\":\"\\u0420\\u0430\\u043d\\u0433\\u0430\\u043c\\u0430\\u0442\\u0438\",\"BD-55\":\"\\u0420\\u0430\\u043d\\u0433\\u043f\\u0443\\u0440\",\"BD-58\":\"\\u0421\\u0430\\u0442\\u043a\\u0445\\u0438\\u0440\\u0430\",\"BD-62\":\"\\u0428\\u0430\\u0440\\u0438\\u0430\\u0442\\u043f\\u0443\\u0440\",\"BD-57\":\"\\u0428\\u0435\\u0440\\u043f\\u0443\\u0440\",\"BD-59\":\"\\u0421\\u0438\\u0440\\u0430\\u0434\\u0436\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-61\":\"\\u0421\\u0443\\u043d\\u0430\\u043c\\u0433\\u0430\\u043d\\u0434\\u0436\",\"BD-60\":\"\\u0421\\u0438\\u043b\\u0445\\u0435\\u0442\",\"BD-63\":\"\\u0422\\u0430\\u043d\\u0433\\u0430\\u0439\\u043b\",\"BD-64\":\"\\u0422\\u0445\\u0430\\u043a\\u0443\\u0440\\u0433\\u0430\\u043e\\u043d\"},\"BG\":{\"BG-01\":\"\\u0411\\u043b\\u0430\\u0433\\u043e\\u0435\\u0432\\u0433\\u0440\\u0430\\u0434\",\"BG-02\":\"\\u0411\\u0443\\u0440\\u0433\\u0430\\u0441\",\"BG-08\":\"\\u0414\\u043e\\u0431\\u0440\\u0438\\u0447\",\"BG-07\":\"\\u0413\\u0430\\u0431\\u0440\\u043e\\u0432\\u043e\",\"BG-26\":\"\\u0425\\u0430\\u0441\\u043a\\u043e\\u0432\\u043e\",\"BG-09\":\"\\u041a\\u044b\\u0440\\u0434\\u0436\\u0430\\u043b\\u0438\",\"BG-10\":\"\\u041a\\u044e\\u0441\\u0442\\u0435\\u043d\\u0434\\u0438\\u043b\",\"BG-11\":\"\\u041b\\u043e\\u0432\\u0435\\u0447\",\"BG-12\":\"\\u041c\\u043e\\u043d\\u0442\\u0430\\u043d\\u0430\",\"BG-13\":\"\\u041f\\u0430\\u0437\\u0430\\u0440\\u0434\\u0436\\u0438\\u043a\",\"BG-14\":\"\\u041f\\u0435\\u0440\\u043d\\u0438\\u043a\",\"BG-15\":\"\\u041f\\u043b\\u0435\\u0432\\u0435\\u043d\",\"BG-16\":\"\\u041f\\u043b\\u043e\\u0432\\u0434\\u0438\\u0432\",\"BG-17\":\"\\u0420\\u0430\\u0437\\u0433\\u0440\\u0430\\u0434\",\"BG-18\":\"\\u0420\\u0443\\u0441\\u0435\",\"BG-27\":\"\\u0428\\u0443\\u043c\\u0435\\u043d\",\"BG-19\":\"\\u0421\\u0438\\u043b\\u0438\\u0441\\u0442\\u0440\\u0430\",\"BG-20\":\"\\u0421\\u043b\\u0438\\u0432\\u0435\\u043d\",\"BG-21\":\"\\u0421\\u043c\\u043e\\u043b\\u044f\\u043d\",\"BG-23\":\"\\u0421\\u043e\\u0444\\u0438\\u044f\",\"BG-22\":\"\\u0413\\u043e\\u0440\\u043e\\u0434\\u0441\\u043a\\u0430\\u044f \\u043e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c \\u0421\\u043e\\u0444\\u0438\\u044f\",\"BG-24\":\"\\u0421\\u0442\\u0430\\u0440\\u0430-\\u0417\\u0430\\u0433\\u043e\\u0440\\u0430\",\"BG-25\":\"\\u0422\\u044b\\u0440\\u0433\\u043e\\u0432\\u0438\\u0448\\u0442\\u0435\",\"BG-03\":\"\\u0412\\u0430\\u0440\\u043d\\u0430\",\"BG-04\":\"\\u0412\\u0435\\u043b\\u0438\\u043a\\u043e-\\u0422\\u044b\\u0440\\u043d\\u043e\\u0432\\u043e\",\"BG-05\":\"\\u0412\\u0438\\u0434\\u0438\\u043d\",\"BG-06\":\"\\u0412\\u0440\\u0430\\u0446\\u0430\",\"BG-28\":\"\\u042f\\u043c\\u0431\\u043e\\u043b\"},\"BO\":{\"B\":\"\\u0427\\u0443\\u043a\\u0438\\u0441\\u0430\\u043a\\u0430\",\"H\":\"\\u0411\\u0435\\u043d\\u0438\",\"C\":\"\\u041a\\u043e\\u0447\\u0430\\u0431\\u0430\\u043c\\u0431\\u0430\",\"L\":\"\\u041b\\u0430-\\u041f\\u0430\\u0441\",\"O\":\"\\u041e\\u0440\\u0443\\u0440\\u043e\",\"N\":\"\\u041f\\u0430\\u043d\\u0434\\u043e\",\"P\":\"\\u041f\\u043e\\u0442\\u043e\\u0441\\u0438\",\"S\":\"\\u0421\\u0430\\u043d\\u0442\\u0430-\\u041a\\u0440\\u0443\\u0441\",\"T\":\"\\u0422\\u0430\\u0440\\u0438\\u0445\\u0430\"},\"BR\":{\"AC\":\"\\u0410\\u043a\\u0440\",\"AL\":\"\\u0410\\u043b\\u0430\\u0433\\u043e\\u0430\\u0441\",\"AP\":\"\\u0410\\u043c\\u0430\\u043f\\u0430\",\"AM\":\"\\u0410\\u043c\\u0430\\u0437\\u043e\\u043d\\u0430\\u0441\",\"BA\":\"\\u0411\\u0430\\u0433\\u0438\\u044f\",\"CE\":\"\\u0421\\u0435\\u0430\\u0440\\u0430\",\"DF\":\"\\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u043e\\u043a\\u0440\\u0443\\u0433\",\"ES\":\"\\u042d\\u0441\\u043f\\u0438\\u0440\\u0438\\u0442\\u0443-\\u0421\\u0430\\u043d\\u0442\\u0443\",\"GO\":\"\\u0413\\u043e\\u0430\\u044f\",\"MA\":\"\\u041c\\u0430\\u0440\\u0430\\u043d\\u044c\\u044f\\u043d\",\"MT\":\"\\u041c\\u0430\\u0442\\u0443-\\u0413\\u0440\\u043e\\u0441\\u0443\",\"MS\":\"\\u041c\\u0430\\u0442\\u0443-\\u0413\\u0440\\u043e\\u0441\\u0443-\\u0434\\u0443-\\u0421\\u0443\\u043b\",\"MG\":\"\\u041c\\u0438\\u043d\\u0430\\u0441-\\u0416\\u0435\\u0440\\u0430\\u0439\\u0441\",\"PA\":\"\\u041f\\u0430\\u0440\\u0430\",\"PB\":\"\\u041f\\u0430\\u0440\\u0430\\u0438\\u0431\\u0430\",\"PR\":\"\\u041f\\u0430\\u0440\\u0430\\u043d\\u0430\",\"PE\":\"\\u041f\\u0435\\u0440\\u043d\\u0430\\u043c\\u0431\\u0443\\u043a\\u0443\",\"PI\":\"\\u041f\\u0438\\u0430\\u0443\\u0438\",\"RJ\":\"\\u0420\\u0438\\u043e-\\u0434\\u0435-\\u0416\\u0430\\u043d\\u0435\\u0439\\u0440\\u043e\",\"RN\":\"\\u0420\\u0438\\u0443-\\u0413\\u0440\\u0430\\u043d\\u0434\\u0438-\\u0434\\u0443-\\u041d\\u043e\\u0440\\u0442\\u0438\",\"RS\":\"\\u0420\\u0438\\u043e-\\u0413\\u0440\\u0430\\u043d\\u0434\\u0435-\\u0434\\u0443-\\u0421\\u0443\\u043b\",\"RO\":\"\\u0420\\u043e\\u043d\\u0434\\u043e\\u043d\\u0438\\u044f\",\"RR\":\"\\u0420\\u043e\\u0440\\u0430\\u0439\\u043c\\u0430\",\"SC\":\"\\u0421\\u0430\\u043d\\u0442\\u0430-\\u041a\\u0430\\u0442\\u0430\\u0440\\u0438\\u043d\\u0430\",\"SP\":\"\\u0421\\u0430\\u043d-\\u041f\\u0430\\u0443\\u043b\\u0443\",\"SE\":\"\\u0421\\u0435\\u0440\\u0436\\u0438\\u043f\\u0438\",\"TO\":\"\\u0422\\u043e\\u043a\\u0430\\u043d\\u0442\\u0438\\u043d\\u0441\"},\"HU\":{\"BK\":\"\\u0411\\u0430\\u0447-\\u041a\\u0438\\u0448\\u043a\\u0443\\u043d\",\"BE\":\"\\u0411\\u0435\\u043a\\u0435\\u0448\",\"BA\":\"\\u0411\\u0430\\u0440\\u0430\\u043d\\u044c\\u044f\",\"BZ\":\"\\u0411\\u043e\\u0440\\u0448\\u043e\\u0434-\\u0410\\u0431\\u0430\\u0443\\u0439-\\u0417\\u0435\\u043c\\u043f\\u043b\\u0435\\u043d\",\"BU\":\"\\u0411\\u0443\\u0434\\u0430\\u043f\\u0435\\u0448\\u0442\",\"CS\":\"\\u0427\\u043e\\u043d\\u0433\\u0440\\u0430\\u0434\",\"FE\":\"\\u0424\\u0435\\u0439\\u0435\\u0440\",\"GS\":\"\\u0414\\u044c\\u0451\\u0440-\\u041c\\u043e\\u0448\\u043e\\u043d-\\u0428\\u043e\\u043f\\u0440\\u043e\\u043d\",\"HB\":\"\\u0425\\u0430\\u0439\\u0434\\u0443-\\u0411\\u0438\\u0445\\u0430\\u0440\",\"HE\":\"\\u0425\\u0435\\u0432\\u0435\\u0448\",\"JN\":\"\\u042f\\u0441-\\u041d\\u0430\\u0434\\u044c\\u043a\\u0443\\u043d-\\u0421\\u043e\\u043b\\u044c\\u043d\\u043e\\u043a\",\"KE\":\"\\u041a\\u043e\\u043c\\u0430\\u0440\\u043e\\u043c-\\u042d\\u0441\\u0442\\u0435\\u0440\\u0433\\u043e\\u043c\",\"NO\":\"\\u041d\\u043e\\u0433\\u0440\\u0430\\u0434\",\"PE\":\"\\u041f\\u0435\\u0441\\u0442\",\"SO\":\"\\u0428\\u043e\\u043c\\u043e\\u0434\\u044c\",\"SZ\":\"\\u0421\\u0430\\u0431\\u043e\\u043b\\u044c\\u0447-\\u0421\\u0430\\u0442\\u043c\\u0430\\u0440-\\u0411\\u0435\\u0440\\u0435\\u0433\",\"TO\":\"\\u0422\\u043e\\u043b\\u044c\\u043d\\u0430\",\"VA\":\"\\u0412\\u0430\\u0448\",\"VE\":\"\\u0412\\u0435\\u0441\\u043f\\u0440\\u0435\\u043c\",\"ZA\":\"\\u0417\\u0430\\u043b\\u0430\"},\"HK\":{\"HONG KONG\":\"\\u041e\\u0441\\u0442\\u0440\\u043e\\u0432 \\u0413\\u043e\\u043d\\u043a\\u043e\\u043d\\u0433\",\"KOWLOON\":\"\\u041a\\u043e\\u0443\\u043b\\u0443\\u043d\",\"NEW TERRITORIES\":\"\\u041d\\u043e\\u0432\\u044b\\u0435 \\u0442\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u0438\"},\"GR\":{\"I\":\"\\u0410\\u0442\\u0442\\u0438\\u043a\\u0430\",\"A\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u0430\\u044f \\u041c\\u0430\\u043a\\u0435\\u0434\\u043e\\u043d\\u0438\\u044f \\u0438 \\u0424\\u0440\\u0430\\u043a\\u0438\\u044f\",\"B\":\"\\u0426\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\\u043d\\u0430\\u044f \\u041c\\u0430\\u043a\\u0435\\u0434\\u043e\\u043d\\u0438\\u044f\",\"C\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u041c\\u0430\\u043a\\u0435\\u0434\\u043e\\u043d\\u0438\\u044f\",\"D\":\"\\u042d\\u043f\\u0438\\u0440\",\"E\":\"\\u0424\\u0435\\u0441\\u0441\\u0430\\u043b\\u0438\\u044f\",\"F\":\"\\u0418\\u043e\\u043d\\u0438\\u0447\\u0435\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"G\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u0413\\u0440\\u0435\\u0446\\u0438\\u044f\",\"H\":\"\\u0426\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\\u043d\\u0430\\u044f \\u0413\\u0440\\u0435\\u0446\\u0438\\u044f\",\"J\":\"\\u041f\\u0435\\u043b\\u043e\\u043f\\u043e\\u043d\\u043d\\u0435\\u0441\",\"K\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0435 \\u042d\\u0433\\u0435\\u0439\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"L\":\"\\u042e\\u0436\\u043d\\u044b\\u0435 \\u042d\\u0433\\u0435\\u0439\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"M\":\"\\u041a\\u0440\\u0438\\u0442\"},\"IN\":{\"AP\":\"\\u0410\\u043d\\u0434\\u0445\\u0440\\u0430-\\u041f\\u0440\\u0430\\u0434\\u0435\\u0448\",\"AR\":\"\\u0410\\u0440\\u0443\\u043d\\u0430\\u0447\\u0430\\u043b-\\u041f\\u0440\\u0430\\u0434\\u0435\\u0448\",\"AS\":\"\\u0410\\u0441\\u0441\\u0430\\u043c\",\"BR\":\"\\u0411\\u0438\\u0445\\u0430\\u0440\",\"CT\":\"\\u0427\\u0445\\u0430\\u0442\\u0442\\u0438\\u0441\\u0433\\u0430\\u0440\\u0445\",\"GA\":\"\\u0413\\u043e\\u0430\",\"GJ\":\"\\u0413\\u0443\\u0434\\u0436\\u0430\\u0440\\u0430\\u0442\",\"HR\":\"\\u0413\\u0430\\u0439\\u0430\\u043d\\u0430\",\"HP\":\"\\u0425\\u0438\\u043c\\u0430\\u0447\\u0430\\u043b-\\u041f\\u0440\\u0430\\u0434\\u0435\\u0448\",\"JK\":\"\\u0414\\u0436\\u0430\\u043c\\u043c\\u0443 \\u0438 \\u041a\\u0430\\u0448\\u043c\\u0438\\u0440\",\"JH\":\"\\u0414\\u0436\\u0430\\u0440\\u043a\\u0445\\u0430\\u043d\\u0434\",\"KA\":\"\\u041a\\u0430\\u0440\\u043d\\u0430\\u0442\\u0430\\u043a\\u0430\",\"KL\":\"\\u041a\\u0435\\u0440\\u0430\\u043b\\u0430\",\"MP\":\"\\u041c\\u0430\\u0434\\u0445\\u044c\\u044f-\\u041f\\u0440\\u0430\\u0434\\u0435\\u0448\",\"MH\":\"\\u041c\\u0430\\u0445\\u0430\\u0440\\u0430\\u0448\\u0442\\u0440\\u0430\",\"MN\":\"\\u041c\\u0430\\u043d\\u0438\\u043f\\u0443\\u0440\",\"ML\":\"\\u041c\\u0435\\u0433\\u0445\\u0430\\u043b\\u0430\\u044f\",\"MZ\":\"\\u041c\\u0438\\u0437\\u043e\\u0440\\u0430\\u043c\",\"NL\":\"\\u041d\\u0430\\u0433\\u0430\\u043b\\u0435\\u043d\\u0434\",\"OR\":\"\\u041e\\u0440\\u0438\\u0441\\u0441\\u0430\",\"PB\":\"\\u041f\\u0435\\u043d\\u0434\\u0436\\u0430\\u0431\",\"RJ\":\"\\u0420\\u0430\\u0434\\u0436\\u0430\\u0441\\u0442\\u0445\\u0430\\u043d\",\"SK\":\"\\u0421\\u0438\\u043a\\u043a\\u0438\\u043c\",\"TN\":\"\\u0422\\u0430\\u043c\\u0438\\u043b\\u043d\\u0430\\u0434\",\"TS\":\"\\u0422\\u0435\\u043b\\u0430\\u043d\\u0433\\u0430\\u043d\\u0430\",\"TR\":\"\\u0422\\u0440\\u0438\\u043f\\u0443\\u0440\\u0430\",\"UK\":\"\\u0423\\u0442\\u0442\\u0430\\u0440\\u0430\\u043a\\u0445\\u0430\\u043d\\u0434\",\"UP\":\"\\u0423\\u0442\\u0442\\u0430\\u0440-\\u041f\\u0440\\u0430\\u0434\\u0435\\u0448\",\"WB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u0411\\u0435\\u043d\\u0433\\u0430\\u043b\\u0438\\u044f\",\"AN\":\"\\u0410\\u043d\\u0434\\u0430\\u043c\\u0430\\u043d\\u0441\\u043a\\u0438\\u0435 \\u0438 \\u041d\\u0438\\u043a\\u043e\\u0431\\u0430\\u0440\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"CH\":\"\\u0427\\u0430\\u043d\\u0434\\u0438\\u0433\\u0430\\u0440\\u0445\",\"DN\":\"\\u0414\\u0430\\u0434\\u0440\\u0430 \\u0438 \\u041d\\u0430\\u0433\\u0430\\u0440-\\u0425\\u0430\\u0432\\u0435\\u043b\\u0438 \",\"DD\":\"\\u0414\\u0430\\u043c\\u0430\\u043d \\u0438 \\u0414\\u0438\\u0443\",\"DL\":\"\\u0414\\u0435\\u043b\\u0438\",\"LD\":\"\\u041b\\u0430\\u043a\\u0448\\u0430\\u0434\\u0432\\u0438\\u043f\",\"PY\":\"\\u041f\\u0443\\u0434\\u0443\\u0447\\u0435\\u0440\\u0440\\u0438\"},\"ID\":{\"AC\":\"\\u0410\\u0447\\u0435\\u0445\",\"SU\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u0421\\u0443\\u043c\\u0430\\u0442\\u0440\\u0430\",\"SB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u0421\\u0443\\u043c\\u0430\\u0442\\u0440\\u0430\",\"RI\":\"\\u0420\\u0438\\u0430\\u0443\",\"KR\":\"\\u041e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430 \\u0420\\u0438\\u0430\\u0443\",\"JA\":\"\\u0414\\u0436\\u0430\\u043c\\u0431\\u0438\",\"SS\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u0421\\u0443\\u043c\\u0430\\u0442\\u0440\\u0430\",\"BB\":\"\\u0411\\u0430\\u043d\\u043a\\u0430-\\u0411\\u0435\\u043b\\u0438\\u0442\\u0443\\u043d\\u0433\",\"BE\":\"\\u0411\\u0435\\u043d\\u043a\\u0443\\u043b\\u0443\",\"LA\":\"\\u041b\\u0430\\u043c\\u043f\\u0443\\u043d\\u0433\",\"JK\":\"\\u0414\\u0436\\u0430\\u043a\\u0430\\u0440\\u0442\\u0430\",\"JB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u042f\\u0432\\u0430\",\"BT\":\"\\u0411\\u0430\\u043d\\u0442\\u0435\\u043d\",\"JT\":\"\\u0426\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\\u043d\\u0430\\u044f \\u042f\\u0432\\u0430\",\"JI\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u0430\\u044f \\u042f\\u0432\\u0430\",\"YO\":\"\\u0414\\u0436\\u043e\\u043a\\u044c\\u044f\\u043a\\u0430\\u0440\\u0442\\u0430\",\"BA\":\"\\u0411\\u0430\\u043b\\u0438\",\"NB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0435 \\u041c\\u0430\\u043b\\u044b\\u0435 \\u0417\\u043e\\u043d\\u0434\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"NT\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0435 \\u041c\\u0430\\u043b\\u044b\\u0435 \\u0417\\u043e\\u043d\\u0434\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"KB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043b\\u0438\\u043c\\u0430\\u043d\\u0442\\u0430\\u043d\",\"KT\":\"\\u0426\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043b\\u0438\\u043c\\u0430\\u043d\\u0442\\u0430\\u043d\",\"KI\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043b\\u0438\\u043c\\u0430\\u043d\\u0442\\u0430\\u043d\",\"KS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043b\\u0438\\u043c\\u0430\\u043d\\u0442\\u0430\\u043d\",\"KU\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043b\\u0438\\u043c\\u0430\\u043d\\u0442\\u0430\\u043d\",\"SA\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0421\\u0443\\u043b\\u0430\\u0432\\u0435\\u0441\\u0438\",\"ST\":\"\\u0426\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u0421\\u0443\\u043b\\u0430\\u0432\\u0435\\u0441\\u0438\",\"SG\":\"\\u042e\\u0433\\u043e-\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u0421\\u0443\\u043b\\u0430\\u0432\\u0435\\u0441\\u0438\",\"SR\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u0421\\u0443\\u043b\\u0430\\u0432\\u0435\\u0441\\u0438\",\"SN\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0421\\u0443\\u043b\\u0430\\u0432\\u0435\\u0441\\u0438\",\"GO\":\"\\u0413\\u043e\\u0440\\u043e\\u043d\\u0442\\u0430\\u043b\\u043e\",\"MA\":\"\\u041c\\u0430\\u043b\\u0443\\u043a\\u0443\",\"MU\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u043e\\u0435 \\u041c\\u0430\\u043b\\u0443\\u043a\\u0443\",\"PA\":\"\\u041f\\u0430\\u043f\\u0443\\u0430\",\"PB\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u043e\\u0435 \\u041f\\u0430\\u043f\\u0443\\u0430\"},\"IR\":{\"KHZ\":\"\\u0425\\u0443\\u0437\\u0435\\u0441\\u0442\\u0430\\u043d  (\\u062e\\u0648\\u0632\\u0633\\u062a\\u0627\\u0646)\",\"THR\":\"\\u0422\\u0435\\u0433\\u0435\\u0440\\u0430\\u043d (\\u062a\\u0647\\u0631\\u0627\\u0646)\",\"ILM\":\"\\u0418\\u043b\\u0430\\u043c (\\u0627\\u06cc\\u0644\\u0627\\u0645)\",\"BHR\":\"\\u0411\\u0443\\u0448\\u0438\\u0440 (\\u0628\\u0648\\u0634\\u0647\\u0631)\",\"ADL\":\"\\u0410\\u0440\\u0434\\u0435\\u0431\\u0438\\u043b\\u044c (\\u0627\\u0631\\u062f\\u0628\\u06cc\\u0644)\",\"ESF\":\"\\u0418\\u0441\\u0444\\u0430\\u0445\\u0430\\u043d (\\u0627\\u0635\\u0641\\u0647\\u0627\\u0646)\",\"YZD\":\"\\u0419\\u0435\\u0437\\u0434 (\\u06cc\\u0632\\u062f)\",\"KRH\":\"\\u041a\\u0435\\u0440\\u043c\\u0430\\u043d\\u0448\\u0430\\u0445 (\\u06a9\\u0631\\u0645\\u0627\\u0646\\u0634\\u0627\\u0647)\",\"KRN\":\"\\u041a\\u0435\\u0440\\u043c\\u0430\\u043d (\\u06a9\\u0631\\u0645\\u0627\\u0646)\",\"HDN\":\"\\u0425\\u0430\\u043c\\u0430\\u0434\\u0430\\u043d  (\\u0647\\u0645\\u062f\\u0627\\u0646)\",\"GZN\":\"\\u041a\\u0430\\u0437\\u0432\\u0438\\u043d (\\u0642\\u0632\\u0648\\u06cc\\u0646)\",\"ZJN\":\"\\u0417\\u0435\\u043d\\u0434\\u0436\\u0430\\u043d (\\u0632\\u0646\\u062c\\u0627\\u0646)\",\"LRS\":\"\\u041b\\u0443\\u0440\\u0435\\u0441\\u0442\\u0430\\u043d (\\u0644\\u0631\\u0633\\u062a\\u0627\\u0646)\",\"ABZ\":\"\\u0410\\u043b\\u044c\\u0431\\u043e\\u0440\\u0437 (\\u0627\\u0644\\u0628\\u0631\\u0632)\",\"EAZ\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u0410\\u0437\\u0435\\u0440\\u0431\\u0430\\u0439\\u0434\\u0436\\u0430\\u043d (\\u0622\\u0630\\u0631\\u0628\\u0627\\u06cc\\u062c\\u0627\\u0646 \\u0634\\u0631\\u0642\\u06cc)\",\"WAZ\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u0410\\u0437\\u0435\\u0440\\u0431\\u0430\\u0439\\u0434\\u0436\\u0430\\u043d (\\u0622\\u0630\\u0631\\u0628\\u0627\\u06cc\\u062c\\u0627\\u0646 \\u063a\\u0631\\u0628\\u06cc)\",\"CHB\":\"\\u0427\\u0435\\u0445\\u0430\\u0440\\u043c\\u0435\\u0445\\u0430\\u043b\\u044c \\u0438 \\u0411\\u0430\\u0445\\u0442\\u0438\\u0430\\u0440\\u0438\\u044f (\\u0686\\u0647\\u0627\\u0631\\u0645\\u062d\\u0627\\u0644 \\u0648 \\u0628\\u062e\\u062a\\u06cc\\u0627\\u0631\\u06cc)\",\"SKH\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0425\\u043e\\u0440\\u0430\\u0441\\u0430\\u043d (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u062c\\u0646\\u0648\\u0628\\u06cc)\",\"RKH\":\"\\u0425\\u043e\\u0440\\u0430\\u0441\\u0430\\u043d-\\u0420\\u0435\\u0437\\u0430\\u0432\\u0438 (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u0631\\u0636\\u0648\\u06cc)\",\"NKH\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0425\\u043e\\u0440\\u0430\\u0441\\u0430\\u043d (\\u062e\\u0631\\u0627\\u0633\\u0627\\u0646 \\u062c\\u0646\\u0648\\u0628\\u06cc)\",\"SMN\":\"\\u0421\\u0435\\u043c\\u043d\\u0430\\u043d (\\u0633\\u0645\\u0646\\u0627\\u0646)\",\"FRS\":\"\\u0424\\u0430\\u0440\\u0441 (\\u0641\\u0627\\u0631\\u0633)\",\"QHM\":\"\\u041a\\u0443\\u043c (\\u0642\\u0645)\",\"KRD\":\"\\u041a\\u0443\\u0440\\u0434\\u0438\\u0441\\u0442\\u0430\\u043d \\\/ \\u06a9\\u0631\\u062f\\u0633\\u062a\\u0627\\u0646)\",\"KBD\":\"\\u041a\\u043e\\u0445\\u0433\\u0438\\u043b\\u0443\\u0439\\u0435 \\u0438 \\u0411\\u043e\\u0439\\u0435\\u0440\\u0430\\u0445\\u043c\\u0435\\u0434 (\\u06a9\\u0647\\u06af\\u06cc\\u0644\\u0648\\u06cc\\u06cc\\u0647 \\u0648 \\u0628\\u0648\\u06cc\\u0631\\u0627\\u062d\\u0645\\u062f)\",\"GLS\":\"\\u0413\\u043e\\u043b\\u0435\\u0441\\u0442\\u0430\\u043d (\\u06af\\u0644\\u0633\\u062a\\u0627\\u0646)\",\"GIL\":\"\\u0413\\u0438\\u043b\\u044f\\u043d (\\u06af\\u06cc\\u0644\\u0627\\u0646)\",\"MZN\":\"\\u041c\\u0430\\u0437\\u0435\\u043d\\u0434\\u0435\\u0440\\u0430\\u043d (\\u0645\\u0627\\u0632\\u0646\\u062f\\u0631\\u0627\\u0646)\",\"MKZ\":\"\\u041c\\u0435\\u0440\\u043a\\u0435\\u0437\\u0438 (\\u0645\\u0631\\u06a9\\u0632\\u06cc)\",\"HRZ\":\"\\u0425\\u043e\\u0440\\u043c\\u043e\\u0437\\u0433\\u0430\\u0301\\u043d (\\u0647\\u0631\\u0645\\u0632\\u06af\\u0627\\u0646)\",\"SBN\":\"\\u0421\\u0438\\u0441\\u0442\\u0430\\u043d \\u0438 \\u0411\\u0435\\u043b\\u0443\\u0434\\u0436\\u0438\\u0441\\u0442\\u0430\\u043d (\\u0633\\u06cc\\u0633\\u062a\\u0627\\u0646 \\u0648 \\u0628\\u0644\\u0648\\u0686\\u0633\\u062a\\u0627\\u0646)\"},\"IE\":{\"CW\":\"\\u041a\\u0430\\u0440\\u043b\\u043e\\u0443\",\"CN\":\"\\u041a\\u0430\\u0432\\u0430\\u043d\",\"CE\":\"\\u041a\\u043b\\u0435\\u0440\",\"CO\":\"\\u041a\\u043e\\u0440\\u043a\",\"DL\":\"\\u0414\\u043e\\u043d\\u0435\\u0433\\u043e\\u043b\",\"D\":\"\\u0414\\u0443\\u0431\\u043b\\u0438\\u043d\",\"G\":\"\\u0413\\u043e\\u043b\\u0432\\u0435\\u0439\",\"KY\":\"\\u041a\\u0435\\u0440\\u0440\\u0438\",\"KE\":\"\\u041a\\u0438\\u043b\\u0434\\u0435\\u0440\",\"KK\":\"\\u041a\\u0438\\u043b\\u043a\\u0435\\u043d\\u043d\\u0438\",\"LS\":\"\\u041b\\u0438\\u0438\\u0448\\u044c\",\"LM\":\"\\u041b\\u0438\\u0442\\u0440\\u0438\\u043c\",\"LK\":\"\\u041b\\u0438\\u043c\\u0435\\u0440\\u0438\\u043a\",\"LD\":\"\\u041b\\u043e\\u043d\\u0433\\u0444\\u043e\\u0440\\u0434\",\"LH\":\"\\u041b\\u0430\\u0443\\u0442\",\"MO\":\"\\u041c\\u044d\\u0439\\u043e\",\"MH\":\"\\u041c\\u0438\\u0442\",\"MN\":\"\\u041c\\u043e\\u043d\\u0430\\u0445\\u0430\\u043d\",\"OY\":\"\\u041e\\u0444\\u0444\\u0430\\u043b\\u0438\",\"RN\":\"\\u0420\\u043e\\u0441\\u043a\\u043e\\u043c\\u043c\\u043e\\u043d\",\"SO\":\"\\u0421\\u043b\\u0430\\u0439\\u0433\\u043e\",\"TA\":\"\\u0422\\u0438\\u043f\\u043f\\u0435\\u0440\\u0435\\u0440\\u0438\",\"WD\":\"\\u0412\\u043e\\u0442\\u0435\\u0440\\u0444\\u043e\\u0440\\u0434\",\"WH\":\"\\u0423\\u044d\\u0441\\u0442\\u043c\\u0438\\u0442\",\"WX\":\"\\u0412\\u0435\\u043a\\u0441\\u0444\\u043e\\u0440\\u0434\",\"WW\":\"\\u0412\\u0438\\u043a\\u043b\\u043e\\u0432\"},\"ES\":{\"C\":\"\\u041b\\u0430-\\u041a\\u043e\\u0440\\u0443\\u043d\\u044c\\u044f\",\"VI\":\"\\u0410\\u0440\\u0430\\u0431\\u0430\\\/\\u0410\\u043b\\u0430\\u0432\\u0430\",\"AB\":\"\\u0410\\u043b\\u044c\\u0431\\u0430\\u0441\\u0435\\u0442\\u0435\",\"A\":\"\\u0410\\u043b\\u0438\\u043a\\u0430\\u043d\\u0442\\u0435\",\"AL\":\"\\u0410\\u043b\\u044c\\u043c\\u0435\\u0440\\u0438\\u044f\",\"O\":\"\\u0410\\u0441\\u0442\\u0443\\u0440\\u0438\\u044f\",\"AV\":\"\\u0410\\u0432\\u0438\\u043b\\u0430\",\"BA\":\"\\u0411\\u0430\\u0434\\u0430\\u0445\\u043e\\u0441\",\"PM\":\"\\u0411\\u0430\\u043b\\u0435\\u0430\\u0440\\u0441\\u043a\\u0438\\u0435 \\u043e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430\",\"B\":\"\\u0411\\u0430\\u0440\\u0441\\u0435\\u043b\\u043e\\u043d\\u0430\",\"BU\":\"\\u0411\\u0443\\u0440\\u0433\\u043e\\u0441\",\"CC\":\"\\u041a\\u0430\\u0441\\u0435\\u0440\\u0435\\u0441\",\"CA\":\"\\u041a\\u0430\\u0434\\u0438\\u0441\",\"S\":\"\\u041a\\u0430\\u043d\\u0442\\u0430\\u0431\\u0440\\u0438\\u044f\",\"CS\":\"\\u041a\\u0430\\u0441\\u0442\\u0435\\u043b\\u044c\\u043e\\u043d\",\"CE\":\"\\u0421\\u0435\\u0443\\u0442\\u0430\",\"CR\":\"\\u0421\\u044c\\u044e\\u0434\\u0430\\u0434-\\u0420\\u0435\\u0430\\u043b\\u044c\",\"CO\":\"\\u041a\\u043e\\u0440\\u0434\\u043e\\u0432\\u0430\",\"CU\":\"\\u041a\\u0443\\u044d\\u043d\\u043a\\u0430\",\"GI\":\"\\u0416\\u0438\\u0440\\u043e\\u043d\\u0430\",\"GR\":\"\\u0413\\u0440\\u0430\\u043d\\u0430\\u0434\\u0430\",\"GU\":\"\\u0413\\u0432\\u0430\\u0434\\u0430\\u043b\\u0430\\u0445\\u0430\\u0440\\u0430\",\"SS\":\"\\u0413\\u0438\\u043f\\u0443\\u0441\\u043a\\u043e\\u0430\",\"H\":\"\\u0423\\u044d\\u043b\\u044c\\u0432\\u0430\",\"HU\":\"\\u0423\\u044d\\u0441\\u043a\\u0430\",\"J\":\"\\u0425\\u0430\\u044d\\u043d\",\"LO\":\"\\u0420\\u0438\\u043e\\u0445\\u0430\",\"GC\":\"\\u041b\\u0430\\u0441-\\u041f\\u0430\\u043b\\u044c\\u043c\\u0430\\u0441\",\"LE\":\"\\u041b\\u0435\\u043e\\u043d\",\"L\":\"\\u041b\\u044c\\u0435\\u0439\\u0434\\u0430\",\"LU\":\"\\u041b\\u0443\\u0433\\u043e\",\"M\":\"\\u041c\\u0430\\u0434\\u0440\\u0438\\u0434\",\"MA\":\"\\u041c\\u0430\\u043b\\u0430\\u0433\\u0430\",\"ML\":\"\\u041c\\u0435\\u043b\\u0438\\u043b\\u044c\\u044f\",\"MU\":\"\\u041c\\u0443\\u0440\\u0441\\u0438\\u044f\",\"NA\":\"\\u041d\\u0430\\u0432\\u0430\\u0440\\u0440\\u0430\",\"OR\":\"\\u041e\\u0440\\u0435\\u043d\\u0441\\u0435\",\"P\":\"\\u041f\\u0430\\u043b\\u0435\\u043d\\u0441\\u0438\\u044f\",\"PO\":\"\\u041f\\u043e\\u043d\\u0442\\u0435\\u0432\\u0435\\u0434\\u0440\\u0430\",\"SA\":\"\\u0421\\u0430\\u043b\\u0430\\u043c\\u0430\\u043d\\u043a\\u0430\",\"TF\":\"\\u0421\\u0430\\u043d\\u0442\\u0430-\\u041a\\u0440\\u0443\\u0441-\\u0434\\u0435-\\u0422\\u0435\\u043d\\u0435\\u0440\\u0438\\u0444\\u0435\",\"SG\":\"\\u0421\\u0435\\u0433\\u043e\\u0432\\u0438\\u044f\",\"SE\":\"\\u0421\\u0435\\u0432\\u0438\\u043b\\u044c\\u044f\",\"SO\":\"\\u0421\\u043e\\u0440\\u0438\\u044f\",\"T\":\"\\u0422\\u0430\\u0440\\u0440\\u0430\\u0433\\u043e\\u043d\\u0430\",\"TE\":\"\\u0422\\u0435\\u0440\\u0443\\u044d\\u043b\\u044c\",\"TO\":\"\\u0422\\u043e\\u043b\\u0435\\u0434\\u043e\",\"V\":\"\\u0412\\u0430\\u043b\\u0435\\u043d\\u0441\\u0438\\u044f\",\"VA\":\"\\u0412\\u0430\\u043b\\u044c\\u044f\\u0434\\u043e\\u043b\\u0438\\u0434\",\"BI\":\"\\u0411\\u0438\\u0441\\u043a\\u0430\\u0439\\u044f\",\"ZA\":\"\\u0421\\u0430\\u043c\\u043e\\u0440\\u0430\",\"Z\":\"\\u0421\\u0430\\u0440\\u0430\\u0433\\u043e\\u0441\\u0430\"},\"IT\":{\"AG\":\"\\u0410\\u0433\\u0440\\u0438\\u0434\\u0436\\u0435\\u043d\\u0442\\u043e\",\"AL\":\"\\u0410\\u043b\\u0435\\u0441\\u0441\\u0430\\u043d\\u0434\\u0440\\u0438\\u044f\",\"AN\":\"\\u0410\\u043d\\u043a\\u043e\\u043d\\u0430\",\"AO\":\"\\u0410\\u043e\\u0441\\u0442\\u0430\",\"AR\":\"\\u0410\\u0440\\u0435\\u0446\\u0446\\u043e\",\"AP\":\"\\u0410\\u0441\\u043a\\u043e\\u043b\\u0438-\\u041f\\u0438\\u0447\\u0435\\u043d\\u043e\",\"AT\":\"\\u0410\\u0441\\u0442\\u0438\",\"AV\":\"\\u0410\\u0432\\u0435\\u043b\\u043b\\u0438\\u043d\\u043e\",\"BA\":\"\\u0411\\u0430\\u0440\\u0438\",\"BT\":\"\\u0411\\u0430\\u0440\\u043b\\u0435\\u0442\\u0442\\u0430-\\u0410\\u043d\\u0434\\u0440\\u0438\\u044f-\\u0422\\u0440\\u0430\\u043d\\u0438\",\"BL\":\"\\u0411\\u0435\\u043b\\u043b\\u0443\\u043d\\u043e\",\"BN\":\"\\u0411\\u0435\\u043d\\u0435\\u0432\\u0435\\u043d\\u0442\\u043e\",\"BG\":\"\\u0411\\u0435\\u0440\\u0433\\u0430\\u043c\\u043e\",\"BI\":\"\\u0411\\u044c\\u0435\\u043b\\u043b\\u0430\",\"BO\":\"\\u0411\\u043e\\u043b\\u043e\\u043d\\u044c\\u044f\",\"BZ\":\"\\u0411\\u043e\\u043b\\u044c\\u0446\\u0430\\u043d\\u043e\",\"BS\":\"\\u0411\\u0440\\u0435\\u0448\\u0438\\u0430\",\"BR\":\"\\u0411\\u0440\\u0438\\u043d\\u0434\\u0438\\u0437\\u0438\",\"CA\":\"\\u041a\\u0430\\u043b\\u044c\\u044f\\u0440\\u0438\",\"CL\":\"\\u041a\\u0430\\u043b\\u044c\\u0442\\u0430\\u043d\\u0438\\u0441\\u0441\\u0435\\u0442\\u0442\\u0430\",\"CB\":\"\\u041a\\u0430\\u043c\\u043f\\u043e\\u0431\\u0430\\u0441\\u0441\\u043e\",\"CE\":\"\\u041a\\u0430\\u0437\\u0435\\u0440\\u0442\\u0430\",\"CT\":\"\\u041a\\u0430\\u0442\\u0430\\u043d\\u0438\\u044f\",\"CZ\":\"\\u041a\\u0430\\u0442\\u0430\\u043d\\u0434\\u0437\\u0430\\u0440\\u043e\",\"CH\":\"\\u041a\\u044c\\u0435\\u0442\\u0438\",\"CO\":\"\\u041a\\u043e\\u043c\\u043e\",\"CS\":\"\\u041a\\u043e\\u0437\\u0435\\u043d\\u0446\\u0430\",\"CR\":\"\\u041a\\u043e\\u0437\\u0435\\u043d\\u0446\\u0430\",\"KR\":\"\\u041a\\u0440\\u043e\\u0442\\u043e\\u043d\\u0435\",\"CN\":\"\\u041a\\u0443\\u043d\\u0435\\u043e\",\"EN\":\"\\u042d\\u043d\\u043d\\u0430\",\"FM\":\"\\u0424\\u0435\\u0440\\u043c\\u043e\",\"FE\":\"\\u0424\\u0435\\u0440\\u0440\\u0430\\u0440\\u0430\",\"FI\":\"\\u0424\\u043b\\u043e\\u0440\\u0435\\u043d\\u0446\\u0438\\u044f\",\"FG\":\"\\u0424\\u043e\\u0434\\u0436\\u0430\",\"FC\":\"\\u0424\\u043e\\u0440\\u043b\\u0438-\\u0427\\u0435\\u0437\\u0435\\u043d\\u0430\",\"FR\":\"\\u0424\\u0440\\u043e\\u0437\\u0438\\u043d\\u043e\\u043d\\u0435\",\"GE\":\"\\u0413\\u0435\\u043d\\u0443\\u044f\",\"GO\":\"\\u0413\\u043e\\u0440\\u0438\\u0446\\u0438\\u044f\",\"GR\":\"\\u0413\\u0440\\u043e\\u0441\\u0441\\u0435\\u0442\\u043e\",\"IM\":\"\\u0418\\u043c\\u043f\\u0435\\u0440\\u0438\\u044f\",\"IS\":\"\\u0418\\u0437\\u0435\\u0440\\u043d\\u0438\\u044f\",\"SP\":\"\\u0421\\u043f\\u0435\\u0446\\u0438\\u044f\",\"AQ\":\"\\u041b\\u2019\\u0410\\u043a\\u0432\\u0438\\u043b\\u0430\",\"LT\":\"\\u041b\\u0430\\u0442\\u0438\\u043d\\u0430\",\"LE\":\"\\u041b\\u0435\\u0447\\u0447\\u0435\",\"LC\":\"\\u041b\\u0435\\u043a\\u043a\\u043e\",\"LI\":\"\\u041b\\u0438\\u0432\\u043e\\u0440\\u043d\\u043e\",\"LO\":\"\\u041b\\u043e\\u0434\\u0438\",\"LU\":\"\\u041b\\u0443\\u043a\\u043a\\u0430\",\"MC\":\"\\u041c\\u0430\\u0447\\u0435\\u0440\\u0430\\u0442\\u0430\",\"MN\":\"\\u041c\\u0430\\u043d\\u0442\\u0443\\u044f\",\"MS\":\"\\u041c\\u0430\\u0441\\u0441\\u0430-\\u041a\\u0430\\u0440\\u0440\\u0430\\u0440\\u0430\",\"MT\":\"\\u041c\\u0430\\u0442\\u0435\\u0440\\u0430\",\"ME\":\"\\u041c\\u0435\\u0441\\u0441\\u0438\\u043d\\u0430\",\"MI\":\"\\u041c\\u0438\\u043b\\u0430\\u043d\",\"MO\":\"\\u041c\\u043e\\u0434\\u0435\\u043d\\u0430\",\"MB\":\"\\u041c\\u043e\\u043d\\u0446\\u0430 \\u0438 \\u0411\\u0440\\u0438\\u0430\\u043d\\u0446\\u0430\",\"NA\":\"\\u041d\\u0430\\u043f\\u043e\\u043b\\u0438\",\"NO\":\"\\u041d\\u043e\\u0432\\u0430\\u0440\\u0430\",\"NU\":\"\\u041d\\u0443\\u043e\\u0440\\u043e\",\"OR\":\"\\u041e\\u0440\\u0438\\u0441\\u0442\\u0430\\u043d\\u043e\",\"PD\":\"\\u041f\\u0430\\u0434\\u043e\\u0432\\u0430\",\"PA\":\"\\u041f\\u0430\\u043b\\u0435\\u0440\\u043c\\u043e\",\"PR\":\"\\u041f\\u0430\\u0440\\u043c\\u0430\",\"PV\":\"\\u041f\\u0430\\u0432\\u0438\\u044f\",\"PG\":\"\\u041f\\u0435\\u0440\\u0443\\u0434\\u0436\\u0430\",\"PU\":\"\\u041f\\u0435\\u0437\\u0430\\u0440\\u043e-\\u044d-\\u0423\\u0440\\u0431\\u0438\\u043d\\u043e\",\"PE\":\"\\u041f\\u0435\\u0441\\u043a\\u0430\\u0440\\u0430\",\"PC\":\"\\u041f\\u044c\\u044f\\u0447\\u0435\\u043d\\u0446\\u0430\",\"PI\":\"\\u041f\\u0438\\u0437\\u0430\",\"PT\":\"\\u041f\\u0438\\u0441\\u0442\\u043e\\u044f\",\"PN\":\"\\u041f\\u043e\\u0440\\u0434\\u0435\\u043d\\u043e\\u043d\\u0435\",\"PZ\":\"\\u041f\\u043e\\u0442\\u0435\\u043d\\u0446\\u0430\",\"PO\":\"\\u041f\\u0440\\u0430\\u0442\\u043e\",\"RG\":\"\\u0420\\u0430\\u0433\\u0443\\u0437\\u0430\",\"RA\":\"\\u0420\\u0430\\u0432\\u0435\\u043d\\u043d\\u0430\",\"RC\":\"\\u0420\\u0435\\u0434\\u0436\\u043e-\\u0434\\u0438-\\u041a\\u0430\\u043b\\u0430\\u0431\\u0440\\u0438\\u044f\",\"RE\":\"\\u0420\\u0435\\u0434\\u0436\\u043e-\\u043d\\u0435\\u043b\\u044c-\\u042d\\u043c\\u0438\\u043b\\u0438\\u044f\",\"RI\":\"\\u0420\\u0438\\u0435\\u0442\\u0438\",\"RN\":\"\\u0420\\u0438\\u043c\\u0438\\u043d\\u0438\",\"RM\":\"\\u0420\\u0438\\u043c\",\"RO\":\"\\u0420\\u043e\\u0432\\u0438\\u0433\\u043e\",\"SA\":\"\\u0421\\u0430\\u043b\\u0435\\u0440\\u043d\\u043e\",\"SS\":\"\\u0421\\u0430\\u0441\\u0441\\u0430\\u0440\\u0438\",\"SV\":\"\\u0421\\u0430\\u0432\\u043e\\u043d\\u0430\",\"SI\":\"\\u0421\\u0438\\u0435\\u043d\\u0430\",\"SR\":\"\\u0421\\u0438\\u0440\\u0430\\u043a\\u0443\\u0437\\u0430\",\"SO\":\"\\u0421\\u043e\\u043d\\u0434\\u0440\\u0438\\u043e\",\"SU\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u0421\\u0430\\u0440\\u0434\\u0438\\u043d\\u0438\\u044f\",\"TA\":\"\\u0422\\u0430\\u0440\\u0430\\u043d\\u0442\\u043e\",\"TE\":\"\\u0422\\u0435\\u0440\\u0430\\u043c\\u043e\",\"TR\":\"\\u0422\\u0435\\u0440\\u043d\\u0438\",\"TO\":\"\\u0422\\u0443\\u0440\\u0438\\u043d\",\"TP\":\"\\u0422\\u0440\\u0430\\u043f\\u0430\\u043d\\u0438\",\"TN\":\"\\u0422\\u0440\\u0435\\u043d\\u0442\\u043e\",\"TV\":\"\\u0422\\u0440\\u0435\\u0432\\u0438\\u0437\\u043e\",\"TS\":\"\\u0422\\u0440\\u0438\\u0435\\u0441\\u0442\",\"UD\":\"\\u0423\\u0434\\u0438\\u043d\\u0435\",\"VA\":\"\\u0412\\u0430\\u0440\\u0435\\u0441\\u0435\",\"VE\":\"\\u0412\\u0435\\u043d\\u0435\\u0446\\u0438\\u044f\",\"VB\":\"\\u0412\\u0435\\u0440\\u0431\\u0430\\u043d\\u043e-\\u041a\\u0443\\u0437\\u044c\\u043e-\\u041e\\u0441\\u0441\\u043e\\u043b\\u0430\",\"VC\":\"\\u0412\\u0435\\u0440\\u0447\\u0435\\u043b\\u043b\\u0438\",\"VR\":\"\\u0412\\u0435\\u0440\\u043e\\u043d\\u0430\",\"VV\":\"\\u0412\\u0438\\u0431\\u043e-\\u0412\\u0430\\u043b\\u0435\\u043d\\u0442\\u0438\\u044f\",\"VI\":\"\\u0412\\u0438\\u0447\\u0435\\u043d\\u0446\\u0430\",\"VT\":\"\\u0412\\u0438\\u0442\\u0435\\u0440\\u0431\\u043e\"},\"CA\":{\"AB\":\"\\u0410\\u043b\\u044c\\u0431\\u0435\\u0440\\u0442\\u0430\",\"BC\":\"\\u0411\\u0440\\u0438\\u0442\\u0430\\u043d\\u0441\\u043a\\u0430\\u044f \\u041a\\u043e\\u043b\\u0443\\u043c\\u0431\\u0438\\u044f\",\"MB\":\"\\u041c\\u0430\\u043d\\u0438\\u0442\\u043e\\u0431\\u0430\",\"NB\":\"\\u041d\\u044c\\u044e-\\u0411\\u0440\\u0430\\u043d\\u0441\\u0443\\u0438\\u043a\",\"NL\":\"\\u041d\\u044c\\u044e\\u0444\\u0430\\u0443\\u043d\\u0434\\u043b\\u0435\\u043d\\u0434 \\u0438 \\u041b\\u0430\\u0431\\u0440\\u0430\\u0434\\u043e\\u0440\",\"NT\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043e-\\u0437\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0435 \\u0422\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u0438\",\"NS\":\"\\u041d\\u043e\\u0432\\u0430\\u044f \\u0428\\u043e\\u0442\\u043b\\u0430\\u043d\\u0434\\u0438\\u044f\",\"NU\":\"\\u041d\\u0443\\u043d\\u0430\\u0432\\u0443\\u0442\",\"ON\":\"\\u041e\\u043d\\u0442\\u0430\\u0440\\u0438\\u043e\",\"PE\":\"\\u041e\\u0441\\u0442\\u0440\\u043e\\u0432 \\u041f\\u0440\\u0438\\u043d\\u0446\\u0430 \\u042d\\u0434\\u0443\\u0430\\u0440\\u0434\\u0430\",\"QC\":\"\\u041a\\u0432\\u0435\\u0431\\u0435\\u043a\",\"SK\":\"\\u0421\\u0430\\u0441\\u043a\\u0430\\u0447\\u0435\\u0432\\u0430\\u043d\",\"YT\":\"\\u042e\\u043a\\u043e\\u043d\"},\"CN\":{\"CN1\":\"\\u042e\\u043d\\u044c\\u043d\\u0430\\u043d\\u044c \\\/ \u4e91\u5357\",\"CN2\":\"\\u041f\\u0435\\u043a\\u0438\\u043d \\\/ \u5317\u4eac\",\"CN3\":\"\\u0422\\u044f\\u043d\\u044c\\u0446\\u0437\\u0438\\u043d\\u044c \\\/ \u5929\u6d25\",\"CN4\":\"\\u0425\\u044d\\u0431\\u044d\\u0439 \\\/ \u6cb3\u5317\",\"CN5\":\"\\u0428\\u0430\\u043d\\u044c\\u0441\\u0438 \\\/ \u5c71\u897f\",\"CN6\":\"\\u0412\\u043d\\u0443\\u0442\\u0440\\u0435\\u043d\\u043d\\u044f\\u044f \\u041c\\u043e\\u043d\\u0433\\u043e\\u043b\\u0438\\u044f \\\/ \u5167\u8499\u53e4\",\"CN7\":\"\\u041b\\u044f\\u043e\\u043d\\u0438\\u043d \\\/ \u8fbd\u5b81\",\"CN8\":\"\\u0413\\u0438\\u0440\\u0438\\u043d \\\/ \u5409\u6797\",\"CN9\":\"\\u0425\\u044d\\u0439\\u043b\\u0443\\u043d\\u0446\\u0437\\u044f\\u043d \\\/ \u9ed1\u9f99\u6c5f\",\"CN10\":\"\\u0428\\u0430\\u043d\\u0445\\u0430\\u0439 \\\/ \u4e0a\u6d77\",\"CN11\":\"\\u0426\\u0437\\u044f\\u043d\\u0441\\u0443 \\\/ \u6c5f\u82cf\",\"CN12\":\"\\u0427\\u0436\\u044d\\u0446\\u0437\\u044f\\u043d \\\/ \u6d59\u6c5f\",\"CN13\":\"\\u0410\\u043d\\u044c\\u0445\\u043e\\u0439 \\\/ \u5b89\u5fbd\",\"CN14\":\"\\u0424\\u0443\\u0446\\u0437\\u044f\\u043d\\u044c \\\/ \u798f\u5efa\",\"CN15\":\"\\u0426\\u0437\\u044f\\u043d\\u0441\\u0438 \\\/ \u6c5f\u897f\",\"CN16\":\"\\u0428\\u0430\\u043d\\u044c\\u0434\\u0443\\u043d \\\/ \u5c71\u4e1c\",\"CN17\":\"\\u0425\\u044d\\u043d\\u0430\\u043d\\u044c \\\/ \u6cb3\u5357\",\"CN18\":\"\\u0425\\u0443\\u0431\\u044d\\u0439 \\\/ \u6e56\u5317\",\"CN19\":\"\\u0425\\u0443\\u043d\\u0430\\u043d\\u044c \\\/ \u6e56\u5357\",\"CN20\":\"\\u0413\\u0443\\u0430\\u043d\\u0434\\u0443\\u043d \\\/ \u5e7f\u4e1c\",\"CN21\":\"\\u0413\\u0443\\u0430\\u043d\\u0441\\u0438-\\u0427\\u0436\\u0443\\u0430\\u043d\\u0441\\u043a\\u0438\\u0439 \\u0430\\u0432\\u0442\\u043e\\u043d\\u043e\\u043c\\u043d\\u044b\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d \\\/ \u5e7f\u897f\u58ee\u65cf\",\"CN22\":\"\\u0425\\u0430\\u0439\\u043d\\u0430\\u043d\\u044c \\\/ \u6d77\u5357\",\"CN23\":\"\\u0427\\u0443\\u043d\\u0446\\u0438\\u043d \\\/ \u91cd\u5e86\",\"CN24\":\"\\u0421\\u044b\\u0447\\u0443\\u0430\\u043d\\u044c \\\/ \u56db\u5ddd\",\"CN25\":\"\\u0413\\u0443\\u0439\\u0447\\u0436\\u043e\\u0443 \\\/ \u8d35\u5dde\",\"CN26\":\"\\u0428\\u044d\\u043d\\u044c\\u0441\\u0438 \\\/ \u9655\u897f\",\"CN27\":\"\\u0413\\u0430\\u043d\\u044c\\u0441\\u0443 \\\/ \u7518\u8083\",\"CN28\":\"\\u0426\\u0438\\u043d\\u0445\\u0430\\u0439 \\\/ \u9752\u6d77\",\"CN29\":\"\\u041d\\u0438\\u043d\\u0441\\u044f-\\u0425\\u0443\\u044d\\u0439\\u0441\\u043a\\u0438\\u0439 \\u0430\\u0432\\u0442\\u043e\\u043d\\u043e\\u043c\\u043d\\u044b\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d \\\/ \u5b81\u590f\",\"CN30\":\"\\u041c\\u0430\\u043a\\u0430\\u043e \\\/ \u6fb3\u95e8\",\"CN31\":\"\\u0422\\u0438\\u0431\\u0435\\u0442 \\\/ \u897f\u85cf\",\"CN32\":\"\\u0421\\u0438\\u043d\\u044c\\u0446\\u0437\\u044f\\u043d-\\u0423\\u0439\\u0433\\u0443\\u0440\\u0441\\u043a\\u0438\\u0439 \\u0430\\u0432\\u0442\\u043e\\u043d\\u043e\\u043c\\u043d\\u044b\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d \\\/ \u65b0\u7586\"},\"LR\":{\"BM\":\"\\u0411\\u043e\\u043c\\u0438\",\"BN\":\"\\u0411\\u043e\\u043d\\u0433\",\"GA\":\"\\u0413\\u0431\\u0430\\u0440\\u043f\\u043e\\u043b\\u0443\",\"GB\":\"\\u0413\\u0440\\u0430\\u043d\\u0434-\\u0411\\u0430\\u0441\\u0441\\u0430\",\"GC\":\"\\u0413\\u0440\\u0430\\u043d\\u0434-\\u041a\\u0435\\u0439\\u043f-\\u041c\\u0430\\u0443\\u043d\\u0442\",\"GG\":\"\\u0413\\u0440\\u0430\\u043d\\u0434-\\u0414\\u0436\\u0438\\u0434\\u0435\",\"GK\":\"\\u0413\\u0440\\u0430\\u043d\\u0434-\\u041a\\u0440\\u0443\",\"LO\":\"\\u041b\\u043e\\u0444\\u0430\",\"MA\":\"\\u041c\\u0430\\u0440\\u0433\\u0438\\u0431\\u0438\",\"MY\":\"\\u041c\\u044d\\u0440\\u0438\\u043b\\u0435\\u043d\\u0434\",\"MO\":\"\\u041c\\u043e\\u043d\\u0442\\u0441\\u0435\\u0440\\u0440\\u0430\\u0434\\u043e\",\"NM\":\"\\u041d\\u0438\\u043c\\u0431\\u0430\",\"RV\":\"\\u0420\\u0438\\u0432\\u0435\\u0440-\\u0421\\u0435\\u0441\\u0441\",\"RG\":\"\\u0420\\u0438\\u0432\\u0435\\u0440-\\u0413\\u0438\",\"SN\":\"\\u0421\\u0438\\u043d\\u043e\"},\"MY\":{\"JHR\":\"\\u0414\\u0436\\u043e\\u0445\\u043e\\u0440\",\"KDH\":\"\\u041a\\u0435\\u0434\\u0430\\u0445\",\"KTN\":\"\\u041a\\u0435\\u043b\\u0430\\u043d\\u0442\\u0430\\u043d\",\"LBN\":\"\\u041b\\u0430\\u0431\\u0443\\u0430\\u043d\",\"MLK\":\"\\u041c\\u0430\\u043b\\u0430\\u043a\\u043a\\u0430\",\"NSN\":\"\\u041d\\u0435\\u0433\\u0440\\u0438-\\u0421\\u0435\\u043c\\u0431\\u0438\\u043b\\u0430\\u043d\",\"PHG\":\"\\u041f\\u0430\\u0445\\u0430\\u043d\\u0433\",\"PNG\":\"\\u041f\\u0438\\u043d\\u0430\\u043d\\u0433\",\"PRK\":\"\\u041f\\u0435\\u0440\\u0430\\u043a\",\"PLS\":\"\\u041f\\u0435\\u0440\\u043b\\u0438\\u0441\",\"SBH\":\"\\u0421\\u0430\\u0431\\u0430\\u0445\",\"SWK\":\"\\u0421\\u0430\\u0440\\u0430\\u0432\\u0430\\u043a\",\"SGR\":\"\\u0421\\u0435\\u043b\\u0430\\u043d\\u0433\\u043e\\u0440\",\"TRG\":\"\\u0422\\u0440\\u0435\\u043d\\u0433\\u0430\\u043d\\u0443\",\"PJY\":\"\\u041f\\u0443\\u0442\\u0440\\u0430\\u0434\\u0436\\u0430\\u044f\",\"KUL\":\"\\u041a\\u0443\\u0430\\u043b\\u0430-\\u041b\\u0443\\u043c\\u043f\\u0443\\u0440\"},\"MX\":{\"DF\":\"\\u041c\\u0435\\u0445\\u0438\\u043a\\u043e\",\"JA\":\"\\u0425\\u0430\\u043b\\u0438\\u0441\\u043a\\u043e\",\"NL\":\"\\u041d\\u0443\\u044d\\u0432\\u043e-\\u041b\\u0435\\u043e\\u043d\",\"AG\":\"\\u0410\\u0433\\u0443\\u0430\\u0441\\u043a\\u0430\\u043b\\u044c\\u0435\\u043d\\u0442\\u0435\\u0441\",\"BC\":\"\\u041d\\u0438\\u0436\\u043d\\u044f\\u044f \\u041a\\u0430\\u043b\\u0438\\u0444\\u043e\\u0440\\u043d\\u0438\\u044f\",\"BS\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u041d\\u0438\\u0436\\u043d\\u044f\\u044f \\u041a\\u0430\\u043b\\u0438\\u0444\\u043e\\u0440\\u043d\\u0438\\u044f\",\"CM\":\"\\u041a\\u0430\\u043c\\u043f\\u0435\\u0447\\u0435\",\"CS\":\"\\u0427\\u044c\\u044f\\u043f\\u0430\\u0441\",\"CH\":\"\\u0427\\u0438\\u0445\\u0443\\u0430\\u0445\\u0443\\u0430\",\"CO\":\"\\u041a\\u043e\\u0430\\u0443\\u0438\\u043b\\u0430\",\"CL\":\"\\u041a\\u043e\\u043b\\u0438\\u043c\\u0430\",\"DG\":\"\\u0414\\u0443\\u0440\\u0430\\u043d\\u0433\\u043e\",\"GT\":\"\\u0413\\u0443\\u0430\\u043d\\u0430\\u0445\\u0443\\u0430\\u0442\\u043e\",\"GR\":\"\\u0413\\u0435\\u0440\\u0440\\u0435\\u0440\\u043e\",\"HG\":\"\\u0418\\u0434\\u0430\\u043b\\u044c\\u0433\\u043e\",\"MX\":\"\\u041c\\u0435\\u0445\\u0438\\u043a\\u043e (\\u0448\\u0442\\u0430\\u0442)\",\"MI\":\"\\u041c\\u0438\\u0447\\u043e\\u0430\\u043a\\u0430\\u043d\",\"MO\":\"\\u041c\\u043e\\u0440\\u0435\\u043b\\u043e\\u0441\",\"NA\":\"\\u041d\\u0430\\u044f\\u0440\\u0438\\u0442\",\"OA\":\"\\u041e\\u0430\\u0445\\u0430\\u043a\\u0430\",\"PU\":\"\\u041f\\u0443\\u044d\\u0431\\u043b\\u0430\",\"QT\":\"\\u041a\\u0435\\u0440\\u0435\\u0442\\u0430\\u0440\\u043e\",\"QR\":\"\\u041a\\u0438\\u043d\\u0442\\u0430\\u043d\\u0430-\\u0420\\u043e\\u043e\",\"SL\":\"\\u0421\\u0430\\u043d-\\u041b\\u0443\\u0438\\u0441-\\u041f\\u043e\\u0442\\u043e\\u0441\\u0438\",\"SI\":\"\\u0421\\u0438\\u043d\\u0430\\u043b\\u043e\\u0430 \",\"SO\":\"\\u0421\\u043e\\u043d\\u043e\\u0440\\u0430\",\"TB\":\"\\u0422\\u0430\\u0431\\u0430\\u0441\\u043a\\u043e \",\"TM\":\"\\u0422\\u0430\\u043c\\u0430\\u0443\\u043b\\u0438\\u043f\\u0430\\u0441 \",\"TL\":\"\\u0422\\u043b\\u0430\\u0441\\u043a\\u0430\\u043b\\u0430\",\"VE\":\"\\u0412\\u0435\\u0440\\u0430\\u043a\\u0440\\u0443\\u0441 \",\"YU\":\"\\u042e\\u043a\\u0430\\u0442\\u0430\\u043d\",\"ZA\":\"\\u0421\\u0430\\u043a\\u0430\\u0442\\u0435\\u043a\\u0430\\u0441\"},\"MD\":{\"C\":\"\\u041a\\u0438\\u0448\\u0438\\u043d\\u0451\\u0432\",\"BL\":\"\\u0411\\u0435\\u043b\\u044c\\u0446\\u044b\",\"AN\":\"\\u041d\\u043e\\u0432\\u043e\\u0430\\u043d\\u0435\\u043d\\u0441\\u043a\\u0438\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d\",\"BS\":\"\\u0411\\u0435\\u0441\\u0441\\u0430\\u0440\\u0430\\u0431\\u043a\\u0430\",\"BR\":\"\\u0411\\u0440\\u0438\\u0447\\u0430\\u043d\\u044b\",\"CH\":\"\\u041a\\u0430\\u0433\\u0443\\u043b\",\"CT\":\"\\u041a\\u0430\\u043d\\u0442\\u0435\\u043c\\u0438\\u0440\",\"CL\":\"\\u041a\\u044d\\u043b\\u044d\\u0440\\u0430\\u0448\\u0438\",\"CS\":\"\\u041a\\u0430\\u0443\\u0448\\u0430\\u043d\\u0441\\u043a\\u0438\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d\",\"CM\":\"\\u0427\\u0438\\u043c\\u0438\\u0448\\u043b\\u0438\\u044f\",\"CR\":\"\\u041a\\u0440\\u0438\\u0443\\u043b\\u0435\\u043d\\u044c\",\"DN\":\"\\u0414\\u043e\\u043d\\u0434\\u044e\\u0448\\u0430\\u043d\\u044b\",\"DR\":\"\\u0414\\u0440\\u043e\\u043a\\u0438\\u0435\\u0432\\u0441\\u043a\\u0438\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d\",\"DB\":\"\\u0414\\u0443\\u0431\\u043e\\u0441\\u0441\\u0430\\u0440\\u044b\",\"ED\":\"\\u0415\\u0434\\u0438\\u043d\\u0435\\u0446\",\"FL\":\"\\u0424\\u0430\\u043b\\u0435\\u0448\\u0442\\u044b\",\"FR\":\"\\u0424\\u043b\\u043e\\u0440\\u0435\\u0448\\u0442\\u044b\",\"GE\":\"\\u0413\\u0430\\u0433\\u0430\\u0443\\u0437\\u0438\\u044f\",\"GL\":\"\\u0413\\u043b\\u043e\\u0434\\u044f\\u043d\\u044b\",\"HN\":\"\\u0425\\u044b\\u043d\\u0447\\u0435\\u0448\\u0442\\u044b\",\"IL\":\"\\u042f\\u043b\\u043e\\u0432\\u0435\\u043d\\u044b\",\"LV\":\"\\u041b\\u0435\\u043e\\u0432\\u0430\",\"NS\":\"\\u041d\\u0438\\u0441\\u043f\\u043e\\u0440\\u0435\\u043d\\u044b\",\"OC\":\"\\u041e\\u043a\\u043d\\u0438\\u0446\\u0430\",\"OR\":\"\\u041e\\u0440\\u0445\\u0435\\u0439\",\"RZ\":\"\\u0420\\u0435\\u0437\\u0438\\u043d\\u0430\",\"RS\":\"\\u0420\\u044b\\u0448\\u043a\\u0430\\u043d\\u044b\",\"SG\":\"\\u0421\\u044b\\u043d\\u0436\\u0435\\u0440\\u0435\\u0439\",\"SR\":\"\\u0421\\u043e\\u0440\\u043e\\u043a\\u0438\",\"ST\":\"\\u0421\\u0442\\u0440\\u0430\\u0448\\u0435\\u043d\\u044b\",\"SD\":\"\\u0428\\u043e\\u043b\\u0434\\u0430\\u043d\\u0435\\u0448\\u0442\\u044b\",\"SV\":\"\\u0428\\u0442\\u0435\\u0444\\u0430\\u043d-\\u0412\\u043e\\u0434\\u0441\\u043a\\u0438\\u0439 \\u0440\\u0430\\u0439\\u043e\\u043d\",\"TR\":\"\\u0422\\u0430\\u0440\\u0430\\u043a\\u043b\\u0438\\u044f\",\"TL\":\"\\u0422\\u0435\\u043b\\u0435\\u043d\\u0435\\u0448\\u0442\\u044b\",\"UN\":\"\\u0423\\u043d\\u0433\\u0435\\u043d\\u044c\"},\"NP\":{\"BAG\":\"\\u0411\\u0430\\u0433\\u043c\\u0430\\u0442\\u0438\",\"BHE\":\"\\u0411\\u0445\\u0435\\u0440\\u0438\",\"DHA\":\"\\u0414\\u0445\\u0430\\u0443\\u043b\\u0430\\u0433\\u0438\\u0440\\u0438\",\"GAN\":\"\\u0413\\u0430\\u043d\\u0434\\u0430\\u043a\\u0438\",\"JAN\":\"\\u0414\\u0436\\u0430\\u043d\\u0430\\u043a\\u043f\\u0443\\u0440\",\"KAR\":\"\\u041a\\u0430\\u0440\\u043d\\u0430\\u043b\\u0438\",\"KOS\":\"\\u041a\\u043e\\u0441\\u0438\",\"LUM\":\"\\u041b\\u0443\\u043c\\u0431\\u0438\\u043d\\u0438\",\"MAH\":\"\\u041c\\u0430\\u0445\\u0430\\u043a\\u0430\\u043b\\u0438\",\"MEC\":\"\\u041c\\u0435\\u0447\\u0438\",\"NAR\":\"\\u041d\\u0430\\u0440\\u0430\\u044f\\u043d\\u0438\",\"RAP\":\"\\u0420\\u0430\\u043f\\u0442\\u0438\",\"SAG\":\"\\u0421\\u0430\\u0433\\u0430\\u0440\\u043c\\u0430\\u0442\\u0445\\u0430\",\"SET\":\"\\u0421\\u0435\\u0442\\u0445\\u0438\"},\"NG\":{\"AB\":\"\\u0410\\u0431\\u0438\\u044f\",\"FC\":\"\\u0410\\u0431\\u0443\\u0434\\u0436\\u0430\",\"AD\":\"\\u0410\\u0434\\u0430\\u043c\\u0430\\u0432\\u0430\",\"AK\":\"\\u0410\\u043a\\u0432\\u0430-\\u0418\\u0431\\u043e\\u043c\",\"AN\":\"\\u0410\\u043d\\u0430\\u043c\\u0431\\u0440\\u0430\",\"BA\":\"\\u0411\\u0430\\u0443\\u0447\\u0438\",\"BY\":\"\\u0411\\u0430\\u0435\\u043b\\u0441\\u0430\",\"BE\":\"\\u0411\\u0435\\u043d\\u0443\\u044d\",\"BO\":\"\\u0411\\u043e\\u0440\\u043d\\u043e\",\"CR\":\"\\u041a\\u0440\\u043e\\u0441\\u0441-\\u0420\\u0438\\u0432\\u0435\\u0440\",\"DE\":\"\\u0414\\u0435\\u043b\\u044c\\u0442\\u0430\",\"EB\":\"\\u042d\\u0431\\u043e\\u043d\\u044c\\u0438\",\"ED\":\"\\u042d\\u0434\\u043e\",\"EK\":\"\\u042d\\u043a\\u0438\\u0442\\u0438\",\"EN\":\"\\u042d\\u043d\\u0443\\u0433\\u0443\",\"GO\":\"\\u0413\\u043e\\u043c\\u0431\\u0435\",\"IM\":\"\\u0418\\u043c\\u043e\",\"JI\":\"\\u0414\\u0436\\u0438\\u0433\\u0430\\u0432\\u0430\",\"KD\":\"\\u041a\\u0430\\u0434\\u0443\\u043d\\u0430\",\"KN\":\"\\u041a\\u0430\\u043d\\u043e\",\"KT\":\"\\u041a\\u0430\\u0446\\u0438\\u043d\\u0430\",\"KE\":\"\\u041a\\u0435\\u0431\\u0431\\u0438\",\"KO\":\"\\u041a\\u043e\\u0433\\u0438\",\"KW\":\"\\u041a\\u0432\\u0430\\u0440\\u0430\",\"LA\":\"\\u041b\\u0430\\u0433\\u043e\\u0441\",\"NA\":\"\\u041d\\u0430\\u0441\\u0430\\u0440\\u0430\\u0432\\u0430\",\"NI\":\"\\u041d\\u0438\\u0433\\u0435\\u0440\",\"OG\":\"\\u041e\\u0433\\u0443\\u043d\",\"ON\":\"\\u041e\\u043d\\u0434\\u043e\",\"OS\":\"\\u041e\\u0441\\u0443\\u043d\",\"OY\":\"\\u041e\\u0439\\u043e\",\"PL\":\"\\u041f\\u043b\\u0430\\u0442\\u043e\",\"RI\":\"\\u0420\\u0438\\u0432\\u0435\\u0440\\u0441\",\"SO\":\"\\u0421\\u043e\\u043a\\u043e\\u0442\\u043e\",\"TA\":\"\\u0422\\u0430\\u0440\\u0430\\u0431\\u0430\",\"YO\":\"\\u0419\\u043e\\u0431\\u0435\",\"ZA\":\"\\u0417\\u0430\\u043c\\u0444\\u0430\\u0440\\u0430\"},\"NZ\":{\"NL\":\"\\u041d\\u043e\\u0440\\u0442\\u043b\\u0435\\u043d\\u0434\",\"AK\":\"\\u041e\\u043a\\u043b\\u0435\\u043d\\u0434\",\"WA\":\"\\u0412\\u0430\\u0439\\u043a\\u0430\\u0442\\u043e\",\"BP\":\"\\u0411\\u0435\\u0439-\\u043e\\u0444-\\u041f\\u043b\\u0435\\u043d\\u0442\\u0438\",\"TK\":\"\\u0422\\u0430\\u0440\\u0430\\u043d\\u0430\\u043a\\u0438\",\"GI\":\"\\u0413\\u0438\\u0441\\u0431\\u043e\\u0440\\u043d\",\"HB\":\"\\u0425\\u043e\\u043a\\u0441-\\u0411\\u0435\\u0439\",\"MW\":\"\\u041c\\u0430\\u043d\\u0430\\u0432\\u0430\\u0442\\u0443-\\u0423\\u0430\\u043d\\u0433\\u0430\\u043d\\u0443\\u0438\",\"WE\":\"\\u0412\\u0435\\u043b\\u043b\\u0438\\u043d\\u0433\\u0442\\u043e\\u043d\",\"NS\":\"\\u041d\\u0435\\u043b\\u044c\\u0441\\u043e\\u043d\",\"MB\":\"\\u041c\\u0430\\u0440\\u043b\\u0431\\u043e\\u0440\\u043e\",\"TM\":\"\\u0422\\u0430\\u0441\\u043c\\u0430\\u043d\\u0438\\u044f\",\"WC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u043e\\u0435 \\u043f\\u043e\\u0431\\u0435\\u0440\\u0435\\u0436\\u044c\\u0435\",\"CT\":\"\\u041a\\u0435\\u043d\\u0442\\u0435\\u0440\\u0431\\u0435\\u0440\\u0438\",\"OT\":\"\\u041e\\u0442\\u0430\\u0433\\u043e\",\"SL\":\"\\u0421\\u0430\\u0443\\u0442\\u043b\\u0435\\u043d\\u0434\"},\"PK\":{\"JK\":\"\\u0410\\u0437\\u0430\\u0434 \\u041a\\u0430\\u0448\\u043c\\u0438\\u0440\",\"BA\":\"\\u0411\\u0435\\u043b\\u0443\\u0434\\u0436\\u0438\\u0441\\u0442\\u0430\\u043d\",\"TA\":\"\\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u043b\\u044c\\u043d\\u043e \\u0443\\u043f\\u0440\\u0430\\u0432\\u043b\\u044f\\u0435\\u043c\\u044b\\u0435 \\u043f\\u043b\\u0435\\u043c\\u0435\\u043d\\u043d\\u044b\\u0435 \\u0442\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u0438\",\"GB\":\"\\u0413\\u0438\\u043b\\u0433\\u0438\\u0442-\\u0411\\u0430\\u043b\\u0442\\u0438\\u0441\\u0442\\u0430\\u043d\",\"IS\":\"\\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u043b\\u044c\\u043d\\u0430\\u044f \\u0441\\u0442\\u043e\\u043b\\u0438\\u0447\\u043d\\u0430\\u044f \\u0442\\u0435\\u0440\\u0440\\u0438\\u0442\\u043e\\u0440\\u0438\\u044f (\\u0418\\u0441\\u043b\\u0430\\u043c\\u0430\\u0431\\u0430\\u0434)\",\"KP\":\"\\u0425\\u0430\\u0439\\u0431\\u0435\\u0440-\\u041f\\u0430\\u0445\\u0442\\u0443\\u043d\\u0445\\u0432\\u0430\",\"PB\":\"\\u041f\\u0435\\u043d\\u0434\\u0436\\u0430\\u0431\",\"SD\":\"\\u0421\\u0438\\u043d\\u0434\"},\"PYG\":{\"PY-ASU\":\"\\u0410\\u0441\\u0443\\u043d\\u0441\\u044c\\u043e\\u043d\",\"PY-1\":\"\\u041a\\u043e\\u043d\\u0441\\u0435\\u043f\\u0441\\u044c\\u043e\\u043d\",\"PY-2\":\"\\u0421\\u0430\\u043d-\\u041f\\u0435\\u0434\\u0440\\u043e\",\"PY-3\":\"\\u041a\\u043e\\u0440\\u0434\\u0438\\u043b\\u044c\\u0435\\u0440\\u044b\",\"PY-4\":\"\\u0413\\u0443\\u0430\\u0438\\u0440\\u0430\",\"PY-5\":\"\\u041a\\u0430\\u0430\\u0433\\u0443\\u0430\\u0441\\u0443\",\"PY-6\":\"\\u041a\\u0430\\u0430\\u0441\\u0430\\u043f\\u0430\",\"PY-7\":\"\\u0418\\u0442\\u0430\\u043f\\u0443\\u0430\",\"PY-8\":\"\\u041c\\u0438\\u0441\\u044c\\u043e\\u043d\\u0435\\u0441\",\"PY-9\":\"\\u041f\\u0430\\u0440\\u0430\\u0433\\u0443\\u0430\\u0440\\u0438\",\"PY-10\":\"\\u0410\\u043b\\u044c\\u0442\\u043e-\\u041f\\u0430\\u0440\\u0430\\u043d\\u0430\",\"PY-11\":\"\\u0421\\u0435\\u043d\\u0442\\u0440\\u0430\\u043b\\u044c\",\"PY-12\":\"\\u041d\\u044c\\u0435\\u044d\\u043c\\u0431\\u0443\\u043a\\u0443\",\"PY-13\":\"\\u0410\\u043c\\u0430\\u043c\\u0431\\u0430\\u0439\",\"PY-14\":\"\\u041a\\u0430\\u043d\\u0435\\u043d\\u0434\\u0438\\u044e\",\"PY-15\":\"\\u041f\\u0440\\u0435\\u0441\\u0438\\u0434\\u0435\\u043d\\u0442\\u0435-\\u0410\\u0435\\u0441\",\"PY-16\":\"\\u0410\\u043b\\u044c\\u0442\\u043e-\\u041f\\u0430\\u0440\\u0430\\u0433\\u0432\\u0430\\u0439\",\"PY-17\":\"\\u0411\\u043e\\u043a\\u0435\\u0440\\u043e\\u043d\"},\"PE\":{\"CAL\":\"\\u041a\\u0430\\u043b\\u044c\\u044f\\u043e\",\"LMA\":\"\\u0421\\u0442\\u043e\\u043b\\u0438\\u0447\\u043d\\u0430\\u044f \\u043c\\u044d\\u0440\\u0438\\u044f \\u041b\\u0438\\u043c\\u044b\",\"AMA\":\"\\u0410\\u043c\\u0430\\u0437\\u043e\\u043d\\u0430\\u0441\",\"ANC\":\"\\u0410\\u043d\\u043a\\u0430\\u0448\",\"APU\":\"\\u0410\\u043f\\u0443\\u0440\\u0438\\u043c\\u0430\\u043a\",\"ARE\":\"\\u0410\\u0440\\u0435\\u043a\\u0438\\u043f\\u0430\",\"AYA\":\"\\u0410\\u044f\\u043a\\u0443\\u0447\\u043e\",\"CAJ\":\"\\u041a\\u0430\\u0445\\u0430\\u043c\\u0430\\u0440\\u043a\\u0430\",\"CUS\":\"\\u041a\\u0443\\u0441\\u043a\\u043e\",\"HUV\":\"\\u0423\\u0430\\u043d\\u043a\\u0430\\u0432\\u0435\\u043b\\u0438\\u043a\\u0430\",\"HUC\":\"\\u0423\\u0430\\u043d\\u0443\\u043a\\u043e\",\"ICA\":\"\\u0418\\u043a\\u0430\",\"JUN\":\"\\u0425\\u0443\\u043d\\u0438\\u043d\",\"LAL\":\"\\u041b\\u0430-\\u041b\\u0438\\u0431\\u0435\\u0440\\u0442\\u0430\\u0434\",\"LAM\":\"\\u041b\\u0430\\u043c\\u0431\\u0430\\u0435\\u043a\\u0435\",\"LIM\":\"\\u041b\\u0438\\u043c\\u0430\",\"LOR\":\"\\u041b\\u043e\\u0440\\u0435\\u0442\\u043e\",\"MDD\":\"\\u041c\\u0430\\u0434\\u0440\\u0435-\\u0434\\u0435-\\u0414\\u044c\\u043e\\u0441\",\"MOQ\":\"\\u041c\\u043e\\u043a\\u0435\\u0433\\u0443\\u0430\",\"PAS\":\"\\u041f\\u0430\\u0441\\u043a\\u043e\",\"PIU\":\"\\u041f\\u044c\\u044e\\u0440\\u0430\",\"PUN\":\"\\u041f\\u0443\\u043d\\u043e\",\"SAM\":\"\\u0421\\u0430\\u043d-\\u041c\\u0430\\u0440\\u0442\\u0438\\u043d\",\"TAC\":\"\\u0422\\u0430\\u043a\\u043d\\u0430\",\"TUM\":\"\\u0422\\u0443\\u043c\\u0431\\u0435\\u0441\",\"UCA\":\"\\u0423\\u043a\\u0430\\u044f\\u043b\\u0438\"},\"RO\":{\"AB\":\"\\u0410\\u043b\\u0431\\u0430\",\"AR\":\"\\u0410\\u0440\\u0430\\u0434\",\"AG\":\"\\u0410\\u0440\\u0434\\u0436\\u0435\\u0448\",\"BC\":\"\\u0411\\u0430\\u043a\\u044d\\u0443\",\"BH\":\"\\u0411\\u0438\\u0445\\u043e\\u0440\",\"BN\":\"\\u0411\\u0438\\u0441\\u0442\\u0440\\u0438\\u0446\\u0430-\\u041d\\u044d\\u0441\\u044d\\u0443\\u0434\",\"BT\":\"\\u0411\\u043e\\u0442\\u043e\\u0448\\u0430\\u043d\\u0438\",\"BR\":\"\\u0411\\u0440\\u044d\\u0438\\u043b\\u0430\",\"BV\":\"\\u0411\\u0440\\u0430\\u0448\\u043e\\u0432\",\"B\":\"\\u0411\\u0443\\u0445\\u0430\\u0440\\u0435\\u0441\\u0442\",\"BZ\":\"\\u0411\\u0443\\u0437\\u044d\\u0443\",\"CL\":\"\\u041a\\u044d\\u043b\\u044d\\u0440\\u0430\\u0448\\u0438\",\"CS\":\"\\u041a\\u0430\\u0440\\u0430\\u0448-\\u0421\\u0435\\u0432\\u0435\\u0440\\u0438\\u043d\",\"CJ\":\"\\u041a\\u043b\\u0443\\u0436\",\"CT\":\"\\u041a\\u043e\\u043d\\u0441\\u0442\\u0430\\u043d\\u0446\\u0430\",\"CV\":\"\\u041a\\u043e\\u0432\\u0430\\u0441\\u043d\\u0430\",\"DB\":\"\\u0414\\u044b\\u043c\\u0431\\u043e\\u0432\\u0438\\u0446\\u0430\",\"DJ\":\"\\u0414\\u043e\\u043b\\u0436\",\"GL\":\"\\u0413\\u0430\\u043b\\u0430\\u0446\",\"GR\":\"\\u0414\\u0436\\u0443\\u0440\\u0434\\u0436\\u0443\",\"GJ\":\"\\u0413\\u043e\\u0440\\u0436\",\"HR\":\"\\u0425\\u0430\\u0440\\u0433\\u0438\\u0442\\u0430\",\"HD\":\"\\u0425\\u0443\\u043d\\u0435\\u0434\\u043e\\u0430\\u0440\\u0430\",\"IL\":\"\\u042f\\u043b\\u043e\\u043c\\u0438\\u0446\\u0430\",\"IS\":\"\\u042f\\u0441\\u0441\\u044b\",\"IF\":\"\\u0418\\u043b\\u0444\\u043e\\u0432\",\"MM\":\"\\u041c\\u0430\\u0440\\u0430\\u043c\\u0443\\u0440\\u0435\\u0448\",\"MH\":\"\\u041c\\u0435\\u0445\\u0435\\u0434\\u0438\\u043d\\u0446\\u0438\",\"MS\":\"\\u041c\\u0443\\u0440\\u0435\\u0448\",\"NT\":\"\\u041d\\u044f\\u043c\\u0446\",\"OT\":\"\\u041e\\u043b\\u0442\",\"PH\":\"\\u041f\\u0440\\u0430\\u0445\\u043e\\u0432\\u0430\",\"SJ\":\"\\u0421\\u044d\\u043b\\u0430\\u0436\",\"SM\":\"\\u0421\\u0430\\u0442\\u0443-\\u041c\\u0430\\u0440\\u0435\",\"SB\":\"\\u0421\\u0438\\u0431\\u0438\\u0443\",\"SV\":\"\\u0421\\u0443\\u0447\\u0430\\u0432\\u0430\",\"TR\":\"\\u0422\\u0435\\u043b\\u0435\\u043e\\u0440\\u043c\\u0430\\u043d\",\"TM\":\"\\u0422\\u0438\\u043c\\u0438\\u0448\",\"TL\":\"\\u0422\\u0443\\u043b\\u0447\\u0430\",\"VL\":\"\\u0412\\u044b\\u043b\\u0447\\u0430\",\"VS\":\"\\u0412\\u0430\\u0441\\u043b\\u0443\\u0439\",\"VN\":\"\\u0412\\u0440\\u0430\\u043d\\u0447\\u0430\"},\"US\":{\"AL\":\"\\u0410\\u043b\\u0430\\u0431\\u0430\\u043c\\u0430\",\"AK\":\"\\u0410\\u043b\\u044f\\u0441\\u043a\\u0430\",\"AZ\":\"\\u0410\\u0440\\u0438\\u0437\\u043e\\u043d\\u0430\",\"AR\":\"\\u0410\\u0440\\u043a\\u0430\\u043d\\u0437\\u0430\\u0441\",\"CA\":\"\\u041a\\u0430\\u043b\\u0438\\u0444\\u043e\\u0440\\u043d\\u0438\\u044f\",\"CO\":\"\\u041a\\u043e\\u043b\\u043e\\u0440\\u0430\\u0434\\u043e\",\"CT\":\"\\u041a\\u043e\\u043d\\u043d\\u0435\\u043a\\u0442\\u0438\\u043a\\u0443\\u0442\",\"DE\":\"\\u0414\\u0435\\u043b\\u0430\\u0432\\u0435\\u0440\",\"DC\":\"\\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u043b\\u044c\\u043d\\u044b\\u0439 \\u043e\\u043a\\u0440\\u0443\\u0433 \\u041a\\u043e\\u043b\\u0443\\u043c\\u0431\\u0438\\u044f\",\"FL\":\"\\u0424\\u043b\\u043e\\u0440\\u0438\\u0434\\u0430\",\"GA\":\"\\u0414\\u0436\\u043e\\u0440\\u0434\\u0436\\u0438\\u044f\",\"HI\":\"\\u0413\\u0430\\u0432\\u0430\\u0439\\u0438\",\"ID\":\"\\u0410\\u0439\\u0434\\u0430\\u0445\\u043e\",\"IL\":\"\\u0418\\u043b\\u043b\\u0438\\u043d\\u043e\\u0439\\u0441\",\"IN\":\"\\u0418\\u043d\\u0434\\u0438\\u0430\\u043d\\u0430\",\"IA\":\"\\u0410\\u0439\\u043e\\u0432\\u0430\",\"KS\":\"\\u041a\\u0430\\u043d\\u0437\\u0430\\u0441\",\"KY\":\"\\u041a\\u0435\\u043d\\u0442\\u0443\\u043a\\u043a\\u0438\",\"LA\":\"\\u041b\\u0443\\u0438\\u0437\\u0438\\u0430\\u043d\\u0430\",\"ME\":\"\\u041c\\u044d\\u043d\",\"MD\":\"\\u041c\\u044d\\u0440\\u0438\\u043b\\u0435\\u043d\\u0434\",\"MA\":\"\\u041c\\u0430\\u0441\\u0441\\u0430\\u0447\\u0443\\u0441\\u0435\\u0442\\u0441\",\"MI\":\"\\u041c\\u0438\\u0447\\u0438\\u0433\\u0430\\u043d\",\"MN\":\"\\u041c\\u0438\\u043d\\u043d\\u0435\\u0441\\u043e\\u0442\\u0430\",\"MS\":\"\\u041c\\u0438\\u0441\\u0441\\u0438\\u0441\\u0438\\u043f\\u0438\",\"MO\":\"\\u041c\\u0438\\u0441\\u0441\\u0443\\u0440\\u0438\",\"MT\":\"\\u041c\\u043e\\u043d\\u0442\\u0430\\u043d\\u0430\",\"NE\":\"\\u041d\\u0435\\u0431\\u0440\\u0430\\u0441\\u043a\\u0430\",\"NV\":\"\\u041d\\u0435\\u0432\\u0430\\u0434\\u0430\",\"NH\":\"\\u041d\\u044c\\u044e-\\u0413\\u0435\\u043c\\u043f\\u0448\\u0438\\u0440 \",\"NJ\":\"\\u041d\\u044c\\u044e-\\u0414\\u0436\\u0435\\u0440\\u0441\\u0438\",\"NM\":\"\\u041d\\u044c\\u044e-\\u041c\\u0435\\u043a\\u0441\\u0438\\u043a\\u043e\",\"NY\":\"\\u041d\\u044c\\u044e-\\u0419\\u043e\\u0440\\u043a\",\"NC\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u041a\\u0430\\u0440\\u043e\\u043b\\u0438\\u043d\\u0430\",\"ND\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u0414\\u0430\\u043a\\u043e\\u0442\\u0430\",\"OH\":\"\\u041e\\u0433\\u0430\\u0439\\u043e\",\"OK\":\"\\u041e\\u043a\\u043b\\u0430\\u0445\\u043e\\u043c\\u0430\",\"OR\":\"\\u041e\\u0440\\u0435\\u0433\\u043e\\u043d\",\"PA\":\"\\u041f\\u0435\\u043d\\u0441\\u0438\\u043b\\u044c\\u0432\\u0430\\u043d\\u0438\\u044f\",\"RI\":\"\\u0420\\u043e\\u0434-\\u0410\\u0439\\u043b\\u0435\\u043d\\u0434\",\"SC\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u041a\\u0430\\u0440\\u043e\\u043b\\u0438\\u043d\\u0430\",\"SD\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u0414\\u0430\\u043a\\u043e\\u0442\\u0430\",\"TN\":\"\\u0422\\u0435\\u043d\\u043d\\u0435\\u0441\\u0441\\u0438\",\"TX\":\"\\u0422\\u0435\\u0445\\u0430\\u0441\",\"UT\":\"\\u042e\\u0442\\u0430\",\"VT\":\"\\u0412\\u0435\\u0440\\u043c\\u043e\\u043d\\u0442\",\"VA\":\"\\u0412\\u0438\\u0440\\u0433\\u0438\\u043d\\u0438\\u044f\",\"WA\":\"\\u0412\\u0430\\u0448\\u0438\\u043d\\u0433\\u0442\\u043e\\u043d\",\"WV\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u0412\\u0438\\u0440\\u0433\\u0438\\u043d\\u0438\\u044f\",\"WI\":\"\\u0412\\u0438\\u0441\\u043a\\u043e\\u043d\\u0441\\u0438\\u043d\",\"WY\":\"\\u0412\\u0430\\u0439\\u043e\\u043c\\u0438\\u043d\\u0433\",\"AA\":\"\\u0412\\u043e\\u043e\\u0440\\u0443\\u0436\\u0451\\u043d\\u043d\\u044b\\u0435 \\u0441\\u0438\\u043b\\u044b (AA)\",\"AE\":\"\\u0412\\u043e\\u043e\\u0440\\u0443\\u0436\\u0451\\u043d\\u043d\\u044b\\u0435 \\u0441\\u0438\\u043b\\u044b (AE)\",\"AP\":\"\\u0412\\u043e\\u043e\\u0440\\u0443\\u0436\\u0451\\u043d\\u043d\\u044b\\u0435 \\u0441\\u0438\\u043b\\u044b (AP)\"},\"TH\":{\"TH-37\":\"\\u0410\\u043c\\u043d\\u0430\\u0442\\u0447\\u0430\\u0440\\u0435\\u043d\",\"TH-15\":\"\\u0410\\u043d\\u0433\\u0442\\u0445\\u043e\\u043d\\u0433\",\"TH-14\":\"\\u0410\\u044e\\u0442\\u0442\\u0445\\u0430\\u044f\\u200e\",\"TH-10\":\"\\u0411\\u0430\\u043d\\u0433\\u043a\\u043e\\u043a\",\"TH-38\":\"\\u0411\\u044b\\u043d\\u0433\\u043a\\u0430\\u043d\",\"TH-31\":\"\\u0411\\u0443\\u0440\\u0438\\u0440\\u0430\\u043c\",\"TH-24\":\"\\u0427\\u0430\\u0447\\u0435\\u043d\\u0433\\u0441\\u0430\\u0443\",\"TH-18\":\"\\u0427\\u0430\\u0439\\u043d\\u0430\\u0442\",\"TH-36\":\"\\u0427\\u0430\\u0439\\u044f\\u043f\\u0445\\u0443\\u043c\",\"TH-22\":\"\\u0427\\u0430\\u043d\\u0442\\u0445\\u0430\\u0431\\u0443\\u0440\\u0438\",\"TH-50\":\"\\u0427\\u0438\\u0430\\u043d\\u0433\\u043c\\u0430\\u0439\",\"TH-57\":\"\\u0427\\u0438\\u0430\\u043d\\u0433\\u0440\\u0430\\u0439\",\"TH-20\":\"\\u0427\\u043e\\u043d\\u0431\\u0443\\u0440\\u0438\",\"TH-86\":\"\\u0427\\u0443\\u043c\\u043f\\u0445\\u043e\\u043d\",\"TH-46\":\"\\u041a\\u0430\\u043b\\u0430\\u0441\\u0438\\u043d\",\"TH-62\":\"\\u041a\\u0430\\u043c\\u043f\\u0445\\u044d\\u043d\\u0433\\u043f\\u0445\\u0435\\u0442\",\"TH-71\":\"\\u041a\\u0430\\u043d\\u0447\\u0430\\u043d\\u0430\\u0431\\u0443\\u0440\\u0438\",\"TH-40\":\"\\u041a\\u0445\\u043e\\u043d\\u043a\\u044d\\u043d\",\"TH-81\":\"\\u041a\\u0440\\u0430\\u0431\\u0438\",\"TH-52\":\"\\u041b\\u0430\\u043c\\u043f\\u0430\\u043d\\u0433\",\"TH-51\":\"\\u041b\\u0430\\u043c\\u043f\\u0445\\u0443\\u043d\",\"TH-42\":\"\\u041b\\u0435\\u0439\",\"TH-16\":\"\\u041b\\u043e\\u043f\\u0431\\u0443\\u0440\\u0438\",\"TH-58\":\"\\u041c\\u044d\\u0445\\u043e\\u043d\\u0433\\u0441\\u043e\\u043d\",\"TH-44\":\"\\u041c\\u0430\\u0445\\u0430\\u0441\\u0430\\u0440\\u0430\\u043a\\u0445\\u0430\\u043c\",\"TH-49\":\"\\u041c\\u0443\\u043a\\u0434\\u0430\\u0445\\u0430\\u043d\",\"TH-26\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u043d\\u0430\\u0439\\u043e\\u043a\",\"TH-73\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u043f\\u0430\\u0442\\u0445\\u043e\\u043c\",\"TH-48\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u043f\\u0445\\u0430\\u043d\\u043e\\u043c\",\"TH-30\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u0440\\u0430\\u0442\\u0447\\u0430\\u0441\\u0438\\u043c\\u0430\",\"TH-60\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u0441\\u0430\\u0432\\u0430\\u043d\",\"TH-80\":\"\\u041d\\u0430\\u043a\\u0445\\u043e\\u043d\\u0441\\u0438\\u0442\\u0445\\u0430\\u043c\\u043c\\u0430\\u0440\\u0430\\u0442\",\"TH-55\":\"\\u041d\\u0430\\u043d\",\"TH-96\":\"\\u041d\\u0430\\u0440\\u0430\\u0442\\u0445\\u0438\\u0432\\u0430\\u0442\",\"TH-39\":\"\\u041d\\u043e\\u043d\\u0433\\u0431\\u0443\\u0430\\u043b\\u0430\\u043c\\u043f\\u0445\\u0443\",\"TH-43\":\"\\u041d\\u043e\\u043d\\u0433\\u043a\\u0445\\u0430\\u0439\",\"TH-12\":\"\\u041d\\u043e\\u043d\\u0442\\u0445\\u0430\\u0431\\u0443\\u0440\\u0438\",\"TH-13\":\"\\u041f\\u0430\\u0442\\u0445\\u0443\\u043c\\u0442\\u0445\\u0430\\u043d\\u0438\",\"TH-94\":\"\\u041f\\u0430\\u0442\\u0442\\u0430\\u043d\\u0438\",\"TH-82\":\"\\u041f\\u0445\\u0430\\u043d\\u0433\\u043d\\u0433\\u0430\",\"TH-93\":\"\\u041f\\u0445\\u0430\\u0442\\u0442\\u0445\\u0430\\u043b\\u0443\\u043d\\u0433\",\"TH-56\":\"\\u041f\\u0445\\u0430\\u044f\\u0443\",\"TH-67\":\"\\u041f\\u0445\\u0435\\u0442\\u0447\\u0430\\u0431\\u0443\\u043d\",\"TH-76\":\"\\u041f\\u0445\\u0435\\u0442\\u0431\\u0443\\u0440\\u0438\",\"TH-66\":\"\\u041f\\u0445\\u0438\\u0447\\u0438\\u0442\",\"TH-65\":\"\\u041f\\u0445\\u0438\\u0442\\u0441\\u0430\\u043d\\u0443\\u043b\\u043e\\u043a\",\"TH-54\":\"\\u041f\\u0445\\u0440\\u044d\",\"TH-83\":\"\\u041f\\u0445\\u0443\\u043a\\u0435\\u0442\",\"TH-25\":\"\\u041f\\u0440\\u0430\\u0447\\u0438\\u043d\\u0431\\u0443\\u0440\\u0438\",\"TH-77\":\"\\u041f\\u0440\\u0430\\u0447\\u0443\\u0430\\u043f\\u043a\\u0445\\u0438\\u0440\\u0438\\u043a\\u0445\\u0430\\u043d\",\"TH-85\":\"\\u0420\\u0430\\u043d\\u043e\\u043d\\u0433\",\"TH-70\":\"\\u0420\\u0430\\u0442\\u0431\\u0443\\u0440\\u0438\",\"TH-21\":\"\\u0420\\u0430\\u0439\\u043e\\u043d\\u0433\",\"TH-45\":\"\\u0420\\u043e\\u0439\\u0435\\u0442\",\"TH-27\":\"\\u0421\\u0430\\u043a\\u044d\\u0443\",\"TH-47\":\"\\u0421\\u0430\\u043a\\u043e\\u043d\\u043d\\u0430\\u043a\\u0445\\u043e\\u043d\",\"TH-11\":\"\\u0421\\u0430\\u043c\\u0443\\u0442\\u043f\\u0440\\u0430\\u043a\\u0430\\u043d\",\"TH-74\":\"\\u0421\\u0430\\u043c\\u0443\\u0442\\u0441\\u0430\\u043a\\u0445\\u043e\\u043d\",\"TH-75\":\"\\u0421\\u0430\\u043c\\u0443\\u0442\\u0441\\u043e\\u043d\\u0433\\u043a\\u0445\\u0440\\u0430\\u043c\",\"TH-19\":\"\\u0421\\u0430\\u0440\\u0430\\u0431\\u0443\\u0440\\u0438\",\"TH-91\":\"\\u0421\\u0430\\u0442\\u0443\\u043d\",\"TH-17\":\"\\u0421\\u0438\\u043d\\u0433\\u0431\\u0443\\u0440\\u0438\",\"TH-33\":\"\\u0421\\u0438\\u0441\\u0430\\u043a\\u0435\\u0442\",\"TH-90\":\"\\u0421\\u043e\\u043d\\u0433\\u043a\\u0445\\u043b\\u0430\",\"TH-64\":\"\\u0421\\u0443\\u043a\\u043e\\u0442\\u0430\\u0438\",\"TH-72\":\"\\u0421\\u0443\\u043f\\u0445\\u0430\\u043d\\u0431\\u0443\\u0440\\u0438\",\"TH-84\":\"\\u0421\\u0443\\u0440\\u0430\\u0442\\u0442\\u0445\\u0430\\u043d\\u0438\",\"TH-32\":\"\\u0421\\u0443\\u0440\\u0438\\u043d\",\"TH-63\":\"\\u0422\\u0430\\u043a\",\"TH-92\":\"\\u0422\\u0440\\u0430\\u043d\\u0433\",\"TH-23\":\"\\u0422\\u0440\\u0430\\u0442\",\"TH-34\":\"\\u0423\\u0431\\u043e\\u043d\\u0440\\u0430\\u0442\\u0447\\u0430\\u0442\\u0445\\u0430\\u043d\\u0438\",\"TH-41\":\"\\u0423\\u0434\\u043e\\u043d\\u0442\\u0445\\u0430\\u043d\\u0438\",\"TH-61\":\"\\u0423\\u0442\\u0445\\u0430\\u0439\\u0442\\u0445\\u0430\\u043d\\u0438\",\"TH-53\":\"\\u0423\\u0442\\u0442\\u0430\\u0440\\u0430\\u0434\\u0438\\u0442\",\"TH-95\":\"\\u042f\\u043b\\u0430\",\"TH-35\":\"\\u042f\\u0441\\u043e\\u0442\\u0445\\u043e\\u043d\"},\"TZ\":{\"TZ01\":\"\\u0410\\u0440\\u0443\\u0448\\u0430\",\"TZ02\":\"\\u0414\\u0430\\u0440-\\u044d\\u0441-\\u0421\\u0430\\u043b\\u0430\\u043c\",\"TZ03\":\"\\u0414\\u043e\\u0434\\u043e\\u043c\\u0430\",\"TZ04\":\"\\u0418\\u0440\\u0438\\u043d\\u0433\\u0430\",\"TZ05\":\"\\u041a\\u0430\\u0433\\u0435\\u0440\\u0430\",\"TZ06\":\"\\u041f\\u0435\\u043c\\u0431\\u0430 \\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f\",\"TZ07\":\"\\u0417\\u0430\\u043d\\u0437\\u0438\\u0431\\u0430\\u0440 \\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439\",\"TZ08\":\"\\u041a\\u0438\\u0433\\u043e\\u043c\\u0430\",\"TZ09\":\"\\u041a\\u0438\\u043b\\u0438\\u043c\\u0430\\u043d\\u0434\\u0436\\u0430\\u0440\\u043e\",\"TZ10\":\"\\u041f\\u0435\\u043c\\u0431\\u0430 \\u042e\\u0436\\u043d\\u0430\\u044f\",\"TZ11\":\"\\u0417\\u0430\\u043d\\u0437\\u0438\\u0431\\u0430\\u0440 \\u042e\\u0436\\u043d\\u044b\\u0439\",\"TZ12\":\"\\u041b\\u0438\\u043d\\u0434\\u0438\",\"TZ13\":\"\\u041c\\u0430\\u0440\\u0430\",\"TZ14\":\"\\u041c\\u0431\\u0435\\u044f\",\"TZ15\":\"\\u0417\\u0430\\u043d\\u0437\\u0438\\u0431\\u0430\\u0440 \\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439\",\"TZ16\":\"\\u041c\\u043e\\u0440\\u043e\\u0433\\u043e\\u0440\\u043e\",\"TZ17\":\"\\u041c\\u0442\\u0432\\u0430\\u0440\\u0430\",\"TZ18\":\"\\u041c\\u0432\\u0430\\u043d\\u0437\\u0430\",\"TZ19\":\"\\u0411\\u0435\\u0440\\u0435\\u0433\\u043e\\u0432\\u0430\\u044f \\u0422\\u0430\\u043d\\u0437\\u0430\\u043d\\u0438\\u044f\",\"TZ20\":\"\\u0420\\u0443\\u043a\\u0432\\u0430\",\"TZ21\":\"\\u0420\\u0443\\u0432\\u0443\\u043c\\u0430\",\"TZ22\":\"\\u0428\\u0438\\u043d\\u044c\\u044f\\u043d\\u0433\\u0430\",\"TZ23\":\"\\u0421\\u0438\\u043d\\u0433\\u0438\\u0434\\u0430\",\"TZ24\":\"\\u0422\\u0430\\u0431\\u043e\\u0440\\u0430\",\"TZ25\":\"\\u0422\\u0430\\u043d\\u0433\\u0430\",\"TZ26\":\"\\u041c\\u0430\\u043d\\u044c\\u044f\\u0440\\u0430\",\"TZ27\":\"\\u0413\\u0435\\u0438\\u0442\\u0430\",\"TZ28\":\"\\u041a\\u0430\\u0442\\u0430\\u0432\\u0438\",\"TZ29\":\"\\u041d\\u0434\\u0436\\u043e\\u043c\\u0431\",\"TZ30\":\"\\u0421\\u0438\\u043c\\u0438\\u044e\"},\"TR\":{\"TR01\":\"\\u0410\\u0434\\u0430\\u043d\\u0430\",\"TR02\":\"\\u0410\\u0434\\u044b\\u044f\\u043c\\u0430\\u043d\",\"TR03\":\"\\u0410\\u0444\\u044c\\u043e\\u043d\",\"TR04\":\"\\u0410\\u0433\\u0440\\u044b\",\"TR05\":\"\\u0410\\u043c\\u0430\\u0441\\u044c\\u044f\",\"TR06\":\"\\u0410\\u043d\\u043a\\u0430\\u0440\\u0430\",\"TR07\":\"\\u0410\\u043d\\u0442\\u0430\\u043b\\u044c\\u044f\",\"TR08\":\"\\u0410\\u0440\\u0442\\u0432\\u0438\\u043d\",\"TR09\":\"\\u0410\\u0439\\u0434\\u044b\\u043d\",\"TR10\":\"\\u0411\\u0430\\u043b\\u044b\\u043a\\u0435\\u0441\\u0438\\u0440\",\"TR11\":\"\\u0411\\u0438\\u043b\\u0435\\u0434\\u0436\\u0438\\u043a\",\"TR12\":\"\\u0411\\u0438\\u043d\\u0433\\u0451\\u043b\\u044c\",\"TR13\":\"\\u0411\\u0438\\u0442\\u043b\\u0438\\u0441\",\"TR14\":\"\\u0411\\u043e\\u043b\\u0443\",\"TR15\":\"\\u0411\\u0443\\u0440\\u0434\\u0443\\u0440\",\"TR16\":\"\\u0411\\u0443\\u0440\\u0441\\u0430\",\"TR17\":\"\\u0427\\u0430\\u043d\\u0430\\u043a\\u043a\\u0430\\u043b\\u0435\",\"TR18\":\"\\u0427\\u0430\\u043d\\u043a\\u044b\\u0440\\u044b\",\"TR19\":\"\\u0427\\u043e\\u0440\\u0443\\u043c\",\"TR20\":\"\\u0414\\u0435\\u043d\\u0438\\u0437\\u043b\\u0438\",\"TR21\":\"\\u0414\\u0438\\u044f\\u0440\\u0431\\u0430\\u043a\\u044b\\u0440\",\"TR22\":\"\\u042d\\u0434\\u0438\\u0440\\u043d\\u0435\",\"TR23\":\"\\u042d\\u043b\\u044f\\u0437\\u044b\\u0433\",\"TR24\":\"\\u042d\\u0440\\u0437\\u0438\\u043d\\u0434\\u0436\\u0430\\u043d\",\"TR25\":\"\\u042d\\u0440\\u0437\\u0443\\u0440\\u0443\\u043c\",\"TR26\":\"\\u042d\\u0441\\u043a\\u0438\\u0448\\u0435\\u0445\\u0438\\u0440\",\"TR27\":\"\\u0413\\u0430\\u0437\\u0438\\u0430\\u043d\\u0442\\u0435\\u043f\",\"TR28\":\"\\u0413\\u0438\\u0440\\u0435\\u0441\\u0443\\u043d\",\"TR29\":\"\\u0413\\u044e\\u043c\\u044e\\u0448\\u0445\\u0430\\u043d\\u0435\",\"TR30\":\"\\u0425\\u0430\\u043a\\u043a\\u044f\\u0440\\u0438\",\"TR31\":\"\\u0425\\u0430\\u0442\\u0430\\u0439\",\"TR32\":\"\\u042b\\u0441\\u043f\\u0430\\u0440\\u0442\\u0430\",\"TR33\":\"\\u041c\\u0435\\u0440\\u0441\\u0438\\u043d\",\"TR34\":\"\\u0421\\u0442\\u0430\\u043c\\u0431\\u0443\\u043b\",\"TR35\":\"\\u0418\\u0437\\u043c\\u0438\\u0440\",\"TR36\":\"\\u041a\\u0430\\u0440\\u0441\",\"TR37\":\"\\u041a\\u0430\\u0441\\u0442\\u0430\\u043c\\u043e\\u043d\\u0443\",\"TR38\":\"\\u041a\\u0430\\u0439\\u0441\\u0435\\u0440\\u0438\",\"TR39\":\"\\u041a\\u044b\\u0440\\u043a\\u043b\\u0430\\u0440\\u0435\\u043b\\u0438\",\"TR40\":\"\\u041a\\u044b\\u0440\\u0448\\u0435\\u0445\\u0438\\u0440\",\"TR41\":\"\\u041a\\u043e\\u0434\\u0436\\u0430\\u044d\\u043b\\u0438\",\"TR42\":\"\\u041a\\u043e\\u043d\\u044c\\u044f\",\"TR43\":\"\\u041a\\u044e\\u0442\\u0430\\u0445\\u044c\\u044f\",\"TR44\":\"\\u041c\\u0430\\u043b\\u0430\\u0442\\u044c\\u044f\",\"TR45\":\"\\u041c\\u0430\\u043d\\u0438\\u0441\\u0430\",\"TR46\":\"\\u041a\\u0430\\u0445\\u0440\\u0430\\u043c\\u0430\\u043d\\u043c\\u0430\\u0440\\u0430\\u0448\",\"TR47\":\"\\u041c\\u0430\\u0440\\u0434\\u0438\\u043d\",\"TR48\":\"\\u041c\\u0443\\u0433\\u043b\\u0430\",\"TR49\":\"\\u041c\\u0443\\u0448\",\"TR50\":\"\\u041d\\u0435\\u0432\\u0448\\u0435\\u0445\\u0438\\u0440\",\"TR51\":\"\\u041d\\u0438\\u0433\\u0434\\u0435\",\"TR52\":\"\\u041e\\u0440\\u0434\\u0443\",\"TR53\":\"\\u0420\\u0438\\u0437\\u0435\",\"TR54\":\"\\u0421\\u0430\\u043a\\u0430\\u0440\\u044c\\u044f\",\"TR55\":\"\\u0421\\u0430\\u043c\\u0441\\u0443\\u043d\",\"TR56\":\"\\u0421\\u0438\\u0438\\u0440\\u0442\",\"TR57\":\"\\u0421\\u0438\\u043d\\u043e\\u043f\",\"TR58\":\"\\u0421\\u0438\\u0432\\u0430\\u0441\",\"TR59\":\"\\u0422\\u0435\\u043a\\u0438\\u0440\\u0434\\u0430\\u0433\",\"TR60\":\"\\u0422\\u043e\\u043a\\u0430\\u0442\",\"TR61\":\"\\u0422\\u0440\\u0430\\u0431\\u0437\\u043e\\u043d\",\"TR62\":\"\\u0422\\u0443\\u043d\\u0434\\u0436\\u0435\\u043b\\u0438\",\"TR63\":\"\\u0428\\u0430\\u043d\\u043b\\u044b\\u0443\\u0440\\u0444\\u0430\",\"TR64\":\"\\u0423\\u0448\\u0430\\u043a\",\"TR65\":\"\\u0412\\u0430\\u043d\",\"TR66\":\"\\u0419\\u043e\\u0437\\u0433\\u0430\\u0442\",\"TR67\":\"\\u0417\\u043e\\u043d\\u0433\\u0443\\u043b\\u0434\\u0430\\u043a\",\"TR68\":\"\\u0410\\u043a\\u0441\\u0430\\u0440\\u0430\\u0439\",\"TR69\":\"\\u0411\\u0430\\u0439\\u0431\\u0443\\u0440\\u0442\",\"TR70\":\"\\u041a\\u0430\\u0440\\u0430\\u043c\\u0430\\u043d\",\"TR71\":\"\\u041a\\u044b\\u0440\\u044b\\u043a\\u043a\\u0430\\u043b\\u0435\",\"TR72\":\"\\u0411\\u0430\\u0442\\u043c\\u0430\\u043d\",\"TR73\":\"\\u0428\\u0438\\u0440\\u043d\\u0430\\u043a\",\"TR74\":\"\\u0411\\u0430\\u0440\\u0442\\u044b\\u043d\",\"TR75\":\"\\u0410\\u0440\\u0434\\u0430\\u0445\\u0430\\u043d\",\"TR76\":\"\\u042b\\u0433\\u0434\\u044b\\u0440\",\"TR77\":\"\\u042f\\u043b\\u043e\\u0432\\u0430\",\"TR78\":\"\\u041a\\u0430\\u0440\\u0430\\u0431\\u044e\\u043a\",\"TR79\":\"\\u041a\\u0438\\u043b\\u0438\\u0441\",\"TR80\":\"\\u041e\\u0441\\u043c\\u0430\\u043d\\u0438\\u0435\",\"TR81\":\"\\u0414\\u044e\\u0437\\u0434\\u0436\\u0435\"},\"PH\":{\"ABR\":\"\\u0410\\u0431\\u0440\\u0430\",\"AGN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0410\\u0433\\u0443\\u0441\\u0430\\u043d\",\"AGS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0410\\u0433\\u0443\\u0441\\u0430\\u043d\",\"AKL\":\"\\u0410\\u043a\\u043b\\u0430\\u043d\",\"ALB\":\"\\u0410\\u043b\\u0431\\u0430\\u0439\",\"ANT\":\"\\u0410\\u043d\\u0442\\u0438\\u043a\\u0435\",\"APA\":\"\\u0410\\u043f\\u0430\\u044f\\u043e\",\"AUR\":\"\\u0410\\u0443\\u0440\\u043e\\u0440\\u0430\",\"BAS\":\"\\u0411\\u0430\\u0441\\u0438\\u043b\\u0430\\u043d\",\"BAN\":\"\\u0411\\u0430\\u0442\\u0430\\u0430\\u043d\",\"BTN\":\"\\u0411\\u0430\\u0442\\u0430\\u043d\\u0435\\u0441\",\"BTG\":\"\\u0411\\u0430\\u0442\\u0430\\u043d\\u0433\\u0430\\u0441\",\"BEN\":\"\\u0411\\u0435\\u043d\\u0433\\u0435\\u0442\",\"BIL\":\"\\u0411\\u0438\\u043b\\u0438\\u0440\\u0430\\u043d\",\"BOH\":\"\\u0411\\u043e\\u0445\\u043e\\u043b\\u044c\",\"BUK\":\"\\u0411\\u0443\\u043a\\u0438\\u0434\\u043d\\u043e\\u043d\",\"BUL\":\"\\u0411\\u0443\\u043b\\u0430\\u043a\\u0430\\u043d\",\"CAG\":\"\\u041a\\u0430\\u0433\\u0430\\u044f\\u043d\",\"CAN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043c\\u0430\\u0440\\u0438\\u043d\\u0435\\u0441\",\"CAS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u041a\\u0430\\u043c\\u0430\\u0440\\u0438\\u043d\\u0435\\u0441\",\"CAM\":\"\\u041a\\u0430\\u043c\\u0438\\u0433\\u0438\\u043d\",\"CAP\":\"\\u041a\\u0430\\u043f\\u0438\\u0441\",\"CAT\":\"\\u041a\\u0430\\u0442\\u0430\\u043d\\u0434\\u0443\\u0430\\u043d\\u0435\\u0441\",\"CAV\":\"\\u041a\\u0430\\u0432\\u0438\\u0442\\u0435\",\"CEB\":\"\\u0421\\u0435\\u0431\\u0443\",\"COM\":\"\\u0414\\u043e\\u043b\\u0438\\u043d\\u0430 \\u041a\\u043e\\u043c\\u043f\\u043e\\u0441\\u0442\\u0435\\u043b\\u0430\",\"NCO\":\"\\u041a\\u043e\\u0442\\u0430\\u0431\\u0430\\u0442\\u043e\",\"DAV\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0414\\u0430\\u0432\\u0430\\u043e\",\"DAS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0414\\u0430\\u0432\\u0430\\u043e\",\"DAC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u0414\\u0430\\u0432\\u0430\\u043e\",\"DAO\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u0414\\u0430\\u0432\\u0430\\u043e\",\"DIN\":\"\\u041e\\u0441\\u0442\\u0440\\u043e\\u0432\\u0430 \\u0414\\u0438\\u043d\\u0430\\u0433\\u0430\\u0442\",\"EAS\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u0421\\u0430\\u043c\\u0430\\u0440\",\"GUI\":\"\\u0413\\u0438\\u043c\\u0430\\u0440\\u0430\\u0441\",\"IFU\":\"\\u0418\\u0444\\u0443\\u0433\\u0430\\u043e\",\"ILN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0418\\u043b\\u043e\\u043a\\u043e\\u0441\",\"ILS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0418\\u043b\\u043e\\u043a\\u043e\\u0441\",\"ILI\":\"\\u0418\\u043b\\u043e\\u0438\\u043b\\u043e\",\"ISA\":\"\\u0418\\u0441\\u0430\\u0431\\u0435\\u043b\\u0430\",\"KAL\":\"\\u041a\\u0430\\u043b\\u0438\\u043d\\u0433\\u0430\",\"LUN\":\"\\u041b\\u0430-\\u0423\\u043d\\u0438\\u043e\\u043d\",\"LAG\":\"\\u041b\\u0430\\u0433\\u0443\\u043d\\u0430\",\"LAN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u041b\\u0430\\u043d\\u0430\\u043e\",\"LAS\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u041b\\u0430\\u043d\\u0430\\u043e\",\"LEY\":\"\\u041b\\u0435\\u0439\\u0442\\u0435\",\"MAG\":\"\\u041c\\u0430\\u0433\\u0438\\u043d\\u0434\\u0430\\u043d\\u0430\\u043e\",\"MAD\":\"\\u041c\\u0430\\u0440\\u0438\\u043d\\u0434\\u0443\\u043a\\u0435\",\"MAS\":\"\\u041c\\u0430\\u0441\\u0431\\u0430\\u0442\\u0435\",\"MSC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u041c\\u0438\\u0441\\u0430\\u043c\\u0438\\u0441\",\"MSR\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u041c\\u0438\\u0441\\u0430\\u043c\\u0438\\u0441\",\"MOU\":\"\\u0413\\u043e\\u0440\\u043d\\u0430\\u044f \\u043f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\",\"NEC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u041d\\u0435\\u0433\\u0440\\u043e\\u0441\",\"NER\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u041d\\u0435\\u0433\\u0440\\u043e\\u0441\",\"NSA\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0421\\u0430\\u043c\\u0430\\u0440\",\"NUE\":\"\\u041d\\u0443\\u044d\\u0432\\u0430-\\u042d\\u0441\\u0438\\u0445\\u0430\",\"NUV\":\"\\u041d\\u0443\\u044d\\u0432\\u0430-\\u0412\\u0438\\u0441\\u043a\\u0430\\u044f\",\"MDC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u044b\\u0439 \\u041c\\u0438\\u043d\\u0434\\u043e\\u0440\\u043e\",\"MDR\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u044b\\u0439 \\u041c\\u0438\\u043d\\u0434\\u043e\\u0440\\u043e\",\"PLW\":\"\\u041f\\u0430\\u043b\\u0430\\u0432\\u0430\\u043d\",\"PAM\":\"\\u041f\\u0430\\u043c\\u043f\\u0430\\u043d\\u0433\\u0430\",\"PAN\":\"\\u041f\\u0430\\u043d\\u0433\\u0430\\u0441\\u0438\\u043d\\u0430\\u043d\",\"QUE\":\"\\u041a\\u0435\\u0441\\u043e\\u043d\",\"QUI\":\"\\u041a\\u0438\\u0440\\u0438\\u043d\\u043e\",\"RIZ\":\"\\u0420\\u0438\\u0441\\u0430\\u043b\\u044c\",\"ROM\":\"\\u0420\\u043e\\u043c\\u0431\\u043b\\u043e\\u043d\",\"WSA\":\"\\u0421\\u0430\\u043c\\u0430\\u0440\",\"SAR\":\"\\u0421\\u0430\\u0440\\u0430\\u043d\\u0433\\u0430\\u043d\\u0438\",\"SIQ\":\"\\u0421\\u0438\\u043a\\u0438\\u0445\\u043e\\u0440\",\"SOR\":\"\\u0421\\u043e\\u0440\\u0441\\u043e\\u0433\\u043e\\u043d\",\"SCO\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u041a\\u043e\\u0442\\u0430\\u0431\\u0430\\u0442\\u043e\",\"SLE\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u041b\\u0435\\u0439\\u0442\\u0435\",\"SUK\":\"\\u0421\\u0443\\u043b\\u0442\\u0430\\u043d-\\u041a\\u0443\\u0434\\u0430\\u0440\\u0430\\u0442\",\"SLU\":\"\\u0421\\u0443\\u043b\\u0443\",\"SUN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u044b\\u0439 \\u0421\\u0443\\u0440\\u0438\\u0433\\u0430\\u043e\",\"SUR\":\"\\u042e\\u0436\\u043d\\u044b\\u0439 \\u0421\\u0443\\u0440\\u0438\\u0433\\u0430\\u043e\",\"TAR\":\"\\u0422\\u0430\\u0440\\u043b\\u0430\\u043a\",\"TAW\":\"\\u0422\\u0430\\u0432\\u0438-\\u0422\\u0430\\u0432\\u0438\",\"ZMB\":\"\\u0421\\u0430\\u043c\\u0431\\u0430\\u043b\\u0435\\u0441\",\"ZAN\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043d\\u0430\\u044f \\u0417\\u0430\\u043c\\u0431\\u043e\\u0430\\u043d\\u0433\\u0430\",\"ZAS\":\"\\u042e\\u0436\\u043d\\u0430\\u044f \\u0417\\u0430\\u043c\\u0431\\u043e\\u0430\\u043d\\u0433\\u0430\",\"ZSI\":\"\\u0417\\u0430\\u043c\\u0431\\u043e\\u0430\\u043d\\u0433\\u0430-\\u0421\\u0438\\u0431\\u0443\\u0433\\u0435\\u0439\",\"00\":\"\\u0421\\u0442\\u043e\\u043b\\u0438\\u0447\\u043d\\u044b\\u0439 \\u0440\\u0435\\u0433\\u0438\\u043e\\u043d\"},\"CH\":{\"AG\":\"\\u0410\\u0440\\u0433\\u0430\\u0443\",\"AR\":\"\\u0410\\u043f\\u043f\\u0435\\u043d\\u0446\\u0435\\u043b\\u043b\\u044c-\\u0410\\u0443\\u0441\\u0435\\u0440\\u0440\\u043e\\u0434\\u0435\\u043d\",\"AI\":\"\\u0410\\u043f\\u043f\\u0435\\u043d\\u0446\\u0435\\u043b\\u043b\\u044c-\\u0418\\u043d\\u043d\\u0435\\u0440\\u0440\\u043e\\u0434\\u0435\\u043d\",\"BL\":\"\\u0411\\u0430\\u0437\\u0435\\u043b\\u044c-\\u041b\\u0430\\u043d\\u0434\",\"BS\":\"\\u0411\\u0430\\u0437\\u0435\\u043b\\u044c-\\u0428\\u0442\\u0430\\u0434\\u0442\",\"BE\":\"\\u0411\\u0435\\u0440\\u043d\",\"FR\":\"\\u0424\\u0440\\u0438\\u0431\\u0443\\u0440\",\"GE\":\"\\u0416\\u0435\\u043d\\u0435\\u0432\\u0430\",\"GL\":\"\\u0413\\u043b\\u0430\\u0440\\u0443\\u0441\",\"GR\":\"\\u0413\\u0440\\u0430\\u0443\\u0431\\u044e\\u043d\\u0434\\u0435\\u043d\",\"JU\":\"\\u042e\\u0440\\u0430\",\"LU\":\"\\u041b\\u044e\\u0446\\u0435\\u0440\\u043d\",\"NE\":\"\\u041d\\u0435\\u0432\\u0448\\u0430\\u0442\\u0435\\u043b\\u044c\",\"NW\":\"\\u041d\\u0438\\u0434\\u0432\\u0430\\u043b\\u044c\\u0434\\u0435\\u043d\",\"OW\":\"\\u041e\\u0431\\u0432\\u0430\\u043b\\u044c\\u0434\\u0435\\u043d\",\"SH\":\"\\u0428\\u0430\\u0444\\u0444\\u0445\\u0430\\u0443\\u0437\\u0435\\u043d\",\"SZ\":\"\\u0428\\u0432\\u0438\\u0446\",\"SO\":\"\\u0417\\u043e\\u043b\\u043e\\u0442\\u0443\\u0440\\u043d\",\"SG\":\"\\u0421\\u0430\\u043d\\u043a\\u0442-\\u0413\\u0430\\u043b\\u043b\\u0435\\u043d\",\"TG\":\"\\u0422\\u0443\\u0440\\u0433\\u0430\\u0443\",\"TI\":\"\\u0422\\u0438\\u0447\\u0438\\u043d\\u043e\",\"UR\":\"\\u0423\\u0440\\u0438\",\"VS\":\"\\u0412\\u0430\\u043b\\u0435\",\"VD\":\"\\u0412\\u043e\",\"ZG\":\"\\u0426\\u0443\\u0433\",\"ZH\":\"\\u0426\\u044e\\u0440\\u0438\\u0445\"},\"ZA\":{\"EC\":\"\\u0412\\u043e\\u0441\\u0442\\u043e\\u0447\\u043d\\u043e-\\u041a\\u0430\\u043f\\u0441\\u043a\\u0430\\u044f \\u043f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\",\"FS\":\"\\u0424\\u0440\\u0438-\\u0421\\u0442\\u0435\\u0439\\u0442\",\"GP\":\"\\u0413\\u0430\\u0443\\u0442\\u0435\\u043d\\u0433\",\"KZN\":\"\\u041a\\u0432\\u0430\\u0437\\u0443\\u043b\\u0443-\\u041d\\u0430\\u0442\\u0430\\u043b\",\"LP\":\"\\u041b\\u0438\\u043c\\u043f\\u043e\\u043f\\u043e\",\"MP\":\"\\u041c\\u043f\\u0443\\u043c\\u0430\\u043b\\u0430\\u043d\\u0433\\u0430\",\"NC\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043e-\\u041a\\u0430\\u043f\\u0441\\u043a\\u0430\\u044f \\u043f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\",\"NW\":\"\\u0421\\u0435\\u0432\\u0435\\u0440\\u043e-\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u0430\\u044f \\u043f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\",\"WC\":\"\\u0417\\u0430\\u043f\\u0430\\u0434\\u043d\\u043e-\\u041a\\u0430\\u043f\\u0441\\u043a\\u0430\\u044f \\u043f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"},\"JP\":{\"JP01\":\"\\u0425\\u043e\\u043a\\u043a\\u0430\\u0439\\u0434\\u043e\",\"JP02\":\"\\u0410\\u043e\\u043c\\u043e\\u0440\\u0438\",\"JP03\":\"\\u0418\\u0432\\u0430\\u0442\\u044d\",\"JP04\":\"\\u041c\\u0438\\u044f\\u0433\\u0438\",\"JP05\":\"\\u0410\\u043a\\u0438\\u0442\\u0430\",\"JP06\":\"\\u042f\\u043c\\u0430\\u0433\\u0430\\u0442\\u0430\",\"JP07\":\"\\u0424\\u0443\\u043a\\u0443\\u0441\\u0438\\u043c\\u0430\",\"JP08\":\"\\u0418\\u0431\\u0430\\u0440\\u0430\\u043a\\u0438\",\"JP09\":\"\\u0422\\u043e\\u0442\\u0438\\u0433\\u0438\",\"JP10\":\"\\u0413\\u0443\\u043c\\u043c\\u0430\",\"JP11\":\"\\u0421\\u0430\\u0439\\u0442\\u0430\\u043c\\u0430\",\"JP12\":\"\\u0422\\u0438\\u0431\\u0430\",\"JP13\":\"\\u0422\\u043e\\u043a\\u0438\\u043e\",\"JP14\":\"\\u041a\\u0430\\u043d\\u0430\\u0433\\u0430\\u0432\\u0430\",\"JP15\":\"\\u041d\\u0438\\u0438\\u0433\\u0430\\u0442\\u0430\",\"JP16\":\"\\u0422\\u043e\\u044f\\u043c\\u0430\",\"JP17\":\"\\u0418\\u0441\\u0438\\u043a\\u0430\\u0432\\u0430\",\"JP18\":\"\\u0424\\u0443\\u043a\\u0443\\u0438\",\"JP19\":\"\\u042f\\u043c\\u0430\\u043d\\u0430\\u0441\\u0438\",\"JP20\":\"\\u041d\\u0430\\u0433\\u0430\\u043d\\u043e\",\"JP21\":\"\\u0413\\u0438\\u0444\\u0443\",\"JP22\":\"\\u0421\\u0438\\u0434\\u0437\\u0443\\u043e\\u043a\\u0430\",\"JP23\":\"\\u0410\\u0439\\u0442\\u0438\",\"JP24\":\"\\u041c\\u0438\\u044d\",\"JP25\":\"\\u0421\\u0438\\u0433\\u0430\",\"JP26\":\"\\u041a\\u0438\\u043e\\u0442\\u043e\",\"JP27\":\"\\u041e\\u0441\\u0430\\u043a\\u0430\",\"JP28\":\"\\u0425\\u0451\\u0433\\u043e\",\"JP29\":\"\\u041d\\u0430\\u0440\\u0430\",\"JP30\":\"\\u0412\\u0430\\u043a\\u0430\\u044f\\u043c\\u0430\",\"JP31\":\"\\u0422\\u043e\\u0442\\u0442\\u043e\\u0440\\u0438\",\"JP32\":\"\\u0421\\u0438\\u043c\\u0430\\u043d\\u044d\",\"JP33\":\"\\u041e\\u043a\\u0430\\u044f\\u043c\\u0430\",\"JP34\":\"\\u0425\\u0438\\u0440\\u043e\\u0441\\u0438\\u043c\\u0430\",\"JP35\":\"\\u042f\\u043c\\u0430\\u0433\\u0443\\u0442\\u0438\",\"JP36\":\"\\u0422\\u043e\\u043a\\u0443\\u0441\\u0438\\u043c\\u0430\",\"JP37\":\"\\u041a\\u0430\\u0433\\u0430\\u0432\\u0430\",\"JP38\":\"\\u042d\\u0445\\u0438\\u043c\\u044d\",\"JP39\":\"\\u041a\\u043e\\u0447\\u0447\\u0438\",\"JP40\":\"\\u0424\\u0443\\u043a\\u0443\\u043e\\u043a\\u0430\",\"JP41\":\"\\u0421\\u0430\\u0433\\u0430\",\"JP42\":\"\\u041d\\u0430\\u0433\\u0430\\u0441\\u0430\\u043a\\u0438\",\"JP43\":\"\\u041a\\u0443\\u043c\\u0430\\u043c\\u043e\\u0442\\u043e\",\"JP44\":\"\\u041e\\u0438\\u0442\\u0430\",\"JP45\":\"\\u041c\\u0438\\u044f\\u0434\\u0437\\u0430\\u043a\\u0438\",\"JP46\":\"\\u041a\\u0430\\u0433\\u043e\\u0441\\u0438\\u043c\\u0430\",\"JP47\":\"\\u041e\\u043a\\u0438\\u043d\\u0430\\u0432\\u0430\"}}",
+    "i18n_select_state_text": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u2026",
+    "i18n_no_matches": "\u0421\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e",
+    "i18n_ajax_error": "\u041e\u0448\u0438\u0431\u043a\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438",
+    "i18n_input_too_short_1": "\u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0432\u0432\u0435\u0434\u0438\u0442\u0435 1 \u0438\u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432",
+    "i18n_input_too_short_n": "\u041d\u0443\u0436\u043d\u043e \u0432\u0432\u0435\u0441\u0442\u0438 \u0431\u043e\u043b\u044c\u0448\u0435 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432, \u0435\u0449\u0451 \u043a\u0430\u043a \u043c\u0438\u043d\u0438\u043c\u0443\u043c %qty%",
+    "i18n_input_too_long_1": "\u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0443\u0434\u0430\u043b\u0438\u0442\u0435 1 \u0441\u0438\u043c\u0432\u043e\u043b",
+    "i18n_input_too_long_n": "\u041d\u0443\u0436\u043d\u043e \u0443\u0434\u0430\u043b\u0438\u0442\u044c \u043b\u0438\u0448\u043d\u0438\u0435 \u0441\u0438\u043c\u0432\u043e\u043b\u044b, \u0438\u0445 \u0437\u0434\u0435\u0441\u044c %qty%",
+    "i18n_selection_too_long_1": "\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u043b\u0438\u0448\u044c 1 \u0432\u0430\u0440\u0438\u0430\u043d\u0442",
+    "i18n_selection_too_long_n": "\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u043d\u0435 \u0431\u043e\u043b\u0435\u0435 %qty%",
+    "i18n_load_more": "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0435\u0449\u0451\u2026",
+    "i18n_searching": "\u041f\u043e\u0438\u0441\u043a\u2026"
+  };
+</script>
+<script type='text/javascript' id='wc-address-i18n-js-extra'>
+  let wc_address_i18n_params = {
+    "locale": "{\"AE\":{\"postcode\":{\"required\":false,\"hidden\":true},\"state\":{\"required\":false}},\"AF\":{\"state\":{\"required\":false}},\"AO\":{\"postcode\":{\"required\":false,\"hidden\":true},\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"AT\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"AU\":{\"city\":{\"label\":\"\\u041f\\u0440\\u0438\\u0433\\u043e\\u0440\\u043e\\u0434\"},\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\"},\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"AX\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"BD\":{\"postcode\":{\"required\":false},\"state\":{\"label\":\"\\u0420\\u0430\\u0439\\u043e\\u043d\"}},\"BE\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false,\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"BH\":{\"postcode\":{\"required\":false},\"state\":{\"required\":false}},\"BI\":{\"state\":{\"required\":false}},\"BO\":{\"postcode\":{\"required\":false,\"hidden\":true}},\"BS\":{\"postcode\":{\"required\":false,\"hidden\":true}},\"CA\":{\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"CH\":{\"postcode\":{\"priority\":65},\"state\":{\"label\":\"\\u041a\\u0430\\u043d\\u0442\\u043e\\u043d\",\"required\":false}},\"CL\":{\"city\":{\"required\":true},\"postcode\":{\"required\":false},\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"CN\":{\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"CO\":{\"postcode\":{\"required\":false}},\"CZ\":{\"state\":{\"required\":false}},\"DE\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"DK\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"EE\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"FI\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"FR\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"GP\":{\"state\":{\"required\":false}},\"GF\":{\"state\":{\"required\":false}},\"HK\":{\"postcode\":{\"required\":false},\"city\":{\"label\":\"\\u0420\\u0430\\u0439\\u043e\\u043d\"},\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"HU\":{\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\"}},\"ID\":{\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"IE\":{\"postcode\":{\"required\":false,\"label\":\"\\u041a\\u043e\\u0434 Eircode\"},\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\"}},\"IS\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"IL\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"IM\":{\"state\":{\"required\":false}},\"IT\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":true,\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"JP\":{\"state\":{\"label\":\"\\u041f\\u0440\\u0435\\u0444\\u0435\\u043a\\u0442\\u0443\\u0440\\u0430\",\"priority\":66},\"postcode\":{\"priority\":65}},\"KR\":{\"state\":{\"required\":false}},\"KW\":{\"state\":{\"required\":false}},\"LB\":{\"state\":{\"required\":false}},\"MQ\":{\"state\":{\"required\":false}},\"MT\":{\"state\":{\"required\":false}},\"NL\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false,\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"NG\":{\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\",\"required\":false,\"hidden\":true},\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"NZ\":{\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\"},\"state\":{\"required\":false,\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"NO\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"NP\":{\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d \\\/ \\u0417\\u043e\\u043d\\u0430\"},\"postcode\":{\"required\":false}},\"PL\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"PT\":{\"state\":{\"required\":false}},\"RE\":{\"state\":{\"required\":false}},\"RO\":{\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\",\"required\":true}},\"SG\":{\"state\":{\"required\":false},\"city\":{\"required\":false,\"hidden\":true}},\"SK\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"SI\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"SR\":{\"postcode\":{\"required\":false,\"hidden\":true}},\"ES\":{\"postcode\":{\"priority\":65},\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"LI\":{\"postcode\":{\"priority\":65},\"state\":{\"label\":\"\\u041c\\u0443\\u043d\\u0438\\u0446\\u0438\\u043f\\u0430\\u043b\\u0438\\u0442\\u0435\\u0442\",\"required\":false}},\"LK\":{\"state\":{\"required\":false}},\"LU\":{\"state\":{\"required\":false}},\"MD\":{\"state\":{\"label\":\"\\u0413\\u043e\\u0440\\u043e\\u0434\\\/\\u0440\\u0430\\u0439\\u043e\\u043d\"}},\"SE\":{\"postcode\":{\"priority\":65},\"state\":{\"required\":false}},\"TR\":{\"postcode\":{\"priority\":65},\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"US\":{\"postcode\":{\"label\":\"\\u0418\\u043d\\u0434\\u0435\\u043a\\u0441\"},\"state\":{\"label\":\"\\u0420\\u0435\\u0433\\u0438\\u043e\\u043d\"}},\"GB\":{\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\"},\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\",\"required\":false}},\"ST\":{\"postcode\":{\"required\":false,\"hidden\":true},\"state\":{\"label\":\"\\u0420\\u0430\\u0439\\u043e\\u043d\"}},\"VN\":{\"state\":{\"required\":false},\"postcode\":{\"priority\":65,\"required\":false,\"hidden\":false},\"address_2\":{\"required\":false,\"hidden\":true}},\"WS\":{\"postcode\":{\"required\":false,\"hidden\":true}},\"YT\":{\"state\":{\"required\":false}},\"ZA\":{\"state\":{\"label\":\"\\u041f\\u0440\\u043e\\u0432\\u0438\\u043d\\u0446\\u0438\\u044f\"}},\"ZW\":{\"postcode\":{\"required\":false,\"hidden\":true}},\"default\":{\"first_name\":{\"label\":\"\\u0418\\u043c\\u044f\",\"placeholder\":\"\",\"class\":[\"form-row-first\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":10,\"priority\":10},\"last_name\":{\"label\":\"\\u0424\\u0430\\u043c\\u0438\\u043b\\u0438\\u044f\",\"placeholder\":\"\",\"class\":[\"form-row-last\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":11,\"priority\":11},\"country\":{\"label\":\"\\u0421\\u0442\\u0440\\u0430\\u043d\\u0430\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\",\"update_totals_on_change\"],\"type\":\"country\",\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":12,\"priority\":12},\"address_1\":{\"label\":\"\\u0410\\u0434\\u0440\\u0435\\u0441\",\"placeholder\":\"\\u041d\\u043e\\u043c\\u0435\\u0440 \\u0434\\u043e\\u043c\\u0430 \\u0438 \\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u0443\\u043b\\u0438\\u0446\\u044b\",\"class\":[\"form-row-wide\",\"address-field\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":13,\"priority\":13},\"address_2\":{\"label\":\"\\u041a\\u0432\\u0430\\u0440\\u0442\\u0438\\u0440\\u0430, \\u043e\\u0444\\u0438\\u0441 \\u0438 \\u0442. \\u0434.\",\"placeholder\":\"\\u041a\\u0432\\u0430\\u0440\\u0442\\u0438\\u0440\\u0430, \\u0430\\u043f\\u0430\\u0440\\u0442\\u0430\\u043c\\u0435\\u043d\\u0442\\u044b, \\u0436\\u0438\\u043b\\u043e\\u0435 \\u043f\\u043e\\u043c\\u0435\\u0449\\u0435\\u043d\\u0438\\u0435 \\u0438 \\u0442. \\u0434. (\\u043d\\u0435 \\u043e\\u0431\\u044f\\u0437\\u0430\\u0442\\u0435\\u043b\\u044c\\u043d\\u043e)\",\"class\":[\"form-row-wide\",\"address-field\"],\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":14,\"priority\":14},\"city\":{\"label\":\"\\u041d\\u0430\\u0441\\u0435\\u043b\\u0451\\u043d\\u043d\\u044b\\u0439 \\u043f\\u0443\\u043d\\u043a\\u0442\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":15,\"priority\":15},\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"type\":\"state\",\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":17,\"priority\":17},\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":18,\"priority\":18}},\"UA\":{\"first_name\":{\"label\":\"\\u0418\\u043c\\u044f\",\"placeholder\":\"\",\"class\":[\"form-row-first\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":10,\"priority\":10},\"last_name\":{\"label\":\"\\u0424\\u0430\\u043c\\u0438\\u043b\\u0438\\u044f\",\"placeholder\":\"\",\"class\":[\"form-row-last\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":11,\"priority\":11},\"country\":{\"label\":\"\\u0421\\u0442\\u0440\\u0430\\u043d\\u0430\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\",\"update_totals_on_change\"],\"type\":\"country\",\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":12,\"priority\":12},\"address_1\":{\"label\":\"\\u0410\\u0434\\u0440\\u0435\\u0441\",\"placeholder\":\"\\u041d\\u043e\\u043c\\u0435\\u0440 \\u0434\\u043e\\u043c\\u0430 \\u0438 \\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u0443\\u043b\\u0438\\u0446\\u044b\",\"class\":[\"form-row-wide\",\"address-field\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":13,\"priority\":13},\"address_2\":{\"label\":\"\\u041a\\u0432\\u0430\\u0440\\u0442\\u0438\\u0440\\u0430, \\u043e\\u0444\\u0438\\u0441 \\u0438 \\u0442. \\u0434.\",\"placeholder\":\"\\u041a\\u0432\\u0430\\u0440\\u0442\\u0438\\u0440\\u0430, \\u0430\\u043f\\u0430\\u0440\\u0442\\u0430\\u043c\\u0435\\u043d\\u0442\\u044b, \\u0436\\u0438\\u043b\\u043e\\u0435 \\u043f\\u043e\\u043c\\u0435\\u0449\\u0435\\u043d\\u0438\\u0435 \\u0438 \\u0442. \\u0434. (\\u043d\\u0435 \\u043e\\u0431\\u044f\\u0437\\u0430\\u0442\\u0435\\u043b\\u044c\\u043d\\u043e)\",\"class\":[\"form-row-wide\",\"address-field\"],\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":14,\"priority\":14},\"city\":{\"label\":\"\\u041d\\u0430\\u0441\\u0435\\u043b\\u0451\\u043d\\u043d\\u044b\\u0439 \\u043f\\u0443\\u043d\\u043a\\u0442\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"required\":true,\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":15,\"priority\":15},\"state\":{\"label\":\"\\u041e\\u0431\\u043b\\u0430\\u0441\\u0442\\u044c\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"type\":\"state\",\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":17,\"priority\":17},\"postcode\":{\"label\":\"\\u041f\\u043e\\u0447\\u0442\\u043e\\u0432\\u044b\\u0439 \\u0438\\u043d\\u0434\\u0435\\u043a\\u0441\",\"placeholder\":\"\",\"class\":[\"form-row-wide\",\"address-field\"],\"public\":true,\"payment_method\":[\"0\"],\"shipping_method\":[\"0\"],\"order\":18,\"priority\":18}}}",
+    "locale_fields": "{\"address_1\":\"#billing_address_1_field, #shipping_address_1_field\",\"address_2\":\"#billing_address_2_field, #shipping_address_2_field\",\"state\":\"#billing_state_field, #shipping_state_field, #calc_shipping_state_field\",\"postcode\":\"#billing_postcode_field, #shipping_postcode_field, #calc_shipping_postcode_field\",\"city\":\"#billing_city_field, #shipping_city_field, #calc_shipping_city_field\"}",
+    "i18n_required_text": "\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e",
+    "i18n_optional_text": "\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e"
+  };
+</script>
+
+<script type='text/javascript' id='wc-cart-js-extra'>
+  let wc_cart_params = {
+    "ajax_url": "\/wp-admin\/admin-ajax.php",
+    "wc_ajax_url": "\/?wc-ajax=%%endpoint%%",
+    "update_shipping_method_nonce": "84c8a0641c",
+    "apply_coupon_nonce": "8de4b57838",
+    "remove_coupon_nonce": "ac016cc94a"
+  };
+</script>
+
+<script type='text/javascript' id='password-strength-meter-js-extra'>
+  let pwsL10n = {
+    "unknown": "\u041d\u0430\u0434\u0451\u0436\u043d\u043e\u0441\u0442\u044c \u043f\u0430\u0440\u043e\u043b\u044f \u043d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u0430",
+    "short": "\u041e\u0447\u0435\u043d\u044c \u0441\u043b\u0430\u0431\u044b\u0439",
+    "bad": "\u0421\u043b\u0430\u0431\u044b\u0439",
+    "good": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+    "strong": "\u041d\u0430\u0434\u0451\u0436\u043d\u044b\u0439",
+    "mismatch": "\u041d\u0435\u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435"
+  };
+</script>
+<script type='text/javascript' id='password-strength-meter-js-translations'>
+  (function (domain, translations) {
+    let localeData = translations.locale_data[domain] || translations.locale_data.messages;
+    localeData[""].domain = domain;
+    wp.i18n.setLocaleData(localeData, domain);
+  })("default", {
+    "translation-revision-date": "2021-05-18 14:23:41+0000",
+    "generator": "GlotPress\/3.0.0-alpha.2",
+    "domain": "messages",
+    "locale_data": {
+      "messages": {
+        "": {
+          "domain": "messages",
+          "plural-forms": "nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);",
+          "lang": "ru"
+        },
+        "%1$s is deprecated since version %2$s! Use %3$s instead. Please consider writing more inclusive code.": ["%1$s \u0443\u0441\u0442\u0430\u0440\u0435\u043b\u0430 \u0441 \u0432\u0435\u0440\u0441\u0438\u0438 %2$s! \u0412\u043c\u0435\u0441\u0442\u043e \u043d\u0435\u0451 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435 %3$s. \u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0440\u0430\u0441\u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u044c \u043d\u0430\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u0431\u043e\u043b\u0435\u0435 \u0438\u043d\u043a\u043b\u044e\u0437\u0438\u0432\u043d\u043e\u0433\u043e \u043a\u043e\u0434\u0430."]
+      }
+    },
+    "comment": {"reference": "wp-admin\/js\/password-strength-meter.js"}
+  });
+</script>
+
+<script type='text/javascript' id='wc-password-strength-meter-js-extra'>
+  let wc_password_strength_meter_params = {
+    "min_password_strength": "3",
+    "i18n_password_error": "\u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u0431\u043e\u043b\u0435\u0435 \u043d\u0430\u0434\u0451\u0436\u043d\u044b\u0439 \u043f\u0430\u0440\u043e\u043b\u044c.",
+    "i18n_password_hint": "\u041f\u043e\u0434\u0441\u043a\u0430\u0437\u043a\u0430: \u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u0442\u0441\u044f \u0437\u0430\u0434\u0430\u0442\u044c \u043f\u0430\u0440\u043e\u043b\u044c \u0434\u043b\u0438\u043d\u043e\u0439 \u043d\u0435 \u043c\u0435\u043d\u0435\u0435 \u0434\u0432\u0435\u043d\u0430\u0434\u0446\u0430\u0442\u0438 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432. \u0427\u0442\u043e\u0431\u044b \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u0435\u0433\u043e \u043d\u0430\u0434\u0451\u0436\u043d\u0435\u0435, \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435 \u0431\u0443\u043a\u0432\u044b \u0432\u0435\u0440\u0445\u043d\u0435\u0433\u043e \u0438 \u043d\u0438\u0436\u043d\u0435\u0433\u043e \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430, \u0447\u0438\u0441\u043b\u0430 \u0438 \u0441\u0438\u043c\u0432\u043e\u043b\u044b \u043d\u0430\u043f\u043e\u0434\u043e\u0431\u0438\u0435 ! \" ? $ % ^ & )."
+  };
+</script>
+
+<script type='text/javascript' id='wc-cart-fragments-js-extra'>
+  let wc_cart_fragments_params = {
+    "ajax_url": "\/wp-admin\/admin-ajax.php",
+    "wc_ajax_url": "\/?wc-ajax=%%endpoint%%",
+    "cart_hash_key": "wc_cart_hash_040777dee4510347c390f004dcfd7483",
+    "fragment_name": "wc_fragments_040777dee4510347c390f004dcfd7483"
+  };
+</script>
+
+</body>
+</html>
+
